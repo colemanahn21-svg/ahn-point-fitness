@@ -14,6 +14,7 @@ struct LogView: View {
     @State private var showSettings: Bool = false
     @State private var progressTarget: ProgressTarget?
     @State private var expandedHistory: Set<UUID> = []
+    @State private var editTarget: WorkoutLog?
 
     // Tue Lift A is a user-chosen variant. Sets are saved under the active
     // variant's name so each option has an isolated history.
@@ -129,6 +130,7 @@ struct LogView: View {
             LogHistoryCard(
                 logs: allLogs,
                 expandedHistory: $expandedHistory,
+                onEdit: { editTarget = $0 },
                 onClear: { showClearAlert = true }
             )
         }
@@ -147,6 +149,10 @@ struct LogView: View {
         }
         .sheet(item: $progressTarget) { target in
             ExerciseProgressView(exerciseName: target.id)
+                .preferredColorScheme(.dark)
+        }
+        .sheet(item: $editTarget) { log in
+            EditLogView(log: log)
                 .preferredColorScheme(.dark)
         }
     }

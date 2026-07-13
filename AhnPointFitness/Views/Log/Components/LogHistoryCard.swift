@@ -5,6 +5,7 @@ import SwiftUI
 struct LogHistoryCard: View {
     let logs: [WorkoutLog]
     @Binding var expandedHistory: Set<UUID>
+    let onEdit: (WorkoutLog) -> Void
     let onClear: () -> Void
 
     private static let etTZ = TimeZone(identifier: "America/New_York")!
@@ -79,6 +80,20 @@ struct LogHistoryCard: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .overlay(alignment: .trailing) {
+                Button {
+                    onEdit(log)
+                } label: {
+                    Image(systemName: "pencil")
+                        .font(.system(size: 12))
+                        .foregroundStyle(Theme.text3)
+                        .padding(8)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Edit log")
+                .offset(x: -64)
+            }
 
             if isExpanded {
                 let grouped = Dictionary(grouping: log.sets, by: { $0.exerciseName })
