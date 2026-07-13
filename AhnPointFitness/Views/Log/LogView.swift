@@ -166,7 +166,7 @@ struct LogView: View {
                 .font(Typography.setHeader)
                 .foregroundStyle(Theme.text3)
                 .tracking(0.5)
-            ForEach([60, 90, 120], id: \.self) { seconds in
+            ForEach([45, 60, 90, 120], id: \.self) { seconds in
                 Button {
                     restTimer.start(seconds: seconds)
                 } label: {

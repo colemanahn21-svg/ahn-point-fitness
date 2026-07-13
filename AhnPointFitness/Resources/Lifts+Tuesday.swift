@@ -74,7 +74,9 @@ extension Programme {
                     .init("tue-e4", "E4. DB Woodchop (half-kneel, no cable)", ["10/side", "Explosive concentric"],
                           "Half-kneeling on turf, both hands on one DB held at hip. Swing DB up and across body like chopping wood. Rotational power without leaving the turf."),
                     .init("tue-e5", "E5. Side Plank + Hip Dip", ["10 dips/side", "Controlled"],
-                          "Side plank position, dip hip toward floor, drive back up. Anti-lateral flexion + oblique burn. 60s rest → Round 2.")
+                          "Side plank position, dip hip toward floor, drive back up. Anti-lateral flexion + oblique burn."),
+                    .init("tue-e6", "E6. KB Swing (hip hinge)", ["15", "Explosive"],
+                          "Heart-rate spike station — the KB is already out. Powerful hip snap, arms relaxed, glutes finish the rep. Pushes the circuit into Zone 3 without loading tired quads. 60s rest → Round 2.")
                 ]
             ),
             .saunaNote("🧖 SAUNA: 15 min infrared after stretching. Best sauna day of the week — flushes legs, elevates growth hormone."),

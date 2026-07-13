@@ -4,7 +4,7 @@ extension Programme {
     static let thursday = DayContent(
         day: .thu,
         title: "Thu · Arms + Shoulders",
-        subtitle: "~80 min · Gym → Turf",
+        subtitle: "~90 min · Gym → Cable Station",
         tag: .abs,
         sections: [
             .mobilityPrimer(
@@ -21,29 +21,29 @@ extension Programme {
                 ]
             ),
             .groups([
-                GroupBlock(label: "Superset A", exercises: [
-                    .init("thu-a1", "A1. Seated DB OHP", ["4×6-8", "3-0-1-0", "90s"],
-                          "Primary shoulder compound. Seated removes leg drive."),
+                GroupBlock(label: "Superset A · No rest A1→A2 · 90s after pair", exercises: [
+                    .init("thu-a1", "A1. Seated DB OHP", ["4×6-8", "3-0-1-0", "→ A2"],
+                          "Primary shoulder compound. Seated removes leg drive. Straight to A2 with no rest — press and curl don't compete."),
                     .init("thu-a2", "A2. EZ-Bar Curl", ["3×6-8", "3-0-1-1", "90s"],
-                          "Primary bicep mass builder. EZ-bar reduces wrist strain.")
+                          "Primary bicep mass builder. EZ-bar reduces wrist strain. Rest 90s after the pair.")
                 ]),
-                GroupBlock(label: "Superset B", exercises: [
-                    .init("thu-b1", "B1. Cable Lateral Raise", ["3×12-15", "2-1-2-0", "60s"],
-                          "Medial delt width. Cables maintain constant tension."),
+                GroupBlock(label: "Superset B · No rest B1→B2 · 60s after pair", exercises: [
+                    .init("thu-b1", "B1. Cable Lateral Raise", ["3×12-15", "2-1-2-0", "→ B2"],
+                          "Medial delt width. Cables maintain constant tension. Straight to B2, no rest."),
                     .init("thu-b2", "B2. OH Tricep Extension", ["3×10-12", "2-1-2-0", "60s"],
-                          "Long head of triceps in stretched position.")
+                          "Long head of triceps in stretched position. Rest 60s after the pair.")
                 ]),
-                GroupBlock(label: "Superset C", exercises: [
-                    .init("thu-c1", "C1. Reverse Pec Deck", ["3×12-15", "2-1-2-0", "60s"],
-                          "Rear delt isolation. Balances heavy pressing."),
+                GroupBlock(label: "Superset C · No rest C1→C2 · 60s after pair", exercises: [
+                    .init("thu-c1", "C1. Reverse Pec Deck", ["3×12-15", "2-1-2-0", "→ C2"],
+                          "Rear delt isolation. Balances heavy pressing. Straight to C2, no rest."),
                     .init("thu-c2", "C2. Hammer Curl", ["3×10-12", "2-0-1-1", "60s"],
-                          "Moved up from D2. Brachialis is fresher here — you can actually load these properly. Neutral grip after reverse pec deck is a smooth transition.")
+                          "Moved up from D2. Brachialis is fresher here — you can actually load these properly. Neutral grip after reverse pec deck is a smooth transition. Rest 60s after the pair.")
                 ]),
-                GroupBlock(label: "Superset D", exercises: [
-                    .init("thu-d1", "D1. Dip Machine / CG Bench", ["3×8-10", "3-0-1-0", "60s"],
-                          "Compound tricep movement."),
+                GroupBlock(label: "Superset D · No rest D1→D2 · 60s after pair", exercises: [
+                    .init("thu-d1", "D1. Dip Machine / CG Bench", ["3×8-10", "3-0-1-0", "→ D2"],
+                          "Compound tricep movement. Straight to D2, no rest."),
                     .init("thu-d2", "D2. Incline DB Curl", ["3×10-12", "3-0-1-1", "60s"],
-                          "Finisher. Stretch-position exercise — works even when fatigued because the incline does the work. Deep stretch recruits long head regardless of how gassed you are. 25–30 lb is plenty here.")
+                          "Finisher. Stretch-position exercise — works even when fatigued because the incline does the work. Deep stretch recruits long head regardless of how gassed you are. 25–30 lb is plenty here. Rest 60s after the pair.")
                 ])
             ]),
             .abCircuit(
@@ -59,8 +59,19 @@ extension Programme {
                     .init("thu-e4", "E4. Cable Reverse Woodchop (low-to-high)", ["10/side", "2-0-1-0"],
                           "Cable low, explode up and across body to opposite shoulder. Opposite direction from E2. Hits the rotational chain from the other angle — critical for balanced oblique development."),
                     .init("thu-e5", "E5. Cable Side Bend (standing)", ["12/side", "2-1-1-0"],
-                          "Stand sideways to cable, handle at hip height, lean away against resistance. Direct oblique isolation under constant tension. 60s rest → Round 2.")
+                          "Stand sideways to cable, handle at hip height, lean away against resistance. Direct oblique isolation under constant tension."),
+                    .init("thu-e6", "E6. Bike Sprint or Jump Rope", ["30s", "Max effort"],
+                          "Heart-rate spike station. 30 seconds all-out on the nearest bike (or jump rope by the cable station). Legs are fresh on arm day — this is what pushes the circuit into Zone 3–4. 60s rest → Round 2.")
                 ]
+            ),
+            .cardioFinisher(
+                title: "⬇ Cardio Finisher · Intervals · Pick One ⬇",
+                options: [
+                    .init("thu-cd1", "Assault Bike Intervals", ["10-12 min", "30s hard / 30s easy", "Zone 3-4"]),
+                    .init("thu-cd2", "Rowing Intervals", ["10-12 min", "40s hard / 40s easy", "Zone 3-4"]),
+                    .init("thu-cd3", "Incline Treadmill Pushes", ["12 min", "1 min @ 12% brisk / 1 min easy", "Zone 3"])
+                ],
+                note: "Arms are fried but legs are fresh — bike/row intervals raise heart rate without stealing from Friday. Cap it at 12 min."
             ),
             .stretchBlocks(title: "⬇ Stretch · 15–20 min ⬇", blocks: [
                 StretchBlock(label: "Post–Arms + Shoulders Stretching", stretches: [

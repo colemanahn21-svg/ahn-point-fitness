@@ -21,23 +21,23 @@ extension Programme {
                 ]
             ),
             .groups([
-                GroupBlock(label: "Superset A", exercises: [
-                    .init("mon-a1", "A1. Barbell Bench Press", ["4×6-8", "3-1-1-0", "90s"],
-                          "Primary horizontal push. Heavy compound for chest mass. Antagonist paired with row."),
+                GroupBlock(label: "Superset A · No rest A1→A2 · 90s after pair", exercises: [
+                    .init("mon-a1", "A1. Barbell Bench Press", ["4×6-8", "3-1-1-0", "→ A2"],
+                          "Primary horizontal push. Heavy compound for chest mass. Antagonist paired with row — go straight to A2 with no rest; the pairing rests each muscle while keeping heart rate up."),
                     .init("mon-a2", "A2. Barbell Bent-Over Row", ["4×6-8", "3-1-1-0", "90s"],
-                          "Primary horizontal pull. Balances pressing volume, builds thick lats and mid-back.")
+                          "Primary horizontal pull. Balances pressing volume, builds thick lats and mid-back. Rest 90s after the pair, then back to A1.")
                 ]),
-                GroupBlock(label: "Superset B", exercises: [
-                    .init("mon-b1", "B1. Incline DB Press (30°)", ["3×8-10", "3-0-1-1", "75s"],
-                          "Upper chest emphasis. Shifts load to clavicular head."),
+                GroupBlock(label: "Superset B · No rest B1→B2 · 75s after pair", exercises: [
+                    .init("mon-b1", "B1. Incline DB Press (30°)", ["3×8-10", "3-0-1-1", "→ B2"],
+                          "Upper chest emphasis. Shifts load to clavicular head. Straight to B2, no rest."),
                     .init("mon-b2", "B2. Chest-Supported DB Row", ["3×8-10", "3-1-1-0", "75s"],
-                          "Isolates lats/rhomboids without low-back fatigue.")
+                          "Isolates lats/rhomboids without low-back fatigue. Rest 75s after the pair.")
                 ]),
-                GroupBlock(label: "Superset C", exercises: [
-                    .init("mon-c1", "C1. Cable Fly (low-to-high)", ["3×12-15", "2-1-2-0", "60s"],
-                          "Inner/upper chest isolation with constant cable tension."),
+                GroupBlock(label: "Superset C · No rest C1→C2 · 60s after pair", exercises: [
+                    .init("mon-c1", "C1. Cable Fly (low-to-high)", ["3×12-15", "2-1-2-0", "→ C2"],
+                          "Inner/upper chest isolation with constant cable tension. Straight to C2, no rest."),
                     .init("mon-c2", "C2. Straight-Arm Pulldown", ["3×12-15", "2-1-2-0", "60s"],
-                          "Isolates lats without bicep. Teaches scapular depression.")
+                          "Isolates lats without bicep. Teaches scapular depression. Rest 60s after the pair.")
                 ]),
                 GroupBlock(exercises: [
                     .init("mon-d", "D. Face Pulls", ["3×15-20", "2-1-2-0", "45s"],
@@ -52,7 +52,7 @@ extension Programme {
                     .init("mon-cd3", "Stairmaster", ["12-15 min", "Lvl 6-8", "Zone 2"]),
                     .init("mon-cd4", "Incline Walk", ["15-20 min", "12-15%, 3.5 mph", "Zone 2"])
                 ],
-                note: "Upper body day = legs are fresh. Running is a great choice. Wk 5–8: add 3–4×30s pushes to Zone 3–4."
+                note: "Upper body day = legs are fresh. Running is a great choice. Every week: add 4×30–45s pushes to Zone 3–4 with easy pace between — don't leave this in Zone 2."
             ),
             .stretchBlocks(title: "⬇ Stretch · 15–20 min ⬇", blocks: [
                 StretchBlock(label: "Post–Back + Chest Stretching", stretches: [
