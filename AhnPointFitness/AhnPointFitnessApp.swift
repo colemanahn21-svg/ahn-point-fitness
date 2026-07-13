@@ -23,6 +23,15 @@ struct AhnPointFitnessApp: App {
                         Task { await whoopAuth.refreshIfNeeded() }
                     }
                 }
+                .task {
+                    // Launch-argument hook (screenshots / UI tests):
+                    // `-seedDemo YES` populates the app with demo data.
+                    if UserDefaults.standard.bool(forKey: "seedDemo") {
+                        let ctx = container.mainContext
+                        let existing = (try? ctx.fetch(FetchDescriptor<WorkoutLog>())) ?? []
+                        DemoSeeder.seed(into: ctx, existing: existing)
+                    }
+                }
         }
         .modelContainer(container)
     }

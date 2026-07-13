@@ -1,7 +1,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selected: Tab = .today
+    // Launch-argument hook (screenshots / UI tests): `-launchTab log` etc.
+    @State private var selected: Tab = {
+        switch UserDefaults.standard.string(forKey: "launchTab") {
+        case "lifts": return .lifts
+        case "log": return .log
+        case "more": return .more
+        default: return .today
+        }
+    }()
     @State private var keyboardHeight: CGFloat = 0
     @StateObject private var restTimer = RestTimerState()
 
