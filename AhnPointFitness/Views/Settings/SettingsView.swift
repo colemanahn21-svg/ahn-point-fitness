@@ -72,6 +72,8 @@ struct SettingsView: View {
                 Card { whoopRows }
                 SectionLabel(text: "Data")
                 Card { dataRows }
+                SectionLabel(text: "Demo")
+                Card { demoRows }
             }
             .padding(.horizontal, Theme.pagePaddingH)
             .padding(.top, Theme.pagePaddingV)
@@ -219,6 +221,29 @@ struct SettingsView: View {
             systemImage: "chart.bar",
             action: {}
         )
+    }
+
+    @ViewBuilder
+    private var demoRows: some View {
+        if DemoSeeder.isSeeded {
+            actionRow(
+                title: "Remove Demo Data",
+                subtitle: "Deletes only the seeded logs; your real logs stay.",
+                systemImage: "trash",
+                action: {
+                    DemoSeeder.unseed(from: ctx, logs: allLogs)
+                }
+            )
+        } else {
+            actionRow(
+                title: "Load Demo Data",
+                subtitle: "Seed 4 weeks of sample workouts (and a sample WHOOP card if none is cached). Never touches real data.",
+                systemImage: "sparkles",
+                action: {
+                    DemoSeeder.seed(into: ctx, existing: allLogs)
+                }
+            )
+        }
     }
 
     @ToolbarContentBuilder
