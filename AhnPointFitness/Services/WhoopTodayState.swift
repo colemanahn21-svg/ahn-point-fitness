@@ -17,6 +17,19 @@ final class WhoopTodayState: ObservableObject {
         snapshot = WhoopTodayCache.load()
     }
 
+    /// True when there's no snapshot or it's older than `maxAge` (30 min).
+    var isStale: Bool {
+        guard let snap = snapshot else { return true }
+        return -snap.fetchedAt.timeIntervalSinceNow > 30 * 60
+    }
+
+    /// Refresh only when the cached snapshot is missing or stale — used by
+    /// on-appear and foreground triggers so we don't hammer the API.
+    func refreshIfStale(auth: WhoopAuth) async {
+        guard isStale else { return }
+        await refresh(auth: auth)
+    }
+
     func refresh(auth: WhoopAuth) async {
         guard auth.isConnected, !isLoading else { return }
         isLoading = true

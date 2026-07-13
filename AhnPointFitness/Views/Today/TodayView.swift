@@ -2,6 +2,8 @@ import SwiftUI
 
 struct TodayView: View {
     @StateObject private var whoop = WhoopTodayState()
+    @EnvironmentObject private var auth: WhoopAuth
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -20,6 +22,11 @@ struct TodayView: View {
 
             SectionLabel(text: "Your Baseline")
             StatGrid(stats: TodayContent.stats)
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active {
+                Task { await whoop.refreshIfStale(auth: auth) }
+            }
         }
     }
 

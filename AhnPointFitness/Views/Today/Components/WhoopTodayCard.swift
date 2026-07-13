@@ -80,7 +80,7 @@ struct WhoopTodayCard: View {
             footerRow
         }
         .task {
-            await state.refresh(auth: auth)
+            await state.refreshIfStale(auth: auth)
         }
     }
 

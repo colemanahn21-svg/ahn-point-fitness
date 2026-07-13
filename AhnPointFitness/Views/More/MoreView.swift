@@ -49,6 +49,10 @@ struct MoreView: View {
         moreRow(label: "Sleep", icon: "moon.fill", color: Theme.purple) {
             DetailScroll(title: "Sleep") { SleepView() }
         }
+        rowDivider
+        moreRow(label: "Trends", icon: "chart.xyaxis.line", color: Theme.accent) {
+            DetailScroll(title: "Trends") { TrendsView() }
+        }
     }
 
     private var rowDivider: some View {
