@@ -4,7 +4,7 @@ extension Programme {
     static let thursday = DayContent(
         day: .thu,
         title: "Thu · Arms + Shoulders",
-        subtitle: "~90 min · Gym → Cable Station",
+        subtitle: "~85 min · Gym → Cable Station",
         tag: .abs,
         sections: [
             .mobilityPrimer(
@@ -27,23 +27,23 @@ extension Programme {
                     .init("thu-a2", "A2. EZ-Bar Curl", ["3×6-8", "3-0-1-1", "90s"],
                           "Primary bicep mass builder. EZ-bar reduces wrist strain. Rest 90s after the pair.")
                 ]),
-                GroupBlock(label: "Superset B · No rest B1→B2 · 60s after pair", exercises: [
+                GroupBlock(label: "Superset B · No rest B1→B2 · 45s after pair", exercises: [
                     .init("thu-b1", "B1. Cable Lateral Raise", ["3×12-15", "2-1-2-0", "→ B2"],
                           "Medial delt width. Cables maintain constant tension. Straight to B2, no rest."),
-                    .init("thu-b2", "B2. OH Tricep Extension", ["3×10-12", "2-1-2-0", "60s"],
-                          "Long head of triceps in stretched position. Rest 60s after the pair.")
+                    .init("thu-b2", "B2. OH Tricep Extension", ["3×10-12", "2-1-2-0", "45s"],
+                          "Long head of triceps in stretched position. Rest 45s after the pair.")
                 ]),
-                GroupBlock(label: "Superset C · No rest C1→C2 · 60s after pair", exercises: [
+                GroupBlock(label: "Superset C · No rest C1→C2 · 45s after pair", exercises: [
                     .init("thu-c1", "C1. Reverse Pec Deck", ["3×12-15", "2-1-2-0", "→ C2"],
                           "Rear delt isolation. Balances heavy pressing. Straight to C2, no rest."),
-                    .init("thu-c2", "C2. Hammer Curl", ["3×10-12", "2-0-1-1", "60s"],
-                          "Moved up from D2. Brachialis is fresher here — you can actually load these properly. Neutral grip after reverse pec deck is a smooth transition. Rest 60s after the pair.")
+                    .init("thu-c2", "C2. Hammer Curl", ["3×10-12", "2-0-1-1", "45s"],
+                          "Moved up from D2. Brachialis is fresher here — you can actually load these properly. Neutral grip after reverse pec deck is a smooth transition. Rest 45s after the pair.")
                 ]),
-                GroupBlock(label: "Superset D · No rest D1→D2 · 60s after pair", exercises: [
+                GroupBlock(label: "Superset D · No rest D1→D2 · 45s after pair", exercises: [
                     .init("thu-d1", "D1. Dip Machine / CG Bench", ["3×8-10", "3-0-1-0", "→ D2"],
                           "Compound tricep movement. Straight to D2, no rest."),
-                    .init("thu-d2", "D2. Incline DB Curl", ["3×10-12", "3-0-1-1", "60s"],
-                          "Finisher. Stretch-position exercise — works even when fatigued because the incline does the work. Deep stretch recruits long head regardless of how gassed you are. 25–30 lb is plenty here. Rest 60s after the pair.")
+                    .init("thu-d2", "D2. Incline DB Curl", ["3×10-12", "3-0-1-1", "45s"],
+                          "Finisher. Stretch-position exercise — works even when fatigued because the incline does the work. Deep stretch recruits long head regardless of how gassed you are. 25–30 lb is plenty here. Rest 45s after the pair.")
                 ])
             ]),
             .abCircuit(
@@ -60,8 +60,8 @@ extension Programme {
                           "Cable low, explode up and across body to opposite shoulder. Opposite direction from E2. Hits the rotational chain from the other angle — critical for balanced oblique development."),
                     .init("thu-e5", "E5. Cable Side Bend (standing)", ["12/side", "2-1-1-0"],
                           "Stand sideways to cable, handle at hip height, lean away against resistance. Direct oblique isolation under constant tension."),
-                    .init("thu-e6", "E6. Bike Sprint or Jump Rope", ["30s", "Max effort"],
-                          "Heart-rate spike station. 30 seconds all-out on the nearest bike (or jump rope by the cable station). Legs are fresh on arm day — this is what pushes the circuit into Zone 3–4. 60s rest → Round 2.")
+                    .init("thu-e6", "E6. Cable Chop Sprint (alternating)", ["30s", "Max effort"],
+                          "Heart-rate spike station, zero steps from the stack. Moderate weight, alternating sides, as many explosive chops as you can in 30s. Pushes the circuit into Zone 3–4 AND banks extra rotational power reps for the golf swing. 60s rest → Round 2.")
                 ]
             ),
             .cardioFinisher(

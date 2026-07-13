@@ -4,7 +4,7 @@ extension Programme {
     static let monday = DayContent(
         day: .mon,
         title: "Mon · Back + Chest",
-        subtitle: "~80 min · Gym",
+        subtitle: "~75 min · Gym",
         tag: .cardio,
         sections: [
             .mobilityPrimer(
@@ -27,21 +27,19 @@ extension Programme {
                     .init("mon-a2", "A2. Barbell Bent-Over Row", ["4×6-8", "3-1-1-0", "90s"],
                           "Primary horizontal pull. Balances pressing volume, builds thick lats and mid-back. Rest 90s after the pair, then back to A1.")
                 ]),
-                GroupBlock(label: "Superset B · No rest B1→B2 · 75s after pair", exercises: [
+                GroupBlock(label: "Superset B · No rest B1→B2 · 60s after pair", exercises: [
                     .init("mon-b1", "B1. Incline DB Press (30°)", ["3×8-10", "3-0-1-1", "→ B2"],
                           "Upper chest emphasis. Shifts load to clavicular head. Straight to B2, no rest."),
-                    .init("mon-b2", "B2. Chest-Supported DB Row", ["3×8-10", "3-1-1-0", "75s"],
-                          "Isolates lats/rhomboids without low-back fatigue. Rest 75s after the pair.")
+                    .init("mon-b2", "B2. Chest-Supported DB Row", ["3×8-10", "3-1-1-0", "60s"],
+                          "Isolates lats/rhomboids without low-back fatigue. Rest 60s after the pair — RPE 7-8 volume work tolerates the density.")
                 ]),
-                GroupBlock(label: "Superset C · No rest C1→C2 · 60s after pair", exercises: [
+                GroupBlock(label: "Giant Set C · C1→C2→C3 no rest · 60s after round · 3 rounds", exercises: [
                     .init("mon-c1", "C1. Cable Fly (low-to-high)", ["3×12-15", "2-1-2-0", "→ C2"],
                           "Inner/upper chest isolation with constant cable tension. Straight to C2, no rest."),
-                    .init("mon-c2", "C2. Straight-Arm Pulldown", ["3×12-15", "2-1-2-0", "60s"],
-                          "Isolates lats without bicep. Teaches scapular depression. Rest 60s after the pair.")
-                ]),
-                GroupBlock(exercises: [
-                    .init("mon-d", "D. Face Pulls", ["3×15-20", "2-1-2-0", "45s"],
-                          "Rear delt and external rotator health. Non-negotiable prehab.")
+                    .init("mon-c2", "C2. Straight-Arm Pulldown", ["3×12-15", "2-1-2-0", "→ C3"],
+                          "Isolates lats without bicep. Teaches scapular depression. Straight to C3, no rest."),
+                    .init("mon-c3", "C3. Face Pulls", ["3×15-20", "2-1-2-0", "60s"],
+                          "Rear delt and external rotator health. Non-negotiable prehab. Closes the round — all three moves live at the cable area, so heart rate stays up with zero travel. 60s, back to C1.")
                 ])
             ]),
             .cardioFinisher(

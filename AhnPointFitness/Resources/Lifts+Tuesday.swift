@@ -22,7 +22,7 @@ extension Programme {
     static let tuesday = DayContent(
         day: .tue,
         title: "Tue · Legs",
-        subtitle: "~90 min · Gym → Turf",
+        subtitle: "~85 min · Gym → Turf",
         tag: .abs,
         sections: [
             .mobilityPrimer(
@@ -48,17 +48,21 @@ extension Programme {
                 ]),
                 GroupBlock(exercises: [
                     .init("tue-a", "A. Trap Bar Squat (low handles)", ["4×5-7", "3-1-1-0", "120s"],
-                          "Use low handles for full ROM. Shifts ~30% of spinal compression to hips and arms vs back squat. More force output at the same %1RM. Match or exceed your back squat working weight — most lifters trap bar 10-15% more."),
-                    .init("tue-b", "B. Romanian Deadlift", ["4×8-10", "3-1-1-0", "90s"],
-                          "Primary posterior chain builder. Heavy eccentric for hamstrings."),
-                    .init("tue-c", "C. Walking Lunges (DB)", ["3×10/leg", "2-0-1-0", "75s"],
-                          "Unilateral quad/glute work. Addresses imbalances."),
-                    .init("tue-d", "D. Leg Curl", ["3×10-12", "3-1-1-0", "60s"],
-                          "Isolated knee-flexion hamstring work."),
-                    .init("tue-e", "E. Leg Press (standard foot placement)", ["3×12-15", "3-1-1-0", "75s"],
+                          "Use low handles for full ROM. Shifts ~30% of spinal compression to hips and arms vs back squat. More force output at the same %1RM. Match or exceed your back squat working weight — most lifters trap bar 10-15% more. Full 120s rest — heavy strength work is protected, heart rate comes from everything after."),
+                    .init("tue-b", "B. Romanian Deadlift", ["4×8-10", "3-1-1-0", "75s"],
+                          "Primary posterior chain builder. Heavy eccentric for hamstrings.")
+                ]),
+                GroupBlock(label: "Superset C · No rest C1→C2 · 75s after pair", exercises: [
+                    .init("tue-c1", "C1. Walking Lunges (DB)", ["3×10/leg", "2-0-1-0", "→ C2"],
+                          "Unilateral quad/glute work. Addresses imbalances. Straight to leg curl — lunges alone will put you in Zone 3."),
+                    .init("tue-c2", "C2. Leg Curl", ["3×10-12", "3-1-1-0", "75s"],
+                          "Isolated knee-flexion hamstring work. Quads recover while hamstrings work. Rest 75s after the pair.")
+                ]),
+                GroupBlock(label: "Superset D · No rest D1→D2 · 60s after pair", exercises: [
+                    .init("tue-d1", "D1. Leg Press (standard foot placement)", ["3×12-15", "3-1-1-0", "→ D2"],
                           "Quad-emphasis volume. Feet shoulder-width, lower on platform. Balances the trap bar's posterior-chain bias by hammering quads with zero spinal load."),
-                    .init("tue-f", "F. Standing Calf Raise", ["4×12-15", "2-2-1-0", "45s"],
-                          "Heavy loading, full stretch. 2s pause at bottom.")
+                    .init("tue-d2", "D2. Standing Calf Raise", ["4×12-15", "2-2-1-0", "60s"],
+                          "Heavy loading, full stretch. 2s pause at bottom. Calves rest the quads between leg press sets — do your 4th set after the last round.")
                 ])
             ]),
             .abCircuit(
