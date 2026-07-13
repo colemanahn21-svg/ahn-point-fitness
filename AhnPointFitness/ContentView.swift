@@ -61,13 +61,13 @@ struct ContentView: View {
                     }
                     .buttonStyle(.plain)
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(Theme.text)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 10)
-                .background(Theme.surface2)
+                .background(Theme.surface)
                 .clipShape(Capsule())
                 .overlay(Capsule().stroke(Theme.accent, lineWidth: 1))
-                .shadow(color: .black.opacity(0.3), radius: 6, x: 0, y: 2)
+                .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
                 .padding(.leading, 16)
                 .padding(.bottom, keyboardHeight > 0 ? keyboardHeight + 8 : 60)
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
@@ -190,5 +190,5 @@ private struct TopBar: View {
 
 #Preview {
     ContentView()
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

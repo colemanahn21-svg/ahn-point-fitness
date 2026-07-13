@@ -15,7 +15,7 @@ struct AhnPointFitnessApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(.light)
                 .tint(Theme.accent)
                 .environmentObject(whoopAuth)
                 .onChange(of: scenePhase) { _, phase in

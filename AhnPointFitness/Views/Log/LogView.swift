@@ -145,15 +145,15 @@ struct LogView: View {
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(.light)
         }
         .sheet(item: $progressTarget) { target in
             ExerciseProgressView(exerciseName: target.id)
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(.light)
         }
         .sheet(item: $editTarget) { log in
             EditLogView(log: log)
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(.light)
         }
     }
 
