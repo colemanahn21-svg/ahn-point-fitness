@@ -94,7 +94,7 @@ enum DataExportService {
         f.timeZone = etTZ
         f.dateFormat = "yyyy-MM-dd"
         let stamp = f.string(from: dateET)
-        let filename = "recomp-logs-\(stamp).json"
+        let filename = "ahn-point-logs-\(stamp).json"
         let url = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
         if FileManager.default.fileExists(atPath: url.path) {
             try FileManager.default.removeItem(at: url)

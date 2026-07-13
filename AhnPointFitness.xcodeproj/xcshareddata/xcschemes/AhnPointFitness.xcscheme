@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A0050001000000000000000A"
-               BuildableName = "RecompApp.app"
-               BlueprintName = "RecompApp"
-               ReferencedContainer = "container:RecompApp.xcodeproj">
+               BuildableName = "AhnPointFitness.app"
+               BlueprintName = "AhnPointFitness"
+               ReferencedContainer = "container:AhnPointFitness.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A0050001000000000000000A"
-            BuildableName = "RecompApp.app"
-            BlueprintName = "RecompApp"
-            ReferencedContainer = "container:RecompApp.xcodeproj">
+            BuildableName = "AhnPointFitness.app"
+            BlueprintName = "AhnPointFitness"
+            ReferencedContainer = "container:AhnPointFitness.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A0050001000000000000000A"
-            BuildableName = "RecompApp.app"
-            BlueprintName = "RecompApp"
-            ReferencedContainer = "container:RecompApp.xcodeproj">
+            BuildableName = "AhnPointFitness.app"
+            BlueprintName = "AhnPointFitness"
+            ReferencedContainer = "container:AhnPointFitness.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

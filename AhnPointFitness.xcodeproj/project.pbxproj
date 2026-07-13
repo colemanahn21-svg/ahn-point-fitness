@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		A0010001000000000000000A /* RecompApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecompApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0010001000000000000000A /* AhnPointFitness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AhnPointFitness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A0020001000000000000000A /* RecompApp */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RecompApp; sourceTree = "<group>"; };
+		A0020001000000000000000A /* AhnPointFitness */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AhnPointFitness; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,7 +28,7 @@
 		A0040001000000000000000A = {
 			isa = PBXGroup;
 			children = (
-				A0020001000000000000000A /* RecompApp */,
+				A0020001000000000000000A /* AhnPointFitness */,
 				A0040002000000000000000A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -36,7 +36,7 @@
 		A0040002000000000000000A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A0010001000000000000000A /* RecompApp.app */,
+				A0010001000000000000000A /* AhnPointFitness.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -44,9 +44,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A0050001000000000000000A /* RecompApp */ = {
+		A0050001000000000000000A /* AhnPointFitness */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A0060001000000000000000A /* Build configuration list for PBXNativeTarget "RecompApp" */;
+			buildConfigurationList = A0060001000000000000000A /* Build configuration list for PBXNativeTarget "AhnPointFitness" */;
 			buildPhases = (
 				A0070001000000000000000A /* Sources */,
 				A0030001000000000000000A /* Frameworks */,
@@ -57,13 +57,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A0020001000000000000000A /* RecompApp */,
+				A0020001000000000000000A /* AhnPointFitness */,
 			);
-			name = RecompApp;
+			name = AhnPointFitness;
 			packageProductDependencies = (
 			);
-			productName = RecompApp;
-			productReference = A0010001000000000000000A /* RecompApp.app */;
+			productName = AhnPointFitness;
+			productReference = A0010001000000000000000A /* AhnPointFitness.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -81,7 +81,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A0060002000000000000000A /* Build configuration list for PBXProject "RecompApp" */;
+			buildConfigurationList = A0060002000000000000000A /* Build configuration list for PBXProject "AhnPointFitness" */;
 			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -94,7 +94,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A0050001000000000000000A /* RecompApp */,
+				A0050001000000000000000A /* AhnPointFitness */,
 			);
 		};
 /* End PBXProject section */
@@ -252,6 +252,7 @@
 				DEVELOPMENT_TEAM = R86BLM6J2Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "AHN POINT";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -283,6 +284,7 @@
 				DEVELOPMENT_TEAM = R86BLM6J2Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "AHN POINT";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -306,7 +308,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A0060001000000000000000A /* Build configuration list for PBXNativeTarget "RecompApp" */ = {
+		A0060001000000000000000A /* Build configuration list for PBXNativeTarget "AhnPointFitness" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A00B0001000000000000000A /* Debug */,
@@ -315,7 +317,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A0060002000000000000000A /* Build configuration list for PBXProject "RecompApp" */ = {
+		A0060002000000000000000A /* Build configuration list for PBXProject "AhnPointFitness" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A00A0001000000000000000A /* Debug */,

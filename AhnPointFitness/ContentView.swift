@@ -106,12 +106,10 @@ private struct TopBar: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 4) {
-                Text("8-Week ")
+                Text("AHN POINT ")
                     .foregroundStyle(Theme.text)
-                + Text("Recomp")
+                + Text("FITNESS")
                     .foregroundStyle(Theme.accent)
-                + Text(" Protocol")
-                    .foregroundStyle(Theme.text)
             }
             .font(Typography.pageTitle)
             .tracking(-0.3)

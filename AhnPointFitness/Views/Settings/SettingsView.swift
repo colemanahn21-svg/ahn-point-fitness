@@ -236,7 +236,7 @@ struct SettingsView: View {
                 }
             } catch {
                 await MainActor.run {
-                    importError = "Could not read this file. Make sure it's a valid Recomp logs export."
+                    importError = "Could not read this file. Make sure it's a valid AHN POINT FITNESS logs export."
                 }
             }
         }
@@ -362,7 +362,7 @@ private struct SettingsAlerts: ViewModifier {
             .alert("Could not read file", isPresented: showImportError) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text(importError ?? "Make sure it's a valid Recomp logs export.")
+                Text(importError ?? "Make sure it's a valid AHN POINT FITNESS logs export.")
             }
             .alert("Import logs?", isPresented: showPending) {
                 Button("Cancel", role: .cancel) {}

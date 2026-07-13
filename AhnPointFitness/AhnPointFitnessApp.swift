@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct RecompAppApp: App {
+struct AhnPointFitnessApp: App {
     @StateObject private var whoopAuth = WhoopAuth()
     @Environment(\.scenePhase) private var scenePhase
 
