@@ -1,0 +1,224 @@
+{
+  "app": {
+    "name": "8-Week Recomp Protocol",
+    "platform": "iOS 17+ (SwiftUI, SwiftData)",
+    "entry": "RecompAppApp.swift → ContentView (TabView)",
+    "tabs": [
+      { "id": "today",    "label": "Today",    "icon": "clock",                  "view": "TodayView" },
+      { "id": "lifts",    "label": "Lifts",    "icon": "dumbbell",               "view": "LiftsView" },
+      { "id": "log",      "label": "Log",      "icon": "square.and.pencil",      "view": "LogView" },
+      { "id": "baseline", "label": "Baseline", "icon": "chart.bar",              "view": "BaselineView" },
+      { "id": "more",     "label": "More",     "icon": "ellipsis.circle",        "view": "MoreView" }
+    ],
+    "moreDrilldowns": [
+      "6 Week WHOOP Progression",
+      "Fuel",
+      "HRV & VO2max",
+      "Plan",
+      "Recovery Rules",
+      "Sauna Protocol",
+      "Sleep"
+    ]
+  },
+  "flows": [
+    {
+      "id": "whoop-connect",
+      "name": "Connect WHOOP (OAuth Authorization Code + PKCE-less Confidential)",
+      "purpose": "Establish first-time WHOOP API access and persist tokens for transparent reuse.",
+      "trigger": "User taps 'Connect WHOOP' in Settings sheet.",
+      "actors": ["User", "App", "WHOOP OAuth Server"],
+      "steps": [
+        { "actor": "App",   "action": "Generate CSRF state (UUID); store as pendingState." },
+        { "actor": "App",   "action": "Build authorization URL with client_id, redirect_uri (twoadays://oauth/callback), scopes (offline + read:*), state." },
+        { "actor": "App",   "action": "Open ASWebAuthenticationSession; user signs in to WHOOP." },
+        { "actor": "WHOOP", "action": "Redirect to twoadays://oauth/callback?code=…&state=…" },
+        { "actor": "App",   "action": "Validate returned state == pendingState (else throw stateMismatch)." },
+        { "actor": "App",   "action": "POST authorization_code grant to /oauth/oauth2/token with code + client_secret." },
+        { "actor": "App",   "action": "Persist access_token, refresh_token, expires_at to Keychain (kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly)." },
+        { "actor": "App",   "action": "isConnected = true. Fetch /user/profile/basic → cache to WhoopProfileCache." }
+      ],
+      "files": [
+        "Services/WhoopAuth.swift",
+        "Services/WhoopConfig.swift",
+        "Views/Settings/SettingsView.swift"
+      ],
+      "edgeCases": [
+        "User cancels ASWeb session → silent return, no error surfaced.",
+        "State mismatch → WhoopAuthError.stateMismatch (likely CSRF/replay).",
+        "Missing authorization code in callback → noAuthorizationCode error.",
+        "Token endpoint non-2xx → tokenExchangeFailed with HTTP status + body."
+      ]
+    },
+    {
+      "id": "whoop-refresh",
+      "name": "Transparent Token Refresh",
+      "purpose": "Keep API calls authenticated without ever asking the user to reconnect for routine token expiry.",
+      "trigger": "Any of: (a) getValidAccessToken finds token within 5 min of expiry; (b) WhoopService receives 401; (c) scene becomes .active (warm-up).",
+      "actors": ["App", "WHOOP OAuth Server"],
+      "steps": [
+        { "actor": "App",   "action": "Load refresh_token from Keychain (else throw notConnected)." },
+        { "actor": "App",   "action": "POST refresh_token grant to /oauth/oauth2/token with client_id + client_secret + scope." },
+        { "actor": "WHOOP", "action": "Return new access_token (+ usually a rotated refresh_token)." },
+        { "actor": "App",   "action": "Persist new tokens. If refresh_token omitted, keep existing (do NOT delete)." }
+      ],
+      "files": [
+        "Services/WhoopAuth.swift (refreshAccessToken, refreshIfNeeded, persistTokens)",
+        "Services/WhoopService.swift (401 retry path)",
+        "RecompAppApp.swift (.onChange scenePhase → refreshIfNeeded)"
+      ],
+      "edgeCases": [
+        "WHOOP returns 400/401 with invalid_grant in body → wipe Keychain, force reconnect.",
+        "Transient 5xx / network failure → tokens preserved, error surfaces, retry next time.",
+        "Refresh response omits refresh_token → existing token retained (defensive against partial rotations).",
+        "scenePhase warm-up failures are swallowed silently."
+      ]
+    },
+    {
+      "id": "today-snapshot",
+      "name": "Today Snapshot Refresh",
+      "purpose": "Populate Today card (recovery, HRV, RHR, strain, sleep) and Weekly card from live WHOOP data.",
+      "trigger": "TodayView appears with whoopAuth.isConnected == true.",
+      "actors": ["App", "WHOOP API"],
+      "steps": [
+        { "actor": "App",   "action": "WhoopTodayState.refresh(auth:) sets isLoading; spawns 3 concurrent calls." },
+        { "actor": "App",   "action": "GET /recovery, /cycle, /activity/sleep with 30-day window (paginated until next_token is nil or 200 records)." },
+        { "actor": "App",   "action": "Each request uses Bearer access_token; 401 → forceRefresh → retry once." },
+        { "actor": "App",   "action": "Compute WhoopTodaySnapshot: latest day + weekly averages." },
+        { "actor": "App",   "action": "Persist snapshot to WhoopTodayCache (disk)." },
+        { "actor": "App",   "action": "Render WhoopTodayCard + WhoopWeeklyCard; pick GREEN/YELLOW/RED rule by recovery score." }
+      ],
+      "files": [
+        "Services/WhoopTodayState.swift",
+        "Services/WhoopService.swift",
+        "Views/Today/TodayView.swift",
+        "Views/Today/Components/WhoopTodayCard.swift",
+        "Views/Today/Components/WhoopWeeklyCard.swift"
+      ],
+      "edgeCases": [
+        "Not connected → snapshot shows cached value if any, otherwise empty.",
+        "5xx during pagination → exponential backoff (3 attempts) per request.",
+        "Decode failure → surfaced as errorMessage on state object."
+      ]
+    },
+    {
+      "id": "log-workout",
+      "name": "Daily Workout Logging",
+      "purpose": "Capture per-set weight + reps for the selected programme day; persist to SwiftData; reflect in History.",
+      "trigger": "User opens Log tab.",
+      "actors": ["User", "App", "SwiftData store"],
+      "steps": [
+        { "actor": "User", "action": "Select day chip (Mon … Sun) via DayChipSelector." },
+        { "actor": "App",  "action": "loadInputs(): if a WorkoutLog already exists for today+day, pre-fill weight/reps fields." },
+        { "actor": "User", "action": "Type weight and reps for each set across each exercise." },
+        { "actor": "User", "action": "Tap 'Save Workout Log'." },
+        { "actor": "App",  "action": "Reuse existing WorkoutLog or create new one for (today ET, day)." },
+        { "actor": "App",  "action": "Delete all child SetEntry rows; insert new ones for each non-empty (weight OR reps) cell." },
+        { "actor": "App",  "action": "ctx.save(); show '✓ Saved' for 2s; History list reorders automatically." }
+      ],
+      "files": [
+        "Views/Log/LogView.swift",
+        "Views/Log/SetInputRow.swift",
+        "Views/Log/DayChipSelector.swift",
+        "Models/WorkoutLog.swift",
+        "Models/SetEntry.swift"
+      ],
+      "edgeCases": [
+        "Empty sets (no weight AND no reps) are skipped — won't pollute history.",
+        "Same-day re-save is idempotent: prior sets cleared then rewritten.",
+        "Day is keyed by ET calendar to keep nights consistent regardless of phone timezone."
+      ]
+    },
+    {
+      "id": "exercise-progress",
+      "name": "Exercise Progress Drill-down",
+      "purpose": "Surface PRs and progression for a single exercise across all logs.",
+      "trigger": "User taps an exercise name in the Log tab.",
+      "actors": ["User", "App"],
+      "steps": [
+        { "actor": "User", "action": "Tap exercise header → progressTarget set." },
+        { "actor": "App",  "action": "ExerciseStats.compute(for:from:) scans @Query allLogs to build PR + recent set summary." },
+        { "actor": "App",  "action": "ExerciseProgressView sheet shows PRLineView + history." }
+      ],
+      "files": [
+        "Views/Log/ExerciseProgressView.swift",
+        "Views/Log/ExerciseStats.swift",
+        "Views/Log/Components/PRLineView.swift (within Components/)"
+      ],
+      "edgeCases": [
+        "No history → empty-state copy.",
+        "Stats recompute reactively as SwiftData changes."
+      ]
+    },
+    {
+      "id": "data-export",
+      "name": "Export Workout Logs",
+      "purpose": "Allow user to back up all logs as a JSON file via the iOS share sheet.",
+      "trigger": "Settings → 'Export All Logs'.",
+      "actors": ["User", "App"],
+      "steps": [
+        { "actor": "App",  "action": "DataExportService.encode(snapshot) → JSON Data." },
+        { "actor": "App",  "action": "Write Data to a temp .json file." },
+        { "actor": "App",  "action": "Present UIActivityViewController over the temp URL." },
+        { "actor": "User", "action": "Save / share via system options." }
+      ],
+      "files": [
+        "Views/Settings/SettingsView.swift",
+        "Services/DataExportService.swift (encode, writeTempFile)"
+      ],
+      "edgeCases": [
+        "No logs → Export button is disabled.",
+        "Encoding failure → exportError alert."
+      ]
+    },
+    {
+      "id": "data-import",
+      "name": "Import Workout Logs (merge with dedup)",
+      "purpose": "Restore logs from a previously exported JSON without overwriting good data.",
+      "trigger": "Settings → 'Import Logs from Backup'.",
+      "actors": ["User", "App"],
+      "steps": [
+        { "actor": "User", "action": "Pick a .json via system file importer." },
+        { "actor": "App",  "action": "Decode ExportPayload; show confirmation alert with count." },
+        { "actor": "User", "action": "Confirm import." },
+        { "actor": "App",  "action": "DataExportService.mergeImport: insert new logs; skip duplicates keyed by (date, exerciseName, setNumber)." },
+        { "actor": "App",  "action": "Result alert shows imported vs skipped counts." }
+      ],
+      "files": [
+        "Views/Settings/SettingsView.swift",
+        "Services/DataExportService.swift (decode, mergeImport)"
+      ],
+      "edgeCases": [
+        "Invalid file → 'Could not read file' alert.",
+        "Dedup is conservative: exact (date+exercise+setNumber) match is skipped, partial matches are kept as new rows."
+      ]
+    },
+    {
+      "id": "whoop-disconnect",
+      "name": "Disconnect WHOOP",
+      "purpose": "Wipe all WHOOP credentials and caches on demand.",
+      "trigger": "Settings → 'Disconnect WHOOP'.",
+      "actors": ["User", "App"],
+      "steps": [
+        { "actor": "User", "action": "Tap Disconnect." },
+        { "actor": "App",  "action": "Delete access_token, refresh_token, expires_at from Keychain." },
+        { "actor": "App",  "action": "Clear WhoopProfileCache and WhoopTodayCache." },
+        { "actor": "App",  "action": "isConnected = false → UI returns to Connect prompt." }
+      ],
+      "files": [
+        "Services/WhoopAuth.swift (disconnect)",
+        "Views/Settings/SettingsView.swift"
+      ],
+      "edgeCases": [
+        "Disconnect is silent (no confirm alert) — accepted because user explicitly tapped the row labeled 'Disconnect'."
+      ]
+    }
+  ],
+  "supportingObjects": [
+    { "name": "WhoopAuth",       "role": "Single source of truth for OAuth state, Keychain I/O, refresh logic." },
+    { "name": "WhoopService",    "role": "Typed wrapper over WHOOP REST endpoints; handles pagination, retries, 401-driven refresh." },
+    { "name": "WhoopTodayState", "role": "ObservableObject feeding Today + Weekly cards from cached or freshly-fetched snapshot." },
+    { "name": "WorkoutLog",      "role": "SwiftData @Model: one record per (date, day) with child SetEntry rows." },
+    { "name": "SetEntry",        "role": "SwiftData @Model: a single set (exerciseName, setNumber, weight?, reps?)." },
+    { "name": "DataExportService","role": "Encode/decode logs JSON; merge with dedup on import." }
+  ]
+}

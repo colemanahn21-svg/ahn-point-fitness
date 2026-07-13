@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RecompApp — Flows</title>
+<style>
+  :root {
+    --bg:        #0A0E17;
+    --surface:   #131925;
+    --surface2:  #1A2235;
+    --surface3:  #212B40;
+    --border:    #2A3552;
+    --text:      #E8ECF4;
+    --text2:     #8B95AA;
+    --text3:     #5A6478;
+    --accent:    #4E8CFF;
+    --accent2:   #3A6FD8;
+    --green:     #34D399;
+    --yellow:    #FBBF24;
+    --red:       #F87171;
+    --orange:    #FB923C;
+    --purple:    #A78BFA;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "SF Pro Text", Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    padding: 32px 20px 64px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  header { border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 24px; }
+  h1 {
+    margin: 0 0 4px;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  h1 .accent { color: var(--accent); }
+  .sub { color: var(--text2); font-size: 13px; }
+  h2 {
+    font-size: 11px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin: 28px 0 10px;
+  }
+
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .tab {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .tab .icon { color: var(--text3); margin-right: 6px; font-size: 11px; }
+
+  .drilldowns {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: var(--text2);
+    font-size: 13px;
+  }
+  .drilldowns strong { color: var(--text); font-weight: 600; }
+
+  .flow {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 18px 14px;
+    margin-bottom: 14px;
+  }
+  .flow h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .flow .purpose { color: var(--text2); font-size: 13px; margin-bottom: 12px; }
+
+  .meta {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 6px 14px;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .meta .key { color: var(--text3); font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; padding-top: 2px; }
+  .meta .val { color: var(--text); }
+  .pill {
+    display: inline-block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin: 2px 4px 2px 0;
+  }
+
+  ol.steps {
+    list-style: none;
+    counter-reset: stp;
+    padding: 0;
+    margin: 0 0 12px;
+  }
+  ol.steps li {
+    counter-increment: stp;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 12px 8px 36px;
+    margin-bottom: 6px;
+    position: relative;
+    font-size: 13px;
+    color: var(--text);
+  }
+  ol.steps li::before {
+    content: counter(stp);
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .actor {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 8px;
+  }
+  .actor.User  { background: rgba(78,140,255,0.15);  color: var(--accent); }
+  .actor.App   { background: rgba(52,211,153,0.12);  color: var(--green); }
+  .actor.WHOOP, .actor.WHOOP-OAuth-Server, .actor.WHOOP-API { background: rgba(167,139,250,0.15); color: var(--purple); }
+  .actor.SwiftData-store { background: rgba(251,146,60,0.15); color: var(--orange); }
+
+  .edge {
+    background: rgba(248,113,113,0.06);
+    border: 1px solid rgba(248,113,113,0.2);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  .edge h4 {
+    margin: 0 0 6px;
+    font-size: 11px;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+  .edge ul { margin: 0; padding-left: 18px; color: var(--text2); font-size: 12px; }
+  .edge li { margin-bottom: 2px; }
+
+  code, .mono {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    background: var(--surface3);
+    color: var(--text);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  table.support {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  table.support th, table.support td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  table.support th { color: var(--text3); font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; }
+  table.support td.name { color: var(--accent); font-weight: 600; font-family: "SF Mono", Menlo, monospace; font-size: 12px; }
+  table.support tr:last-child td { border-bottom: none; }
+
+  .error-box {
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.25);
+    color: var(--text);
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+  .error-box .mono { background: var(--surface3); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>RecompApp · <span class="accent">Main Flows</span></h1>
+      <div class="sub" id="sub">Loading…</div>
+    </header>
+    <div id="root"></div>
+  </div>
+
+  <!-- Inline fallback of flows.json so the page also works when opened via file:// -->
+  <script id="inline-data" type="application/json">
+{
+  "app": {
+    "name": "8-Week Recomp Protocol",
+    "platform": "iOS 17+ (SwiftUI, SwiftData)",
+    "entry": "RecompAppApp.swift → ContentView (TabView)",
+    "tabs": [
+      { "id": "today",    "label": "Today",    "icon": "clock",                  "view": "TodayView" },
+      { "id": "lifts",    "label": "Lifts",    "icon": "dumbbell",               "view": "LiftsView" },
+      { "id": "log",      "label": "Log",      "icon": "square.and.pencil",      "view": "LogView" },
+      { "id": "baseline", "label": "Baseline", "icon": "chart.bar",              "view": "BaselineView" },
+      { "id": "more",     "label": "More",     "icon": "ellipsis.circle",        "view": "MoreView" }
+    ],
+    "moreDrilldowns": [
+      "6 Week WHOOP Progression",
+      "Fuel",
+      "HRV & VO2max",
+      "Plan",
+      "Recovery Rules",
+      "Sauna Protocol",
+      "Sleep"
+    ]
+  },
+  "flows": [
+    {
+      "id": "whoop-connect",
+      "name": "Connect WHOOP (OAuth Authorization Code)",
+      "purpose": "Establish first-time WHOOP API access and persist tokens for transparent reuse.",
+      "trigger": "User taps 'Connect WHOOP' in Settings sheet.",
+      "actors": ["User", "App", "WHOOP OAuth Server"],
+      "steps": [
+        { "actor": "App",   "action": "Generate CSRF state (UUID); store as pendingState." },
+        { "actor": "App",   "action": "Build authorization URL with client_id, redirect_uri (twoadays://oauth/callback), scopes (offline + read:*), state." },
+        { "actor": "App",   "action": "Open ASWebAuthenticationSession; user signs in to WHOOP." },
+        { "actor": "WHOOP OAuth Server", "action": "Redirect to twoadays://oauth/callback?code=…&state=…" },
+        { "actor": "App",   "action": "Validate returned state == pendingState (else throw stateMismatch)." },
+        { "actor": "App",   "action": "POST authorization_code grant to /oauth/oauth2/token with code + client_secret." },
+        { "actor": "App",   "action": "Persist access_token, refresh_token, expires_at to Keychain (kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly)." },
+        { "actor": "App",   "action": "isConnected = true. Fetch /user/profile/basic → cache to WhoopProfileCache." }
+      ],
+      "files": ["Services/WhoopAuth.swift", "Services/WhoopConfig.swift", "Views/Settings/SettingsView.swift"],
+      "edgeCases": [
+        "User cancels ASWeb session → silent return, no error surfaced.",
+        "State mismatch → WhoopAuthError.stateMismatch (likely CSRF/replay).",
+        "Missing authorization code in callback → noAuthorizationCode error.",
+        "Token endpoint non-2xx → tokenExchangeFailed with HTTP status + body."
+      ]
+    },
+    {
+      "id": "whoop-refresh",
+      "name": "Transparent Token Refresh",
+      "purpose": "Keep API calls authenticated without ever asking the user to reconnect for routine token expiry.",
+      "trigger": "Any of: (a) getValidAccessToken finds token within 5 min of expiry; (b) WhoopService receives 401; (c) scene becomes .active (warm-up).",
+      "actors": ["App", "WHOOP OAuth Server"],
+      "steps": [
+        { "actor": "App",   "action": "Load refresh_token from Keychain (else throw notConnected)." },
+        { "actor": "App",   "action": "POST refresh_token grant to /oauth/oauth2/token with client_id + client_secret + scope." },
+        { "actor": "WHOOP OAuth Server", "action": "Return new access_token (+ usually a rotated refresh_token)." },
+        { "actor": "App",   "action": "Persist new tokens. If refresh_token omitted, keep existing (do NOT delete)." }
+      ],
+      "files": [
+        "Services/WhoopAuth.swift (refreshAccessToken, refreshIfNeeded, persistTokens)",
+        "Services/WhoopService.swift (401 retry path)",
+        "RecompAppApp.swift (.onChange scenePhase → refreshIfNeeded)"
+      ],
+      "edgeCases": [
+        "WHOOP returns 400/401 with invalid_grant in body → wipe Keychain, force reconnect.",
+        "Transient 5xx / network failure → tokens preserved, error surfaces, retry next time.",
+        "Refresh response omits refresh_token → existing token retained (defensive against partial rotations).",
+        "scenePhase warm-up failures are swallowed silently."
+      ]
+    },
+    {
+      "id": "today-snapshot",
+      "name": "Today Snapshot Refresh",
+      "purpose": "Populate Today card (recovery, HRV, RHR, strain, sleep) and Weekly card from live WHOOP data.",
+      "trigger": "TodayView appears with whoopAuth.isConnected == true.",
+      "actors": ["App", "WHOOP API"],
+      "steps": [
+        { "actor": "App",   "action": "WhoopTodayState.refresh(auth:) sets isLoading; spawns 3 concurrent calls." },
+        { "actor": "App",   "action": "GET /recovery, /cycle, /activity/sleep with 30-day window (paginated until next_token is nil or 200 records)." },
+        { "actor": "App",   "action": "Each request uses Bearer access_token; 401 → forceRefresh → retry once." },
+        { "actor": "App",   "action": "Compute WhoopTodaySnapshot: latest day + weekly averages." },
+        { "actor": "App",   "action": "Persist snapshot to WhoopTodayCache (disk)." },
+        { "actor": "App",   "action": "Render WhoopTodayCard + WhoopWeeklyCard; pick GREEN/YELLOW/RED rule by recovery score." }
+      ],
+      "files": [
+        "Services/WhoopTodayState.swift",
+        "Services/WhoopService.swift",
+        "Views/Today/TodayView.swift",
+        "Views/Today/Components/WhoopTodayCard.swift",
+        "Views/Today/Components/WhoopWeeklyCard.swift"
+      ],
+      "edgeCases": [
+        "Not connected → snapshot shows cached value if any, otherwise empty.",
+        "5xx during pagination → exponential backoff (3 attempts) per request.",
+        "Decode failure → surfaced as errorMessage on state object."
+      ]
+    },
+    {
+      "id": "log-workout",
+      "name": "Daily Workout Logging",
+      "purpose": "Capture per-set weight + reps for the selected programme day; persist to SwiftData; reflect in History.",
+      "trigger": "User opens Log tab.",
+      "actors": ["User", "App", "SwiftData store"],
+      "steps": [
+        { "actor": "User", "action": "Select day chip (Mon … Sun) via DayChipSelector." },
+        { "actor": "App",  "action": "loadInputs(): if a WorkoutLog already exists for today+day, pre-fill weight/reps fields." },
+        { "actor": "User", "action": "Type weight and reps for each set across each exercise." },
+        { "actor": "User", "action": "Tap 'Save Workout Log'." },
+        { "actor": "App",  "action": "Reuse existing WorkoutLog or create new one for (today ET, day)." },
+        { "actor": "App",  "action": "Delete all child SetEntry rows; insert new ones for each non-empty (weight OR reps) cell." },
+        { "actor": "App",  "action": "ctx.save(); show '✓ Saved' for 2s; History list reorders automatically." }
+      ],
+      "files": [
+        "Views/Log/LogView.swift",
+        "Views/Log/SetInputRow.swift",
+        "Views/Log/DayChipSelector.swift",
+        "Models/WorkoutLog.swift",
+        "Models/SetEntry.swift"
+      ],
+      "edgeCases": [
+        "Empty sets (no weight AND no reps) are skipped — won't pollute history.",
+        "Same-day re-save is idempotent: prior sets cleared then rewritten.",
+        "Day is keyed by ET calendar to keep nights consistent regardless of phone timezone."
+      ]
+    },
+    {
+      "id": "exercise-progress",
+      "name": "Exercise Progress Drill-down",
+      "purpose": "Surface PRs and progression for a single exercise across all logs.",
+      "trigger": "User taps an exercise name in the Log tab.",
+      "actors": ["User", "App"],
+      "steps": [
+        { "actor": "User", "action": "Tap exercise header → progressTarget set." },
+        { "actor": "App",  "action": "ExerciseStats.compute(for:from:) scans @Query allLogs to build PR + recent set summary." },
+        { "actor": "App",  "action": "ExerciseProgressView sheet shows PRLineView + history." }
+      ],
+      "files": [
+        "Views/Log/ExerciseProgressView.swift",
+        "Views/Log/ExerciseStats.swift",
+        "Views/Log/Components/PRLineView.swift"
+      ],
+      "edgeCases": [
+        "No history → empty-state copy.",
+        "Stats recompute reactively as SwiftData changes."
+      ]
+    },
+    {
+      "id": "data-export",
+      "name": "Export Workout Logs",
+      "purpose": "Allow user to back up all logs as a JSON file via the iOS share sheet.",
+      "trigger": "Settings → 'Export All Logs'.",
+      "actors": ["User", "App"],
+      "steps": [
+        { "actor": "App",  "action": "DataExportService.encode(snapshot) → JSON Data." },
+        { "actor": "App",  "action": "Write Data to a temp .json file." },
+        { "actor": "App",  "action": "Present UIActivityViewController over the temp URL." },
+        { "actor": "User", "action": "Save / share via system options." }
+      ],
+      "files": [
+        "Views/Settings/SettingsView.swift",
+        "Services/DataExportService.swift (encode, writeTempFile)"
+      ],
+      "edgeCases": [
+        "No logs → Export button is disabled.",
+        "Encoding failure → exportError alert."
+      ]
+    },
+    {
+      "id": "data-import",
+      "name": "Import Workout Logs (merge with dedup)",
+      "purpose": "Restore logs from a previously exported JSON without overwriting good data.",
+      "trigger": "Settings → 'Import Logs from Backup'.",
+      "actors": ["User", "App"],
+      "steps": [
+        { "actor": "User", "action": "Pick a .json via system file importer." },
+        { "actor": "App",  "action": "Decode ExportPayload; show confirmation alert with count." },
+        { "actor": "User", "action": "Confirm import." },
+        { "actor": "App",  "action": "DataExportService.mergeImport: insert new logs; skip duplicates keyed by (date, exerciseName, setNumber)." },
+        { "actor": "App",  "action": "Result alert shows imported vs skipped counts." }
+      ],
+      "files": [
+        "Views/Settings/SettingsView.swift",
+        "Services/DataExportService.swift (decode, mergeImport)"
+      ],
+      "edgeCases": [
+        "Invalid file → 'Could not read file' alert.",
+        "Dedup is conservative: exact (date+exercise+setNumber) match is skipped, partial matches are kept as new rows."
+      ]
+    },
+    {
+      "id": "whoop-disconnect",
+      "name": "Disconnect WHOOP",
+      "purpose": "Wipe all WHOOP credentials and caches on demand.",
+      "trigger": "Settings → 'Disconnect WHOOP'.",
+      "actors": ["User", "App"],
+      "steps": [
+        { "actor": "User", "action": "Tap Disconnect." },
+        { "actor": "App",  "action": "Delete access_token, refresh_token, expires_at from Keychain." },
+        { "actor": "App",  "action": "Clear WhoopProfileCache and WhoopTodayCache." },
+        { "actor": "App",  "action": "isConnected = false → UI returns to Connect prompt." }
+      ],
+      "files": [
+        "Services/WhoopAuth.swift (disconnect)",
+        "Views/Settings/SettingsView.swift"
+      ],
+      "edgeCases": [
+        "Disconnect is silent (no confirm alert) — accepted because user explicitly tapped the row labeled 'Disconnect'."
+      ]
+    }
+  ],
+  "supportingObjects": [
+    { "name": "WhoopAuth",        "role": "Single source of truth for OAuth state, Keychain I/O, refresh logic." },
+    { "name": "WhoopService",     "role": "Typed wrapper over WHOOP REST endpoints; handles pagination, retries, 401-driven refresh." },
+    { "name": "WhoopTodayState",  "role": "ObservableObject feeding Today + Weekly cards from cached or freshly-fetched snapshot." },
+    { "name": "WorkoutLog",       "role": "SwiftData @Model: one record per (date, day) with child SetEntry rows." },
+    { "name": "SetEntry",         "role": "SwiftData @Model: a single set (exerciseName, setNumber, weight?, reps?)." },
+    { "name": "DataExportService","role": "Encode/decode logs JSON; merge with dedup on import." }
+  ]
+}
+  </script>
+
+  <script>
+    const root = document.getElementById('root');
+    const sub  = document.getElementById('sub');
+
+    function el(tag, attrs = {}, ...children) {
+      const node = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === 'class') node.className = v;
+        else if (k === 'html') node.innerHTML = v;
+        else node.setAttribute(k, v);
+      }
+      for (const c of children.flat()) {
+        if (c == null) continue;
+        node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+      }
+      return node;
+    }
+
+    function actorClass(name) {
+      return name.replace(/[^A-Za-z0-9]/g, '-');
+    }
+
+    function render(data) {
+      sub.textContent =
+        `${data.app.name} · ${data.app.platform} · ` +
+        `Entry: ${data.app.entry}`;
+
+      // Tabs
+      root.appendChild(el('h2', {}, 'Top-level Tabs'));
+      const tabs = el('div', { class: 'tabs' });
+      data.app.tabs.forEach(t => {
+        tabs.appendChild(el('span', { class: 'tab' },
+          el('span', { class: 'icon mono' }, t.icon),
+          `${t.label} → ${t.view}`));
+      });
+      root.appendChild(tabs);
+
+      // Drilldowns
+      const dd = el('div', { class: 'drilldowns' });
+      dd.appendChild(el('strong', {}, 'More tab drill-downs: '));
+      dd.appendChild(document.createTextNode(data.app.moreDrilldowns.join(' · ')));
+      root.appendChild(dd);
+
+      // Flows
+      root.appendChild(el('h2', {}, 'Flows'));
+      data.flows.forEach(f => {
+        const card = el('div', { class: 'flow' });
+        card.appendChild(el('h3', {}, f.name));
+        card.appendChild(el('div', { class: 'purpose' }, f.purpose));
+
+        const meta = el('div', { class: 'meta' });
+        meta.appendChild(el('div', { class: 'key' }, 'Trigger'));
+        meta.appendChild(el('div', { class: 'val' }, f.trigger));
+        meta.appendChild(el('div', { class: 'key' }, 'Actors'));
+        const actors = el('div', { class: 'val' });
+        f.actors.forEach(a => actors.appendChild(el('span', { class: 'pill' }, a)));
+        meta.appendChild(actors);
+        meta.appendChild(el('div', { class: 'key' }, 'Files'));
+        const files = el('div', { class: 'val' });
+        f.files.forEach(p => {
+          files.appendChild(el('span', { class: 'pill mono' }, p));
+        });
+        meta.appendChild(files);
+        card.appendChild(meta);
+
+        const ol = el('ol', { class: 'steps' });
+        f.steps.forEach(s => {
+          const li = el('li', {});
+          li.appendChild(el('span', { class: `actor ${actorClass(s.actor)}` }, s.actor));
+          li.appendChild(document.createTextNode(s.action));
+          ol.appendChild(li);
+        });
+        card.appendChild(ol);
+
+        if (f.edgeCases && f.edgeCases.length) {
+          const e = el('div', { class: 'edge' });
+          e.appendChild(el('h4', {}, 'Edge cases & failure modes'));
+          const ul = el('ul', {});
+          f.edgeCases.forEach(x => ul.appendChild(el('li', {}, x)));
+          e.appendChild(ul);
+          card.appendChild(e);
+        }
+
+        root.appendChild(card);
+      });
+
+      // Supporting objects
+      root.appendChild(el('h2', {}, 'Supporting Objects'));
+      const tbl = el('table', { class: 'support' });
+      const thead = el('thead', {});
+      const trh = el('tr', {});
+      trh.appendChild(el('th', {}, 'Type'));
+      trh.appendChild(el('th', {}, 'Role'));
+      thead.appendChild(trh);
+      tbl.appendChild(thead);
+      const tb = el('tbody', {});
+      data.supportingObjects.forEach(o => {
+        const tr = el('tr', {});
+        tr.appendChild(el('td', { class: 'name' }, o.name));
+        tr.appendChild(el('td', {}, o.role));
+        tb.appendChild(tr);
+      });
+      tbl.appendChild(tb);
+      root.appendChild(tbl);
+    }
+
+    function renderFromInline() {
+      const tag = document.getElementById('inline-data');
+      if (!tag) throw new Error('No inline data');
+      render(JSON.parse(tag.textContent));
+    }
+
+    fetch('./flows.json')
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .then(render)
+      .catch(() => {
+        // file:// or fetch blocked — fall back to inline copy of flows.json.
+        try { renderFromInline(); }
+        catch (err) {
+          sub.textContent = 'Could not load data.';
+          console.error(err);
+        }
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Xcode user state
+xcuserdata/
+*.xcuserstate
+
+# Secrets — real WHOOP credentials (template lives at repo root)
+**/WhoopSecrets.swift
+
+# Personal working notes
+CLAUDE_HANDOFF.md
+
+# Local tool config
+.claude/
