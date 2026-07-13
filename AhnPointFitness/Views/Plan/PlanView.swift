@@ -2,6 +2,11 @@ import SwiftUI
 
 struct PlanView: View {
     @State private var expandedProg: Set<String> = []
+    @AppStorage(CycleModel.storageKey) private var cycleStartRaw: Double = 0
+
+    private var currentWeek: Int? {
+        CycleModel(startDateRaw: cycleStartRaw).currentWeek
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -9,7 +14,9 @@ struct PlanView: View {
             Card {
                 VStack(spacing: 0) {
                     ForEach(Array(PlanContent.overload.enumerated()), id: \.element.id) { idx, wk in
-                        overloadRow(wk, isLast: idx == PlanContent.overload.count - 1)
+                        overloadRow(wk,
+                                    isCurrent: currentWeek == idx + 1,
+                                    isLast: idx == PlanContent.overload.count - 1)
                     }
                 }
             }
@@ -50,7 +57,7 @@ struct PlanView: View {
     }
 
     @ViewBuilder
-    private func overloadRow(_ wk: OverloadWeek, isLast: Bool) -> some View {
+    private func overloadRow(_ wk: OverloadWeek, isCurrent: Bool, isLast: Bool) -> some View {
         let bgColor: Color = {
             switch wk.highlight {
             case .none: return .clear
@@ -62,7 +69,7 @@ struct PlanView: View {
             HStack(alignment: .center, spacing: 8) {
                 Text(wk.wk)
                     .font(.system(size: 12, weight: .bold, design: .monospaced))
-                    .foregroundStyle(Theme.accent)
+                    .foregroundStyle(isCurrent ? Theme.green : Theme.accent)
                     .frame(width: 36, alignment: .leading)
                 (Text(wk.desc.bold.map { "\($0)" } ?? "").fontWeight(.semibold)
                  + Text(wk.desc.body))
@@ -76,9 +83,15 @@ struct PlanView: View {
                     .frame(width: 48, alignment: .trailing)
             }
             .padding(.vertical, 8)
-            .padding(.horizontal, wk.highlight == .none ? 0 : 8)
+            .padding(.horizontal, (wk.highlight == .none && !isCurrent) ? 0 : 8)
             .background(bgColor)
-            .clipShape(RoundedRectangle(cornerRadius: wk.highlight == .none ? 0 : 4))
+            .clipShape(RoundedRectangle(cornerRadius: (wk.highlight == .none && !isCurrent) ? 0 : 4))
+            .overlay {
+                if isCurrent {
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(Theme.green, lineWidth: 1)
+                }
+            }
             if !isLast {
                 Rectangle().fill(Theme.border).frame(height: 1)
             }

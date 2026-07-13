@@ -99,6 +99,25 @@ private struct ScrollableTab<Content: View>: View {
 }
 
 private struct TopBar: View {
+    @AppStorage(CycleModel.storageKey) private var cycleStartRaw: Double = 0
+
+    private var subtitle: String {
+        let cycle = CycleModel(startDateRaw: cycleStartRaw)
+        switch cycle.phase {
+        case .unset:
+            return "Set your cycle start date in Settings"
+        case .upcoming(let days):
+            return "\(cycle.rangeString ?? "") · Starts in \(days)d"
+        case .active(let week):
+            var line = "\(cycle.rangeString ?? "") · Week \(week) of \(CycleModel.weekCount)"
+            if cycle.isDeloadWeek { line += " · Deload" }
+            if cycle.isTaperWeek { line += " · Taper" }
+            return line
+        case .completed:
+            return "\(cycle.rangeString ?? "") · Cycle complete"
+        }
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 4) {
@@ -110,7 +129,7 @@ private struct TopBar: View {
             .font(Typography.pageTitle)
             .tracking(-0.3)
 
-            Text("Mar 30 – May 25, 2026 · 175–185 lb · Visible Abs")
+            Text(subtitle)
                 .font(Typography.cardSubtitle)
                 .foregroundStyle(Theme.text2)
         }

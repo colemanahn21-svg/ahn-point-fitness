@@ -25,6 +25,9 @@ struct SettingsView: View {
     @State private var isConnectingWhoop = false
     @State private var whoopError: String?
 
+    // Cycle
+    @AppStorage(CycleModel.storageKey) private var cycleStartRaw: Double = 0
+
     private var totalSets: Int {
         allLogs.reduce(0) { $0 + $1.sets.count }
     }
@@ -63,6 +66,8 @@ struct SettingsView: View {
     private var contentScroll: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
+                SectionLabel(text: "Training Cycle")
+                Card { cycleRows }
                 SectionLabel(text: "WHOOP Connection")
                 Card { whoopRows }
                 SectionLabel(text: "Data")
@@ -72,6 +77,68 @@ struct SettingsView: View {
             .padding(.top, Theme.pagePaddingV)
             .padding(.bottom, 24)
             .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    // MARK: - Cycle
+
+    private var cycleStartBinding: Binding<Date> {
+        Binding(
+            get: {
+                cycleStartRaw > 0
+                    ? Date(timeIntervalSince1970: cycleStartRaw)
+                    : Date()
+            },
+            set: { cycleStartRaw = $0.timeIntervalSince1970 }
+        )
+    }
+
+    @ViewBuilder
+    private var cycleRows: some View {
+        let cycle = CycleModel(startDateRaw: cycleStartRaw)
+
+        HStack(spacing: 12) {
+            Image(systemName: "calendar")
+                .font(.system(size: 18))
+                .foregroundStyle(Theme.accent)
+                .frame(width: 28, alignment: .center)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Cycle Start Date")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(Theme.text)
+                Text(cycleSubtitle(cycle))
+                    .font(.system(size: 12))
+                    .foregroundStyle(Theme.text2)
+            }
+            Spacer()
+            DatePicker("", selection: cycleStartBinding, displayedComponents: .date)
+                .labelsHidden()
+                .datePickerStyle(.compact)
+        }
+        .padding(.vertical, 12)
+        .padding(.horizontal, 4)
+
+        if cycleStartRaw > 0 {
+            rowDivider
+            actionRow(
+                title: "Clear Cycle",
+                subtitle: "Remove the start date. The header stops tracking weeks.",
+                systemImage: "calendar.badge.minus",
+                action: { cycleStartRaw = 0 }
+            )
+        }
+    }
+
+    private func cycleSubtitle(_ cycle: CycleModel) -> String {
+        switch cycle.phase {
+        case .unset:
+            return "Pick the Monday your \(CycleModel.weekCount)-week cycle starts"
+        case .upcoming(let days):
+            return "Starts in \(days)d · \(cycle.rangeString ?? "")"
+        case .active(let week):
+            return "Week \(week) of \(CycleModel.weekCount) · \(cycle.rangeString ?? "")"
+        case .completed:
+            return "Completed · \(cycle.rangeString ?? "")"
         }
     }
 
