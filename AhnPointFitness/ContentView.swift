@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var selected: Tab = .today
     @State private var keyboardHeight: CGFloat = 0
+    @StateObject private var restTimer = RestTimerState()
 
     enum Tab: Hashable {
         case today, lifts, log, more
@@ -33,6 +34,38 @@ struct ContentView: View {
                 .tint(Theme.accent)
             }
         }
+        .environmentObject(restTimer)
+        .overlay(alignment: .bottomLeading) {
+            if restTimer.isRunning {
+                HStack(spacing: 8) {
+                    Image(systemName: "timer")
+                        .font(.system(size: 12, weight: .semibold))
+                    Text(restTimer.display)
+                        .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        .monospacedDigit()
+                    Button {
+                        restTimer.cancel()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 10, weight: .bold))
+                            .padding(4)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+                .background(Theme.surface2)
+                .clipShape(Capsule())
+                .overlay(Capsule().stroke(Theme.accent, lineWidth: 1))
+                .shadow(color: .black.opacity(0.3), radius: 6, x: 0, y: 2)
+                .padding(.leading, 16)
+                .padding(.bottom, keyboardHeight > 0 ? keyboardHeight + 8 : 60)
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: restTimer.isRunning)
         .overlay(alignment: .bottomTrailing) {
             if keyboardHeight > 0 {
                 Button {

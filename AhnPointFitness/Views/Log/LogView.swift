@@ -3,6 +3,7 @@ import SwiftData
 
 struct LogView: View {
     @Environment(\.modelContext) private var ctx
+    @EnvironmentObject private var restTimer: RestTimerState
     @Query(sort: [SortDescriptor(\WorkoutLog.date, order: .reverse)])
     private var allLogs: [WorkoutLog]
 
@@ -62,6 +63,8 @@ struct LogView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            RecoveryBanner()
+
             SectionLabel(text: "Weight Tracker")
             Card {
                 HStack {
@@ -84,6 +87,8 @@ struct LogView: View {
                 .padding(.bottom, 12)
 
                 DayChipSelector(selected: $selectedDay, days: LogContent.orderedDays)
+
+                restChips
 
                 if selectedDay == .tue {
                     TueVariantPicker(
@@ -144,6 +149,35 @@ struct LogView: View {
             ExerciseProgressView(exerciseName: target.id)
                 .preferredColorScheme(.dark)
         }
+    }
+
+    // MARK: - Rest timer chips
+
+    @ViewBuilder
+    private var restChips: some View {
+        HStack(spacing: 6) {
+            Text("REST")
+                .font(Typography.setHeader)
+                .foregroundStyle(Theme.text3)
+                .tracking(0.5)
+            ForEach([60, 90, 120], id: \.self) { seconds in
+                Button {
+                    restTimer.start(seconds: seconds)
+                } label: {
+                    Text(seconds == 120 ? "2:00" : "\(seconds)s")
+                        .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                        .foregroundStyle(Theme.text2)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Theme.surface)
+                        .clipShape(Capsule())
+                        .overlay(Capsule().stroke(Theme.border, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+            }
+            Spacer()
+        }
+        .padding(.bottom, 12)
     }
 
     // MARK: - Exercise card
