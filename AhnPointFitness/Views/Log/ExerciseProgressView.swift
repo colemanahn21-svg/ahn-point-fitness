@@ -369,14 +369,7 @@ private struct SessionHistoryRow: View {
 }
 
 // MARK: - Helpers
-
-private func formatWeight(_ w: Double) -> String {
-    if w.truncatingRemainder(dividingBy: 1) == 0 {
-        return String(Int(w))
-    } else {
-        return String(w)
-    }
-}
+// formatWeight lives in Resources/ETCalendar.swift.
 
 private let etTZ = TimeZone(identifier: "America/New_York")!
 

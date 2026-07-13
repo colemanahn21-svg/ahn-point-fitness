@@ -17,6 +17,9 @@ struct TodayView: View {
                 SectionLabel(text: "Weekly Averages")
                 WhoopWeeklyCard(snapshot: snap)
             }
+
+            SectionLabel(text: "Your Baseline")
+            StatGrid(stats: TodayContent.stats)
         }
     }
 
@@ -45,7 +48,7 @@ struct TodayView: View {
     }
 }
 
-// MARK: - StatGrid (kept here so BaselineView can reuse without refactor)
+// MARK: - StatGrid
 
 struct StatGrid: View {
     let stats: [StatBox]

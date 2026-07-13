@@ -5,7 +5,7 @@ struct ContentView: View {
     @State private var keyboardHeight: CGFloat = 0
 
     enum Tab: Hashable {
-        case today, lifts, log, baseline, more
+        case today, lifts, log, more
     }
 
     var body: some View {
@@ -25,10 +25,6 @@ struct ContentView: View {
                     ScrollableTab { LogView() }
                         .tabItem { Label("Log", systemImage: "square.and.pencil") }
                         .tag(Tab.log)
-
-                    ScrollableTab { BaselineView() }
-                        .tabItem { Label("Baseline", systemImage: "chart.bar") }
-                        .tag(Tab.baseline)
 
                     MoreView()
                         .tabItem { Label("More", systemImage: "ellipsis.circle") }
