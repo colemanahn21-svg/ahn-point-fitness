@@ -147,6 +147,20 @@ final class StretchTimelineTests: XCTestCase {
             "no diagram for:\n" + missing.joined(separator: "\n"))
     }
 
+    func testEveryStretchHasSkimmableCues() {
+        var missing: [String] = []
+        for routine in StretchLibrary.all {
+            for step in routine.steps {
+                if step.cues.isEmpty { missing.append(step.name) }
+                for cue in step.cues {
+                    XCTAssertLessThanOrEqual(cue.count, 60,
+                        "cue too long to skim: \(step.name) — \(cue)")
+                }
+            }
+        }
+        XCTAssertTrue(missing.isEmpty, "no cues for: " + missing.joined(separator: ", "))
+    }
+
     func testEveryLiftDayWithStretchesHasARoutine() {
         for day in Programme.allDays where !day.stretchBlocks.isEmpty {
             XCTAssertNotNil(StretchLibrary.routine(for: day.day),

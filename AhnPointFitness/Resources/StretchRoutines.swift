@@ -13,6 +13,10 @@ struct StretchStep: Identifiable {
     /// Illustration(s) for this movement, if added to the catalogue.
     var art: StretchArtSet? { StretchArt.artSet(for: name) }
 
+    /// Skimmable setup cues. The long-form `detail` stays available behind
+    /// the Why toggle — these are what you read mid-hold.
+    var cues: [String] { StretchCues.cues(for: name) }
+
     init(id: String, name: String, detail: String, chips: [String]) {
         self.id = id
         self.name = name

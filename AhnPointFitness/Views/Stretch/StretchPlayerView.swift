@@ -161,7 +161,7 @@ struct StretchPlayerView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 292)
+                .frame(height: 236)
                 .animation(.easeInOut(duration: 0.45), value: showEndFrame)
                 .background(Theme.surface)
                 .clipShape(RoundedRectangle(cornerRadius: Theme.cardRadius))
@@ -237,7 +237,7 @@ struct StretchPlayerView: View {
     private var stepDetail: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(session.current?.step.name ?? "")
-                .font(.system(size: 22, weight: .bold))
+                .font(.system(size: 19, weight: .bold))
                 .foregroundStyle(Theme.text)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .minimumScaleFactor(0.7)
@@ -249,7 +249,51 @@ struct StretchPlayerView: View {
                     .foregroundStyle(Theme.text3)
             }
 
-            if session.current?.step.art == nil {
+            if let step = session.current?.step, !step.cues.isEmpty {
+                VStack(alignment: .leading, spacing: 5) {
+                    ForEach(step.cues, id: \.self) { cue in
+                        HStack(alignment: .firstTextBaseline, spacing: 8) {
+                            Circle()
+                                .fill(Theme.accent)
+                                .frame(width: 5, height: 5)
+                                .offset(y: -1)
+                            Text(cue)
+                                .font(.system(size: 15, weight: .medium))
+                                .foregroundStyle(Theme.text)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Button {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
+                        showCue.toggle()
+                    }
+                } label: {
+                    HStack(spacing: 5) {
+                        Text(showCue ? "Hide why" : "Why")
+                            .font(.system(size: 12, weight: .medium))
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 9, weight: .bold))
+                            .rotationEffect(.degrees(showCue ? 180 : 0))
+                    }
+                    .foregroundStyle(Theme.text3)
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 2)
+
+                if showCue {
+                    ScrollView {
+                        Text(step.detail)
+                            .font(Typography.bodySm)
+                            .foregroundStyle(Theme.text2)
+                            .lineSpacing(4)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .frame(maxHeight: 88)
+                }
+            } else {
                 ScrollView {
                     Text(session.current?.step.detail ?? "")
                         .font(Typography.bodyMd)
@@ -258,33 +302,6 @@ struct StretchPlayerView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .frame(maxHeight: 110)
-            } else {
-                Button {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
-                        showCue.toggle()
-                    }
-                } label: {
-                    HStack(spacing: 5) {
-                        Text(showCue ? "Hide cue" : "Cue")
-                            .font(.system(size: 13, weight: .medium))
-                        Image(systemName: "chevron.down")
-                            .font(.system(size: 10, weight: .bold))
-                            .rotationEffect(.degrees(showCue ? 180 : 0))
-                    }
-                    .foregroundStyle(Theme.text3)
-                }
-                .buttonStyle(.plain)
-
-                if showCue {
-                    ScrollView {
-                        Text(session.current?.step.detail ?? "")
-                            .font(Typography.bodyMd)
-                            .foregroundStyle(Theme.text2)
-                            .lineSpacing(4)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    .frame(maxHeight: 96)
-                }
             }
 
             if let next = session.next, next.stepIndex != session.current?.stepIndex {
