@@ -161,6 +161,41 @@ final class StretchTimelineTests: XCTestCase {
         XCTAssertTrue(missing.isEmpty, "no cues for: " + missing.joined(separator: ", "))
     }
 
+    @MainActor
+    func testSkipNeverLandsOnAGetReadyGap() {
+        let session = StretchSessionState()
+        session.start(StretchLibrary.Golf.dailyRotationRestore)
+        // From the opening get-ready, every press should land on a hold.
+        for _ in 0..<12 {
+            session.skip()
+            guard session.isActive else { break }
+            XCTAssertEqual(session.current?.kind, .work,
+                           "skip parked on a get-ready gap")
+        }
+        session.stop()
+    }
+
+    @MainActor
+    func testSkipMovesOnRatherThanStartingWhatItSkipped() {
+        let session = StretchSessionState()
+        session.start(StretchLibrary.Golf.weeklyAddOns)   // opens on a per-side stretch
+
+        // Opening get-ready is for the left side; skipping it should skip that
+        // side outright, not drop into it.
+        session.skip()
+        XCTAssertEqual(session.current?.kind, .work)
+        XCTAssertEqual(session.current?.side, .right)
+        XCTAssertEqual(session.current?.stepIndex, 0)
+
+        // From the last side of a stretch, skip moves to the next movement —
+        // again landing on the hold, not its get-ready.
+        session.skip()
+        XCTAssertEqual(session.current?.kind, .work)
+        XCTAssertEqual(session.current?.stepIndex, 1)
+        XCTAssertEqual(session.current?.side, .left)
+        session.stop()
+    }
+
     func testEveryLiftDayWithStretchesHasARoutine() {
         for day in Programme.allDays where !day.stretchBlocks.isEmpty {
             XCTAssertNotNil(StretchLibrary.routine(for: day.day),

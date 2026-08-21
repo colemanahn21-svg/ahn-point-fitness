@@ -103,10 +103,20 @@ final class StretchSessionState: ObservableObject {
         }
     }
 
-    /// Skip to the next working segment (skipping its get-ready gap too).
+    /// Skip the current stretch and land on the next one already running.
+    ///
+    /// Advancing by one segment would drop you into that stretch's 5s
+    /// get-ready instead — pressing skip means "move on now", so the gap is
+    /// exactly what you are trying to bypass. Sides count as separate
+    /// segments, so skipping the left side lands on the right.
     func skip() {
-        guard isActive else { return }
-        advance(to: index + 1, playChime: false)
+        guard isActive, let cur = current else { return }
+        let next = segments.indices.dropFirst(index + 1).first { i in
+            let seg = segments[i]
+            return seg.kind == .work
+                && !(seg.stepIndex == cur.stepIndex && seg.side == cur.side)
+        }
+        advance(to: next ?? segments.count, playChime: false)
     }
 
     /// Back to the start of the current stretch, or the previous one if we're
