@@ -134,6 +134,19 @@ final class StretchTimelineTests: XCTestCase {
         }
     }
 
+    /// Art is resolved by slugging the stretch name, so a rename silently
+    /// drops the diagram back to text. This fails loudly instead.
+    func testEveryStretchHasADiagram() {
+        var missing: [String] = []
+        for routine in StretchLibrary.all {
+            for step in routine.steps where step.art == nil {
+                missing.append("\(step.name) -> \(StretchArt.assetName(for: step.name))")
+            }
+        }
+        XCTAssertTrue(missing.isEmpty,
+            "no diagram for:\n" + missing.joined(separator: "\n"))
+    }
+
     func testEveryLiftDayWithStretchesHasARoutine() {
         for day in Programme.allDays where !day.stretchBlocks.isEmpty {
             XCTAssertNotNil(StretchLibrary.routine(for: day.day),

@@ -1,0 +1,5 @@
+{
+  "images" : [ { "filename" : "peanut-extension-upper-t4-t6.svg", "idiom" : "universal" } ],
+  "info" : { "author" : "xcode", "version" : 1 },
+  "properties" : { "preserves-vector-representation" : true }
+}

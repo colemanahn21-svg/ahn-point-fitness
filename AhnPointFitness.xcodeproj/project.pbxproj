@@ -323,9 +323,9 @@
 				DEVELOPMENT_TEAM = R86BLM6J2Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "AhnPointFitness-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "AHN POINT";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_FILE = "AhnPointFitness-Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
@@ -356,9 +356,9 @@
 				DEVELOPMENT_TEAM = R86BLM6J2Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "AhnPointFitness-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "AHN POINT";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_FILE = "AhnPointFitness-Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
