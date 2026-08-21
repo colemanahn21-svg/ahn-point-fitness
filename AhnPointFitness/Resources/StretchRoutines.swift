@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 // MARK: - Routine content model
 
@@ -8,6 +9,9 @@ struct StretchStep: Identifiable {
     let detail: String
     let chips: [String]
     let timing: StretchTiming
+
+    /// Illustration(s) for this movement, if added to the catalogue.
+    var art: StretchArtSet? { StretchArt.artSet(for: name) }
 
     init(id: String, name: String, detail: String, chips: [String]) {
         self.id = id

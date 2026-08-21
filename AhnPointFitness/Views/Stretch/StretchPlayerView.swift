@@ -7,6 +7,15 @@ struct StretchPlayerView: View {
     @EnvironmentObject private var session: StretchSessionState
     @Environment(\.dismiss) private var dismiss
 
+    @State private var showCue = false
+
+    /// Derived from the countdown so a movement drill animates start -> end
+    /// every two seconds without a second timer, and holds still when paused.
+    private var showEndFrame: Bool {
+        guard session.current?.step.art?.isSequence == true else { return false }
+        return session.remaining % 4 < 2
+    }
+
     private var isGetReady: Bool { session.current?.kind == .getReady }
 
     var body: some View {
@@ -19,7 +28,11 @@ struct StretchPlayerView: View {
                 VStack(spacing: 0) {
                     header
                     Spacer(minLength: 0)
-                    timerRing
+                    if let art = session.current?.step.art {
+                        diagramHero(art)
+                    } else {
+                        timerRing
+                    }
                     Spacer(minLength: 0)
                     stepDetail
                     transport
@@ -131,6 +144,84 @@ struct StretchPlayerView: View {
         .padding(.vertical, 12)
     }
 
+    /// Diagram as the hero, with the countdown overlaid rather than beside it —
+    /// on the floor mid-hold you want the picture big and the number readable
+    /// in one glance, not two competing circles.
+    private func diagramHero(_ art: StretchArtSet) -> some View {
+        VStack(spacing: 10) {
+            ZStack(alignment: .bottomTrailing) {
+                ZStack {
+                    art.start
+                        .resizable().scaledToFit()
+                        .opacity(showEndFrame ? 0 : 1)
+                    if let end = art.end {
+                        end
+                            .resizable().scaledToFit()
+                            .opacity(showEndFrame ? 1 : 0)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 292)
+                .animation(.easeInOut(duration: 0.45), value: showEndFrame)
+                .background(Theme.surface)
+                .clipShape(RoundedRectangle(cornerRadius: Theme.cardRadius))
+                .overlay(RoundedRectangle(cornerRadius: Theme.cardRadius)
+                    .stroke(Theme.border, lineWidth: 1))
+                .overlay(alignment: .topLeading) {
+                    if art.isSequence {
+                        Text(showEndFrame ? "END" : "START")
+                            .font(.system(size: 10, weight: .bold))
+                            .tracking(1.0)
+                            .foregroundStyle(Theme.text3)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Theme.surface2)
+                            .clipShape(Capsule())
+                            .padding(12)
+                    }
+                }
+
+                HStack(spacing: 8) {
+                    if let side = session.current?.side, !isGetReady {
+                        Text(side.rawValue.uppercased())
+                            .font(.system(size: 12, weight: .bold))
+                            .tracking(1.0)
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 9)
+                            .padding(.vertical, 4)
+                            .background(Theme.accent)
+                            .clipShape(Capsule())
+                    }
+                    Text(isGetReady
+                         ? (session.current?.side == .right ? "SWITCH · \(session.display)" : "READY · \(session.display)")
+                         : session.display)
+                        .font(.system(size: isGetReady ? 20 : 40, weight: .bold, design: .monospaced))
+                        .monospacedDigit()
+                        .foregroundStyle(countdownColor)
+                        .contentTransition(.numericText())
+                        .animation(.snappy(duration: 0.15), value: session.remaining)
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(Theme.background.opacity(0.94))
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .overlay(RoundedRectangle(cornerRadius: 14)
+                    .stroke(isGetReady ? Theme.yellow : Theme.border, lineWidth: 1))
+                .padding(12)
+            }
+
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule().fill(Theme.surface3)
+                    Capsule().fill(ringColor)
+                        .frame(width: geo.size.width * session.segmentProgress)
+                        .animation(.linear(duration: 0.1), value: session.segmentProgress)
+                }
+            }
+            .frame(height: 5)
+        }
+    }
+
     private var ringColor: Color {
         if isGetReady { return Theme.yellow }
         return session.remaining <= StretchTimeline.countdownSeconds ? Theme.red : Theme.accent
@@ -158,14 +249,43 @@ struct StretchPlayerView: View {
                     .foregroundStyle(Theme.text3)
             }
 
-            ScrollView {
-                Text(session.current?.step.detail ?? "")
-                    .font(Typography.bodyMd)
-                    .foregroundStyle(Theme.text2)
-                    .lineSpacing(4)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            if session.current?.step.art == nil {
+                ScrollView {
+                    Text(session.current?.step.detail ?? "")
+                        .font(Typography.bodyMd)
+                        .foregroundStyle(Theme.text2)
+                        .lineSpacing(4)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxHeight: 110)
+            } else {
+                Button {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
+                        showCue.toggle()
+                    }
+                } label: {
+                    HStack(spacing: 5) {
+                        Text(showCue ? "Hide cue" : "Cue")
+                            .font(.system(size: 13, weight: .medium))
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 10, weight: .bold))
+                            .rotationEffect(.degrees(showCue ? 180 : 0))
+                    }
+                    .foregroundStyle(Theme.text3)
+                }
+                .buttonStyle(.plain)
+
+                if showCue {
+                    ScrollView {
+                        Text(session.current?.step.detail ?? "")
+                            .font(Typography.bodyMd)
+                            .foregroundStyle(Theme.text2)
+                            .lineSpacing(4)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .frame(maxHeight: 96)
+                }
             }
-            .frame(maxHeight: 110)
 
             if let next = session.next, next.stepIndex != session.current?.stepIndex {
                 HStack(spacing: 6) {
