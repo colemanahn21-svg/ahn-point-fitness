@@ -325,6 +325,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "AHN POINT";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = "AhnPointFitness-Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
@@ -357,6 +358,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "AHN POINT";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = "AhnPointFitness-Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
@@ -426,20 +428,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A0060003000000000000000A /* Build configuration list for PBXNativeTarget "AhnPointFitnessTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A00B0003000000000000000A /* Debug */,
-				A00B0004000000000000000A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		A0060002000000000000000A /* Build configuration list for PBXProject "AhnPointFitness" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A00A0001000000000000000A /* Debug */,
 				A00A0002000000000000000A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A0060003000000000000000A /* Build configuration list for PBXNativeTarget "AhnPointFitnessTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00B0003000000000000000A /* Debug */,
+				A00B0004000000000000000A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

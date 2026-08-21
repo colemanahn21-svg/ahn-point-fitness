@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Keeps the guided stretch player audible with the screen locked.
+	     GENERATE_INFOPLIST_FILE stays on and merges its keys into this file;
+	     UIBackgroundModes is one of the few keys its INFOPLIST_KEY_* form
+	     does not support, so it has to live here. -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
+</dict>
+</plist>

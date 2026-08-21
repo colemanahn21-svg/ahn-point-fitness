@@ -6,15 +6,17 @@ struct ContentView: View {
         switch UserDefaults.standard.string(forKey: "launchTab") {
         case "lifts": return .lifts
         case "log": return .log
+        case "stretch": return .stretch
         case "more": return .more
         default: return .today
         }
     }()
     @State private var keyboardHeight: CGFloat = 0
     @StateObject private var restTimer = RestTimerState()
+    @StateObject private var stretchSession = StretchSessionState()
 
     enum Tab: Hashable {
-        case today, lifts, log, more
+        case today, lifts, log, stretch, more
     }
 
     var body: some View {
@@ -35,6 +37,10 @@ struct ContentView: View {
                         .tabItem { Label("Log", systemImage: "square.and.pencil") }
                         .tag(Tab.log)
 
+                    ScrollableTab { StretchView() }
+                        .tabItem { Label("Stretch", systemImage: "figure.flexibility") }
+                        .tag(Tab.stretch)
+
                     MoreView()
                         .tabItem { Label("More", systemImage: "ellipsis.circle") }
                         .tag(Tab.more)
@@ -43,6 +49,7 @@ struct ContentView: View {
             }
         }
         .environmentObject(restTimer)
+        .environmentObject(stretchSession)
         .overlay(alignment: .bottomLeading) {
             if restTimer.isRunning {
                 HStack(spacing: 8) {

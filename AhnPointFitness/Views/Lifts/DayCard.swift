@@ -86,15 +86,12 @@ struct DayCard: View {
                     .padding(.top, 8)
             }
 
-        case .stretchBlocks(let title, let blocks):
+        case .stretchBlocks(let title, _):
+            // Stretch content now lives in the Stretch tab, which can run it as
+            // a guided timed session. This row is the pointer to it.
             SectionDivider(text: title, color: Theme.orange)
-            ForEach(blocks) { block in
-                VStack(alignment: .leading, spacing: 0) {
-                    GroupLabel(text: block.label, color: Theme.orange)
-                    ForEach(block.stretches) { s in StretchRow(stretch: s) }
-                }
+            StretchRoutineLink(day: day.day)
                 .padding(.bottom, 10)
-            }
 
         case .mobility(let title, let block):
             SectionDivider(text: title, color: Theme.green)
