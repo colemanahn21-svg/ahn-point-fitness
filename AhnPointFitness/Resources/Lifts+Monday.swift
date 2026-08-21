@@ -54,8 +54,10 @@ extension Programme {
             ),
             .stretchBlocks(title: "⬇ Stretch · 15–20 min ⬇", blocks: [
                 StretchBlock(label: "Post–Back + Chest Stretching", stretches: [
-                    .init("mon-s1", "Doorway Pec Stretch (90° + 135°)", ["45s/angle/side"],
-                          "Two angles: 90° hits sternal fibres from flat bench; 135° hits clavicular from incline. Restores shoulder protraction/retraction balance."),
+                    .init("mon-s1a", "Doorway Pec Stretch · 90° Elbow", ["45s/side"],
+                          "Sternal fibres — the ones flat bench shortens. Forearm flat on the frame, elbow at shoulder height, step through and rotate away from the arm."),
+                    .init("mon-s1b", "Doorway Pec Stretch · 135° Elbow", ["45s/side"],
+                          "Clavicular fibres, the incline-press half. Higher hand position on the frame. Different fibre direction — one angle does not cover both."),
                     .init("mon-s2", "Supine Floor Angel", ["10 reps slow"],
                           "Pec minor, anterior delt, serratus. Floor gives feedback—if low back lifts off, pec minor is the limiter."),
                     .init("mon-s3", "Cat-Cow + Extended Hold", ["8 reps + 10s holds"],

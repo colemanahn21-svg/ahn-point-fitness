@@ -39,8 +39,10 @@ extension Programme {
                           "Feet hip-width, hinge forward, let head and arms hang heavy. Gently sway side to side. Full posterior chain decompression — hamstrings, calves, erectors."),
                     .init("sun-s12", "Elevated Hamstring Stretch", ["60s/side"],
                           "Foot on couch/bench, hinge forward with flat back. Biceps femoris + semitendinosus at full length."),
-                    .init("sun-s13", "Wall Calf (straight + bent knee)", ["45s/position/side"],
-                          "Straight = gastroc. Bent = soleus. Both loaded from the week's squatting and walking. Tight calves restrict ankle dorsiflexion, which limits squat depth."),
+                    .init("sun-s13a", "Wall Calf · Straight Knee", ["45s/side"],
+                          "Gastrocnemius, which crosses the knee and only lengthens with the leg straight. Loaded all week by squatting and walking."),
+                    .init("sun-s13b", "Wall Calf · Bent Knee", ["45s/side"],
+                          "Soleus. Bending the knee takes the gastroc out and puts the stretch where the straight-knee version cannot reach. Tight calves cap ankle dorsiflexion, which caps squat depth."),
                     .init("sun-s14", "Supine Spinal Twist", ["60s/side"],
                           "Lumbar erectors, QL, obliques. Full decompression before the new training week.")
                 ]),

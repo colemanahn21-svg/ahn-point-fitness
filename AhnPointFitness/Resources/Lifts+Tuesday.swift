@@ -98,8 +98,10 @@ extension Programme {
                           "Hip internal/external rotation. Squats demand sagittal stability but restrict rotational ROM."),
                     .init("tue-s6", "Frog Stretch", ["60–90s"],
                           "Adductor longus, brevis, magnus. Wide-stance pressing and lunges load adductors. Ease in gradually."),
-                    .init("tue-s7", "Wall Calf (straight + bent knee)", ["40s/position/side"],
-                          "Straight = gastrocnemius. Bent = soleus. Two positions non-negotiable—functionally different muscles."),
+                    .init("tue-s7a", "Wall Calf · Straight Knee", ["40s/side"],
+                          "Gastrocnemius. Crosses the knee, so it only lengthens with the leg straight."),
+                    .init("tue-s7b", "Wall Calf · Bent Knee", ["40s/side"],
+                          "Soleus. Functionally a different muscle from the gastroc — running both positions is non-negotiable, not optional."),
                     .init("tue-s8", "Supine Spinal Twist", ["45s/side"],
                           "Lumbar erectors, QL, obliques. Squats brace lumbar spine isometrically—this rotation decompresses.")
                 ])
