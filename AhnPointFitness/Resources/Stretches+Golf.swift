@@ -1,111 +1,57 @@
 import Foundation
 
-/// Golf rotational mobility. Built around one finding: thoracic rotation range
-/// drops sharply from a flexed posture and leaks into side-bend when it does,
-/// so every session opens the spine into extension and resets rib position
-/// BEFORE asking it to rotate. Order is the programme.
+/// Golf rotational mobility, built as a flow rather than a checklist.
+///
+/// The body only moves in one direction — floor, side, seated, all fours,
+/// kneeling, standing — and every position is entered on an exhale and eased
+/// on the inhale, so rotation is trained by rotating rather than by holding
+/// still. Order still carries the programme's central claim: the thoracic
+/// spine is opened into extension and the ribs are reset BEFORE anything asks
+/// it to rotate.
 extension StretchLibrary {
     enum Golf {
 
-        static let dailyRotationRestore = StretchRoutine(
-            id: "golf.daily",
-            name: "Daily Rotation Restore",
-            subtitle: "Thoracic + hips · do this one every day",
+        static let rotationFlow = StretchRoutine(
+            id: "golf.flow",
+            name: "Golf Rotation Flow",
+            subtitle: "Floor to standing · breath-led · every day",
             focus: .golf,
             phases: [
-                StretchPhase(id: "golf.daily.p1", label: "Phase 1 · Open the Spine", steps: [
+                StretchPhase(id: "golf.flow.p1", label: "Floor · Open", steps: [
                     StretchStep(
-                        id: "g1", name: "Peanut Extension · Low Ribs (T8–T10)",
-                        detail: "Peanut straddling the spine on the muscle, never on the bone. 5 small crunches to pin the segment, then reach both arms overhead and try to touch thumbs to the floor. Segmental — it forces extension at THIS level instead of letting your one mobile segment do all the work.",
-                        chips: ["45s"]),
+                        id: "gf1", name: "Peanut Climb (T10 → T4)",
+                        detail: "One continuous position. Lie back over the peanut with the arms overhead, arch over it on each exhale and let the ribs drop, and after four breaths slide the peanut up one level. Low ribs, mid, upper. Segmental — it forces extension at each level instead of letting the one mobile segment do all the work.",
+                        chips: ["2 min", "≈ 16 breaths · up a level every 4"]),
                     StretchStep(
-                        id: "g2", name: "Peanut Extension · Mid (T6–T8)",
-                        detail: "Move the peanut up one segment. Same 5 crunches, same overhead reach. If a level feels blocked, spend an extra breath there — that's the one costing you rotation.",
-                        chips: ["45s"]),
-                    StretchStep(
-                        id: "g3", name: "Peanut Extension · Upper (T4–T6)",
-                        detail: "Final position, between the shoulder blades. Keep the hips down; if they lift you're extending through the low back instead of the mid-back.",
-                        chips: ["45s"]),
-                    StretchStep(
-                        id: "g4", name: "Roller Extension + Full Exhale",
-                        detail: "Roller across the mid-back, hands supporting the head, hips down. Exhale fully at the bottom of each rep and pause 2s with the air out. Extending on a held inhale just flares the ribs — the exhale is what moves the joint.",
-                        chips: ["60s"]),
-                    StretchStep(
-                        id: "g5", name: "Supine 90/90 Exhale Breathing",
-                        detail: "Feet on a wall or chair, hips and knees at 90°, low back FLAT. In through the nose 4s, out through pursed lips 8s, pause 3s with the air fully out. Resets rib position from flared to stacked — your ribs are the rotation hardware, and this is the piece most people skip.",
-                        chips: ["120s"]),
+                        id: "gf2", name: "Rib Reset (feet up)",
+                        detail: "Stay on your back, feet up on the couch, low back flat. Long exhales through pursed lips and a pause with the air fully out. This drops the ribcage from flared to stacked — the ribs are the rotation hardware, and a flared cage is mechanically blocked from turning.",
+                        chips: ["60s", "≈ 5 breaths · pause empty"]),
                 ]),
-                StretchPhase(id: "golf.daily.p2", label: "Phase 2 · Rotate What You Opened", steps: [
+                StretchPhase(id: "golf.flow.p2", label: "Side + Seated · Rotate", steps: [
                     StretchStep(
-                        id: "g6", name: "Bench Sink (lat + t-spine)",
-                        detail: "Kneel, elbows on a couch or coffee table, hips back over the heels. Let the chest sink and the armpits open. Exhale deeper on each breath. Given three lat exercises on your Monday, this one is not optional.",
-                        chips: ["90s"]),
+                        id: "gf3", name: "Open Book → Arm Circle",
+                        detail: "Roll to your side, top knee pinned on a pillow and it does not move. Instead of a static open book, sweep the top arm in one big arc over the head and around behind you, exhaling as it passes overhead. Then roll straight over for the other side.",
+                        chips: ["60s/side", "≈ 6 breaths/side"]),
                     StretchStep(
-                        id: "g7", name: "Heel-Sit Reach-Back",
-                        detail: "Sit back on the heels, chest to thighs, one hand behind the head. Drive the elbow from floor to ceiling. Hips stay glued to the heels — that lockout is the whole point, it leaves the rotation nowhere to go but the t-spine.",
-                        chips: ["45s/side"]),
-                    StretchStep(
-                        id: "g8", name: "Open Book · Pelvis Pinned",
-                        detail: "Side-lying, top knee bent 90° on a pillow and it does NOT move. Rotate the top arm and chest open toward the floor behind you. Exhale hard at end range and sink another inch. The pinned knee stops the lumbar spine donating rotation.",
-                        chips: ["45s/side"]),
+                        id: "gf4", name: "90/90 Switch + Turn",
+                        detail: "Sit up into shin box. Switch sides slowly, and each time you land, turn the chest over the front shin and exhale. Front leg trains external rotation, back leg internal — both halves of your hip restriction, and the turn on top adds the thoracic piece.",
+                        chips: ["90s", "≈ 10 breaths"]),
                 ]),
-                StretchPhase(id: "golf.daily.p3", label: "Phase 3 · Hips, Both Directions", steps: [
+                StretchPhase(id: "golf.flow.p3", label: "Kneeling · Integrate", steps: [
                     StretchStep(
-                        id: "g9", name: "90/90 Hip Switches",
-                        detail: "Slow switches, 2s pause at each end, no hands. Front leg is external rotation, back leg is internal rotation — one position covering both halves of your restriction.",
-                        chips: ["60s"]),
+                        id: "gf5", name: "Thread + Open",
+                        detail: "On all fours. Thread one arm under the body on the exhale, then sweep it up to the ceiling on the inhale, eyes following the hand. Continuous — never park at either end. Hips stay square over the knees.",
+                        chips: ["75s/side", "≈ 8 breaths/side"]),
                     StretchStep(
-                        id: "g10", name: "90/90 PAIL/RAIL",
-                        detail: "Hinge over the front leg to honest end range, hold 30s. PAIL: press the shin DOWN into the floor at 60–70% for 10s. RAIL: reverse it, try to lift that knee OFF the floor at 60–70% for 10s. Relax and sink deeper. End-range isometrics are what make new range survive a swing at speed.",
-                        chips: ["90s/side"]),
-                    StretchStep(
-                        id: "g11", name: "Half-Kneeling Hip Flexor + Overhead Reach",
-                        detail: "Squeeze the down-side glute and TUCK the pelvis first, then reach the same-side arm overhead and side-bend away. If you're arching your low back to feel it, you've lost the rep. Hip flexor + lat + side-bend in one position.",
-                        chips: ["45s/side"]),
+                        id: "gf6", name: "Couch Sink + Rotation",
+                        detail: "Elbows on the couch, hips back over the heels, let the chest sink through the arms. Then walk both hands to one side and turn the ribcage toward them, breathe, and walk to the other. Lats and thoracic extension together — three lat exercises on Monday made this one non-negotiable.",
+                        chips: ["90s", "≈ 10 breaths"]),
                 ]),
-                StretchPhase(id: "golf.daily.p4", label: "Phase 4 · Own It", steps: [
+                StretchPhase(id: "golf.flow.p4", label: "Standing · Own It", steps: [
                     StretchStep(
-                        id: "g12", name: "Standing Club Rotations",
-                        detail: "Club across the shoulders, golf posture, progressively larger turns, exhaling into each one. Never end a mobility session passive — rotate through the new range actively so the nervous system files it as usable.",
-                        chips: ["60s"]),
-                ]),
-            ])
-
-        static let weeklyAddOns = StretchRoutine(
-            id: "golf.weekly",
-            name: "3×/Week Add-Ons",
-            subtitle: "Run after the daily sequence",
-            focus: .golf,
-            phases: [
-                StretchPhase(id: "golf.weekly.p1", label: "Deep Work", steps: [
-                    StretchStep(
-                        id: "gw1", name: "Bretzel",
-                        detail: "Side-lying, top knee pinned down by the opposite hand, reach back and grab the bottom ankle pulling heel to glute, rotate the chest to the ceiling. Trail-hip quad length and t-spine rotation at once — the best single position you own.",
-                        chips: ["40s/side"]),
-                    StretchStep(
-                        id: "gw2", name: "Thread the Needle",
-                        detail: "Adds scapular glide to the rotation. Reach far and let the shoulder settle rather than forcing the floor.",
-                        chips: ["45s/side"]),
-                    StretchStep(
-                        id: "gw3", name: "Side-Lying Rib Expansion Breathing",
-                        detail: "Lie on your side, top arm overhead. Inhale into the UP-side ribs only. Directly mobilises the costovertebral joints — the actual hardware of thoracic rotation.",
-                        chips: ["60s/side"]),
-                    StretchStep(
-                        id: "gw4", name: "Doorway Pec · 90° Elbow",
-                        detail: "Sternal fibres. Your bench and dip volume shortens these, which pulls you into flexion, which kills rotation.",
-                        chips: ["30s/side"]),
-                    StretchStep(
-                        id: "gw5", name: "Doorway Pec · 135° Elbow",
-                        detail: "Clavicular fibres. Different angle, different fibre direction — one height does not cover both.",
-                        chips: ["30s/side"]),
-                    StretchStep(
-                        id: "gw6", name: "Adductor Rock-Back",
-                        detail: "All fours, one leg straight out to the side, foot flat. Rock the hips back toward the heel of the down leg. Lead adductor length is a quiet limiter on clearing the hips.",
-                        chips: ["45s/side"]),
-                    StretchStep(
-                        id: "gw7", name: "Cervical Rotation",
-                        detail: "Chin level, no tilting. The head has to stay while the shoulders turn — a stiff neck silently shortens your backswing.",
-                        chips: ["30s/side"]),
+                        id: "gf7", name: "Kneeling → Standing Club Turns",
+                        detail: "Half-kneeling, club across the shoulders, turn toward the front knee and back, exhaling into each turn. Switch knees. Then stand into golf posture and keep turning — slow, progressively bigger, building into half swings. Never end a mobility session passive.",
+                        chips: ["150s", "≈ 16 breaths"]),
                 ]),
             ])
 
@@ -145,6 +91,7 @@ extension StretchLibrary {
                         detail: "Counter-rotation. Restores side-to-side symmetry and primes the direction you're most restricted in.",
                         chips: ["45s"]),
                 ]),
-            ])
+            ],
+            cadence: .interval)
     }
 }

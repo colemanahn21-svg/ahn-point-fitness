@@ -185,7 +185,8 @@ final class StretchSessionState: ObservableObject {
     /// 3-2-1 ticks only on working segments — the get-ready gap already ends
     /// with the stretch starting, so double-beeping it is noise.
     private func announce(_ left: Int) {
-        guard current?.kind == .work,
+        guard routine?.cadence == .interval,
+              current?.kind == .work,
               left <= StretchTimeline.countdownSeconds,
               left > 0,
               left != lastAnnounced
@@ -203,7 +204,10 @@ final class StretchSessionState: ObservableObject {
             if playChime { audio.complete(); Haptics.done() }
             return finish()
         }
-        if playChime { audio.alarm(); Haptics.done() }
+        if playChime {
+            routine?.cadence == .flow ? audio.chime() : audio.alarm()
+            Haptics.done()
+        }
         index = newIndex
         beginSegment()
     }

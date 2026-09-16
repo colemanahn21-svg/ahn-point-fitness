@@ -74,7 +74,9 @@ final class StretchTimelineTests: XCTestCase {
         for (i, seg) in segments.enumerated() where seg.kind == .work {
             XCTAssertGreaterThan(i, 0)
             XCTAssertEqual(segments[i - 1].kind, .getReady)
-            XCTAssertEqual(segments[i - 1].seconds, StretchTimeline.getReadySeconds)
+            let expected = seg.side == .right
+                ? StretchTimeline.sideSwitchSeconds : StretchTimeline.getReadySeconds
+            XCTAssertEqual(segments[i - 1].seconds, expected)
         }
     }
 
@@ -95,9 +97,11 @@ final class StretchTimelineTests: XCTestCase {
     }
 
     func testTotalIncludesGetReadyGaps() {
-        // 30s + (40s x 2 sides) = 110s work, plus 3 gaps of 5s.
+        // 30s + (40s x 2 sides) = 110s work, plus two set-up gaps and one
+        // shorter side-switch gap.
         let r = routine([["30s"], ["40s/side"]])
-        XCTAssertEqual(r.totalSeconds, 110 + 3 * StretchTimeline.getReadySeconds)
+        XCTAssertEqual(r.totalSeconds,
+                       110 + 2 * StretchTimeline.getReadySeconds + StretchTimeline.sideSwitchSeconds)
     }
 
     func testStepIndexIsSharedAcrossBothSides() {
@@ -107,11 +111,11 @@ final class StretchTimelineTests: XCTestCase {
                        "left and right must belong to the same step")
     }
 
-    func testGolfDailyRoutineIsOrderedExtensionBeforeRotation() {
+    func testGolfFlowOpensTheSpineBeforeRotating() {
         // The programme's central claim: you cannot rotate a flexed spine, so
-        // the extension phase must always run before the rotation phase.
-        let phases = StretchLibrary.Golf.dailyRotationRestore.phases
-        let openIdx = phases.firstIndex { $0.label.contains("Open the Spine") }
+        // the opening phase must always run before the rotation phase.
+        let phases = StretchLibrary.Golf.rotationFlow.phases
+        let openIdx = phases.firstIndex { $0.label.contains("Open") }
         let rotateIdx = phases.firstIndex { $0.label.contains("Rotate") }
         XCTAssertNotNil(openIdx)
         XCTAssertNotNil(rotateIdx)
@@ -164,7 +168,7 @@ final class StretchTimelineTests: XCTestCase {
     @MainActor
     func testSkipNeverLandsOnAGetReadyGap() {
         let session = StretchSessionState()
-        session.start(StretchLibrary.Golf.dailyRotationRestore)
+        session.start(StretchLibrary.Golf.rotationFlow)
         // From the opening get-ready, every press should land on a hold.
         for _ in 0..<12 {
             session.skip()
@@ -178,7 +182,7 @@ final class StretchTimelineTests: XCTestCase {
     @MainActor
     func testSkipMovesOnRatherThanStartingWhatItSkipped() {
         let session = StretchSessionState()
-        session.start(StretchLibrary.Golf.weeklyAddOns)   // opens on a per-side stretch
+        session.start(StretchLibrary.routine(for: .mon)!)   // opens on a per-side stretch
 
         // Opening get-ready is for the left side; skipping it should skip that
         // side outright, not drop into it.
@@ -194,6 +198,25 @@ final class StretchTimelineTests: XCTestCase {
         XCTAssertEqual(session.current?.stepIndex, 1)
         XCTAssertEqual(session.current?.side, .left)
         session.stop()
+    }
+
+    func testFlowShortensTheSideSwitchGapButIntervalsDoNot() {
+        let flow = StretchTimeline.build(routine([["40s/side"]]))
+        let switchGap = flow.first { $0.kind == .getReady && $0.side == .right }
+        XCTAssertEqual(switchGap?.seconds, StretchTimeline.sideSwitchSeconds)
+        XCTAssertEqual(flow.first { $0.kind == .getReady && $0.side == .left }?.seconds,
+                       StretchTimeline.getReadySeconds)
+
+        var interval = routine([["40s/side"]]); interval.cadence = .interval
+        let gap = StretchTimeline.build(interval).first { $0.kind == .getReady && $0.side == .right }
+        XCTAssertEqual(gap?.seconds, StretchTimeline.getReadySeconds)
+    }
+
+    func testBreathCountSurfacesAsTheNote() {
+        let t = StretchTiming.parse(["75s/side", "≈ 8 breaths/side"])
+        XCTAssertEqual(t.seconds, 75)
+        XCTAssertTrue(t.perSide)
+        XCTAssertEqual(t.note, "≈ 8 breaths/side")
     }
 
     func testEveryLiftDayWithStretchesHasARoutine() {

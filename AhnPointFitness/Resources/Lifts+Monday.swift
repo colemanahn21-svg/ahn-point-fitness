@@ -52,28 +52,7 @@ extension Programme {
                 ],
                 note: "Upper body day = legs are fresh. Running is a great choice. Every week: add 4×30–45s pushes to Zone 3–4 with easy pace between — don't leave this in Zone 2."
             ),
-            .stretchBlocks(title: "⬇ Stretch · 15–20 min ⬇", blocks: [
-                StretchBlock(label: "Post–Back + Chest Stretching", stretches: [
-                    .init("mon-s1a", "Doorway Pec Stretch · 90° Elbow", ["45s/side"],
-                          "Sternal fibres — the ones flat bench shortens. Forearm flat on the frame, elbow at shoulder height, step through and rotate away from the arm."),
-                    .init("mon-s1b", "Doorway Pec Stretch · 135° Elbow", ["45s/side"],
-                          "Clavicular fibres, the incline-press half. Higher hand position on the frame. Different fibre direction — one angle does not cover both."),
-                    .init("mon-s2", "Supine Floor Angel", ["10 reps slow"],
-                          "Pec minor, anterior delt, serratus. Floor gives feedback—if low back lifts off, pec minor is the limiter."),
-                    .init("mon-s3", "Cat-Cow + Extended Hold", ["8 reps + 10s holds"],
-                          "Thoracic erectors locked from bracing during bench/rows. Restores segmental flexion/extension."),
-                    .init("mon-s4", "Thread the Needle", ["45s/side"],
-                          "Thoracic rotation + lat stretch. Push/pull is sagittal-only—reclaims transverse plane ROM."),
-                    .init("mon-s5", "Prayer Lat Stretch (kneeling)", ["45s × 2"],
-                          "Kneel in front of a bench, couch, or box. Forearms flat on the surface, hands pressed together like prayer. Sit hips back toward heels and let chest sink toward the floor. Deep lat lengthening + teres major stretch without hanging — same tissue targets, anywhere."),
-                    .init("mon-s6", "Foam Roller Thoracic Extension", ["60–90s"],
-                          "Opens anterior chest wall, extends the kyphotic curve bench pressing reinforces."),
-                    .init("mon-s7", "Cross-Body Posterior Delt", ["40s/side"],
-                          "Posterior delt, infraspinatus. Tight from rows and face pulls."),
-                    .init("mon-s8", "Child's Pose (wide knee, reach far)", ["60–90s"],
-                          "Lats, teres, thoracolumbar fascia. Deep breathing shifts ANS toward parasympathetic recovery.")
-                ])
-            ])
+            .stretchBlocks(title: "⬇ Stretch · ~12 min ⬇", blocks: Programme.upperBodyFlow)
         ]
     )
 }

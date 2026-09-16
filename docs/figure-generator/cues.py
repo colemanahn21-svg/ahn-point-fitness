@@ -65,4 +65,14 @@ C = {
 "club-across-shoulders-rotations":["Club across the shoulders, address posture","Turn both ways, bigger each rep","Exhale into the turn","Stay in your posture"],
 "ramped-swings-50-90":["Start at 50%, build to 90%","Full finish every swing","Breathe out through impact","Never max out cold"],
 "left-handed-swings":["Swing from the opposite side","Half speed, full range","Restores side-to-side symmetry","Five is enough"],
+"peanut-climb-t10-t4":["Peanut on the muscle, never the bone","Arch over it on every exhale","Up one level every 4 breaths","Low ribs → mid → between the blades"],
+"rib-reset-feet-up":["Feet up on the couch, low back FLAT","Long exhale through pursed lips","Pause with the air fully out","Feel the ribs drop"],
+"open-book-arm-circle":["Top knee pinned — it does not move","Sweep the arm in one big arc overhead","Exhale as it passes over the head","Roll straight over, other side"],
+"90-90-switch-turn":["Shin box, both knees 90°","Switch slowly, no hands","Land, then turn the chest over the front shin","Exhale into every turn"],
+"thread-open":["Thread the arm under on the exhale","Sweep it to the ceiling on the inhale","Eyes follow the hand","Never stop at either end"],
+"couch-sink-rotation":["Elbows on the couch, hips back","Let the chest sink through","Walk the hands to one side, turn the ribs","Breathe, then the other side"],
+"kneeling-standing-club-turns":["Club across the shoulders","Half-kneeling: turn toward the front knee","Switch knees, then stand up","Build slow turns into half swings"],
+"doorway-pec-90-then-135":["Forearm on the frame, step through, rotate away","30s, then slide the hand high","Repeat at 135°","Ribs down the whole time"],
+"child-s-pose-reach-each-side":["Knees wide, hips to heels","Walk both hands to one side","Breathe into the opposite ribs","Switch"],
 }
+

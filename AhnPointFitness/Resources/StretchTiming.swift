@@ -78,6 +78,11 @@ struct StretchTiming: Equatable {
         if s.contains("/angle") { note = "per angle" }
         if s.contains("/position") { note = "per position" }
 
+        // Flows are breath-led; show the breath count beside the clock.
+        if let breaths = chips.first(where: { $0.lowercased().contains("breath") }) {
+            note = breaths
+        }
+
         return StretchTiming(seconds: max(10, seconds), perSide: perSide, note: note)
     }
 

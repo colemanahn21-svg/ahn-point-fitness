@@ -50,11 +50,18 @@ struct StretchRoutine: Identifiable {
         }
     }
 
+    /// How the player paces a routine. A flow is breath-led: no 3-2-1
+    /// ticks, one soft chime when it is time to move, and only a 3s gap to
+    /// roll to the other side. Intervals keep the countdown — right for a
+    /// dynamic warm-up, wrong for something meant to feel like a class.
+    enum Cadence { case flow, interval }
+
     let id: String
     let name: String
     let subtitle: String
     let focus: Focus
     let phases: [StretchPhase]
+    var cadence: Cadence = .flow
 
     var steps: [StretchStep] { phases.flatMap(\.steps) }
 
@@ -89,6 +96,8 @@ struct StretchSegment: Identifiable {
 enum StretchTimeline {
     /// Seconds of "get into position" before every working segment.
     static let getReadySeconds = 5
+    /// Rolling to the other side needs less than a full set-up in a flow.
+    static let sideSwitchSeconds = 3
     /// Seconds of audible countdown at the end of a working segment.
     static let countdownSeconds = 3
 
@@ -101,9 +110,11 @@ enum StretchTimeline {
             for step in phase.steps {
                 let sides: [StretchSide?] = step.timing.perSide ? [.left, .right] : [nil]
                 for side in sides {
+                    let gap = (side == .right && routine.cadence == .flow)
+                        ? sideSwitchSeconds : getReadySeconds
                     segments.append(StretchSegment(
                         id: id, kind: .getReady, step: step, stepIndex: stepIndex,
-                        phaseLabel: phase.label, side: side, seconds: getReadySeconds))
+                        phaseLabel: phase.label, side: side, seconds: gap))
                     id += 1
                     segments.append(StretchSegment(
                         id: id, kind: .work, step: step, stepIndex: stepIndex,
@@ -155,7 +166,7 @@ enum StretchLibrary {
     }
 
     static var golfRoutines: [StretchRoutine] {
-        [Golf.dailyRotationRestore, Golf.weeklyAddOns, Golf.preRound]
+        [Golf.rotationFlow, Golf.preRound]
     }
 
     static var all: [StretchRoutine] { golfRoutines + dayRoutines }

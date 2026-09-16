@@ -54,19 +54,7 @@ extension Programme {
                 body: "10 KB Swings (heaviest) → 8 Push-Ups → 6 Pull-Ups → 200m Row or 15-cal Assault Bike",
                 footer: "Target: ~90s work per round. HR to Zone 3–4 (150–170 bpm) during work. Far more effective than steady walking for VO2max."
             ),
-            .stretchBlocks(title: "⬇ Stretch · 15–20 min ⬇", blocks: [
-                StretchBlock(label: "Post–Athletic Upper Stretching", stretches: [
-                    .init("fri-s1", "Puppy Pose", ["60–90s"], "Deep lat stretch after explosive pulling."),
-                    .init("fri-s2", "Supine Floor Angel", ["10 reps slow"], "Pec minor and anterior delt after explosive push-ups and pressing."),
-                    .init("fri-s3", "Cat-Cow + Extended Hold", ["8 reps + 10s holds"], "Thoracic mobility after rowing and overhead work."),
-                    .init("fri-s4", "Thread the Needle", ["45s/side"], "Thoracic rotation — critical after cable chops."),
-                    .init("fri-s5", "Prayer Lat Stretch (kneeling)", ["45s × 2"],
-                          "Kneel in front of a bench. Forearms flat, hands in prayer. Sit hips back and chest drops. Lengthens the lats fully after pull-ups and rows — deeper stretch than a dead hang and you can do it anywhere."),
-                    .init("fri-s6", "Upper Trap + Levator Scap", ["40s/side"], "Push press and rowing elevate the scapula — release it."),
-                    .init("fri-s7", "Cross-Body Posterior Delt", ["40s/side"], "Tight from rows and face pulls."),
-                    .init("fri-s8", "Child's Pose (wide knee)", ["60–90s"], "Parasympathetic wind-down.")
-                ])
-            ])
+            .stretchBlocks(title: "⬇ Stretch · ~12 min ⬇", blocks: Programme.upperBodyFlow)
         ]
     )
 }

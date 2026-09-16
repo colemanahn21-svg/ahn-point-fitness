@@ -222,14 +222,19 @@ struct StretchPlayerView: View {
         }
     }
 
+    private var inFinalCountdown: Bool {
+        routine.cadence == .interval
+            && !isGetReady
+            && session.remaining <= StretchTimeline.countdownSeconds
+    }
+
     private var ringColor: Color {
         if isGetReady { return Theme.yellow }
-        return session.remaining <= StretchTimeline.countdownSeconds ? Theme.red : Theme.accent
+        return inFinalCountdown ? Theme.red : Theme.accent
     }
 
     private var countdownColor: Color {
-        session.remaining <= StretchTimeline.countdownSeconds && !isGetReady
-            ? Theme.red : Theme.text
+        inFinalCountdown ? Theme.red : Theme.text
     }
 
     // MARK: - Detail

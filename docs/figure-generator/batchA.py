@@ -1,4 +1,4 @@
-import sys; sys.path.insert(0,'/private/tmp/claude-501/-Users-colemanahn-Documents-RecompApp/dd8fcea9-c60b-4445-b8eb-1cc9d215fd2d/scratchpad/gen')
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from figlib import figure
 
 

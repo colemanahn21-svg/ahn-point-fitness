@@ -24,6 +24,7 @@ final class StretchAudio {
     private var tickBuffer: AVAudioPCMBuffer?
     private var alarmBuffer: AVAudioPCMBuffer?
     private var completeBuffer: AVAudioPCMBuffer?
+    private var chimeBuffer: AVAudioPCMBuffer?
     private var silenceBuffer: AVAudioPCMBuffer?
 
     private var isRunning = false
@@ -46,6 +47,7 @@ final class StretchAudio {
         tickBuffer     = Self.tone(fmt, [(880, 0, 0.07)], total: 0.09)
         alarmBuffer    = Self.tone(fmt, [(1175, 0, 0.11), (1175, 0.19, 0.11), (1175, 0.38, 0.16)], total: 0.58)
         completeBuffer = Self.tone(fmt, [(784, 0, 0.14), (988, 0.15, 0.14), (1319, 0.30, 0.30)], total: 0.64)
+        chimeBuffer    = Self.tone(fmt, [(988, 0, 0.45)], total: 0.55, amplitude: 0.35)
         silenceBuffer  = Self.silence(fmt, seconds: 1)
 
         engine.attach(cueNode)
@@ -95,6 +97,9 @@ final class StretchAudio {
     /// End of the whole routine.
     func complete() { play(completeBuffer) }
 
+    /// Flow transition — one soft note, not an alarm.
+    func chime() { play(chimeBuffer) }
+
     private func play(_ buffer: AVAudioPCMBuffer?) {
         guard isRunning, let buffer, engine.isRunning else { return }
         cueNode.scheduleBuffer(buffer, at: nil, options: [], completionHandler: nil)
@@ -131,7 +136,8 @@ final class StretchAudio {
 
     /// Sums a set of notes into one buffer. Each note gets a short attack and
     /// an exponential decay — a raw square edge on a sine clicks audibly.
-    private static func tone(_ format: AVAudioFormat, _ notes: [Note], total: Double) -> AVAudioPCMBuffer? {
+    private static func tone(_ format: AVAudioFormat, _ notes: [Note], total: Double,
+                             amplitude: Double = 0.55) -> AVAudioPCMBuffer? {
         let rate = format.sampleRate
         let frames = AVAudioFrameCount(total * rate)
         guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frames),
@@ -150,7 +156,7 @@ final class StretchAudio {
                 guard idx < Int(frames) else { break }
                 let t = Double(n) / rate
                 let envelope = min(1, t / attack) * exp(-3.5 * t / note.duration)
-                let sample = sin(2 * .pi * note.freq * t) * envelope * 0.55
+                let sample = sin(2 * .pi * note.freq * t) * envelope * amplitude
                 channel[idx] += Float(sample)
             }
         }
