@@ -24,6 +24,8 @@ struct AhnPointFitnessApp: App {
                     }
                 }
                 .task {
+                    ProfileExpiryReminder.scheduleIfNeeded()
+
                     // Launch-argument hook (screenshots / UI tests):
                     // `-seedDemo YES` populates the app with demo data.
                     if UserDefaults.standard.bool(forKey: "seedDemo") {
