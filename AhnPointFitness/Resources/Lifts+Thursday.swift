@@ -4,20 +4,22 @@ extension Programme {
     static let thursday = DayContent(
         day: .thu,
         title: "Thu · Arms + Shoulders",
-        subtitle: "~85 min · Gym → Cable Station",
+        subtitle: "~88 min · Gym → Cable Station",
         tag: .abs,
         sections: [
             .mobilityPrimer(
-                dividerTitle: "⬇ Mobility Primer · 6 min ⬇",
-                label: "Warm-Up · Preps Shoulders + Elbows for Pressing/Curling",
+                dividerTitle: "⬇ Mobility Primer · 9 min ⬇",
+                label: "Warm-Up · Opens the T-Spine, Then Preps Shoulders + Elbows for Pressing/Curling",
                 items: [
-                    .init("thu-mp1", "Shoulder CARs · 5/direction/side (capsule warm-up)"),
-                    .init("thu-mp2", "Wall Slide (shoulder W to Y) · 2×10"),
-                    .init("thu-mp3", "Band Dislocate (wide → narrow grip) · 2×10"),
-                    .init("thu-mp4", "Band Pull-Apart · 2×15"),
-                    .init("thu-mp5", "Band External Rotation · 2×12/side"),
-                    .init("thu-mp6", "Band Overhead Press (very light) · 2×15 (grooves OHP pattern)"),
-                    .init("thu-mp7", "Wrist Circles + Elbow Flex/Extend · 10 each")
+                    .init("thu-mp1", "Peanut (or gym foam roller) T-Spine Extension · 4 positions × 5 reps (open the upper back BEFORE pressing overhead)"),
+                    .init("thu-mp2", "Heel-Sit Reach-Back · 6/side, 3s hold (t-spine rotation, hips locked on heels)"),
+                    .init("thu-mp3", "Shoulder CARs · 5/direction/side (capsule warm-up)"),
+                    .init("thu-mp4", "Wall Slide (shoulder W to Y) · 2×10"),
+                    .init("thu-mp5", "Band Dislocate (wide → narrow grip) · 2×10"),
+                    .init("thu-mp6", "Band Pull-Apart · 2×15"),
+                    .init("thu-mp7", "Band External Rotation · 2×12/side"),
+                    .init("thu-mp8", "Band Overhead Press (very light) · 2×15 (grooves OHP pattern)"),
+                    .init("thu-mp9", "Wrist Circles + Elbow Flex/Extend · 10 each")
                 ]
             ),
             .groups([

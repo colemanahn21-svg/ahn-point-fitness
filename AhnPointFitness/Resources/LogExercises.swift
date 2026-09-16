@@ -25,7 +25,7 @@ enum LogContent {
             .init("Incline DB Press", 3),
             .init("Chest-Supported DB Row", 3),
             .init("Cable Fly", 3),
-            .init("Straight-Arm Pulldown", 3),
+            .init("Half-Kneeling Cable Chop", 3),
             .init("Face Pulls", 3)
         ],
         .tue: [

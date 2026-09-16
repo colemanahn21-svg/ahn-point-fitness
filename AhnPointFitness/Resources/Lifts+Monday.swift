@@ -36,8 +36,8 @@ extension Programme {
                 GroupBlock(label: "Giant Set C · C1→C2→C3 no rest · 60s after round · 3 rounds", exercises: [
                     .init("mon-c1", "C1. Cable Fly (low-to-high)", ["3×12-15", "2-1-2-0", "→ C2"],
                           "Inner/upper chest isolation with constant cable tension. Straight to C2, no rest."),
-                    .init("mon-c2", "C2. Straight-Arm Pulldown", ["3×12-15", "2-1-2-0", "→ C3"],
-                          "Isolates lats without bicep. Teaches scapular depression. Straight to C3, no rest."),
+                    .init("mon-c2", "C2. Half-Kneeling Cable Chop", ["3×10/side", "3-0-1-0", "→ C3"],
+                          "Replaces straight-arm pulldown, which trained the lats in their shortest range on a day already carrying two heavy rows — stiffness that caps thoracic rotation. Hips square and still, chop high-to-low across the body, 3s controlled return. Rotation under load for the golf swing. Same cable station, straight to C3, no rest."),
                     .init("mon-c3", "C3. Face Pulls", ["3×15-20", "2-1-2-0", "60s"],
                           "Rear delt and external rotator health. Non-negotiable prehab. Closes the round — all three moves live at the cable area, so heart rate stays up with zero travel. 60s, back to C1.")
                 ])
