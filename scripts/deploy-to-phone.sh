@@ -14,9 +14,12 @@ BUNDLE="com.coleman.recomp"
 DD="$HOME/Library/Developer/Xcode/DerivedData"
 
 echo "▸ Phone"
-INFO=$(xcrun devicectl device info details --device "$DEVICE_ID" 2>&1)
-VER=$(print -r -- "$INFO" | awk '/osVersionNumber:/ {print $NF; exit}')
-BUILD=$(print -r -- "$INFO" | awk '/osBuildUpdate:/ {print $NF; exit}')
+# JSON, not the human-readable text: Xcode 27 renamed those labels and broke parsing.
+INFO_JSON=$(mktemp)
+xcrun devicectl device info details --device "$DEVICE_ID" --quiet --json-output "$INFO_JSON" >/dev/null 2>&1
+VER=$(plutil -extract result.deviceProperties.osVersionNumber raw -o - "$INFO_JSON" 2>/dev/null)
+BUILD=$(plutil -extract result.deviceProperties.osBuildUpdate raw -o - "$INFO_JSON" 2>/dev/null)
+rm -f "$INFO_JSON"
 if [[ -z "$VER" || -z "$BUILD" ]]; then
   echo "  Phone not reachable — plug it in, unlock it, and rerun."; exit 1
 fi
@@ -33,7 +36,7 @@ done
 echo "▸ Prune DerivedData"
 for dir in "$DD"/*/; do
   name=$(basename "$dir")
-  [[ "$name" == *.noindex ]] && continue                      # Xcode's shared caches
+  [[ "$name" == *.noindex || "$name" == SDK* ]] && continue   # Xcode's shared caches
   ws=$(/usr/libexec/PlistBuddy -c "Print :WorkspacePath" "$dir/info.plist" 2>/dev/null)
   if [[ -z "$ws" || ! -e "$ws" ]]; then
     echo "  removing $name ($(du -sh "$dir" | cut -f1))"; rm -rf "$dir"
@@ -63,6 +66,6 @@ for i in 1 2 3; do
   sleep 6
 done
 EXP=$(security cms -D -i "$APP/embedded.mobileprovision" 2>/dev/null | plutil -extract ExpirationDate raw -o - - 2>/dev/null)
-[[ -n "$EXP" ]] && echo "  Profile expires: $(date -j -f '%Y-%m-%dT%H:%M:%SZ' "$EXP" '+%a %b %d, %-I:%M %p' 2>/dev/null || echo $EXP) (UTC→local may differ)"
+[[ -n "$EXP" ]] && echo "  Profile expires: $(date -r "$(TZ=UTC date -j -f '%Y-%m-%dT%H:%M:%SZ' "$EXP" +%s)" '+%a %b %d, %-I:%M %p %Z' 2>/dev/null || echo "$EXP")"
 
 echo "Done."
