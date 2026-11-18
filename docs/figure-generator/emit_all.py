@@ -3,7 +3,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from figlib import emit
 import batchA, batchB, batchC
 
-CAT = "/Users/colemanahn/Documents/RecompApp/AhnPointFitness/Assets.xcassets/Stretch"
+CAT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "AhnPointFitness", "Assets.xcassets", "Stretch")
 if os.path.isdir(CAT): shutil.rmtree(CAT)
 os.makedirs(CAT)
 open(os.path.join(CAT, "Contents.json"), "w").write(
