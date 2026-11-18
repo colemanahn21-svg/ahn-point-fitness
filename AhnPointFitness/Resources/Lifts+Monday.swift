@@ -52,7 +52,7 @@ extension Programme {
                 ],
                 note: "Upper body day = legs are fresh. Running is a great choice. Every week: add 4×30–45s pushes to Zone 3–4 with easy pace between — don't leave this in Zone 2."
             ),
-            .stretchBlocks(title: "⬇ Stretch · ~12 min ⬇", blocks: Programme.upperBodyFlow)
+            .stretchLink
         ]
     )
 }

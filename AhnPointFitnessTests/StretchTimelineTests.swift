@@ -182,7 +182,7 @@ final class StretchTimelineTests: XCTestCase {
     @MainActor
     func testSkipMovesOnRatherThanStartingWhatItSkipped() {
         let session = StretchSessionState()
-        session.start(StretchLibrary.routine(for: .mon)!)   // opens on a per-side stretch
+        session.start(StretchLibrary.routine(for: .mon))   // opens on a per-side stretch
 
         // Opening get-ready is for the left side; skipping it should skip that
         // side outright, not drop into it.
@@ -219,10 +219,102 @@ final class StretchTimelineTests: XCTestCase {
         XCTAssertEqual(t.note, "≈ 8 breaths/side")
     }
 
-    func testEveryLiftDayWithStretchesHasARoutine() {
-        for day in Programme.allDays where !day.stretchBlocks.isEmpty {
-            XCTAssertNotNil(StretchLibrary.routine(for: day.day),
-                            "\(day.day.short) lost its routine")
+    // MARK: - One routine a day
+
+    func testEveryDayHasExactlyOneEveningRoutineFromTheLibrary() {
+        for day in ProgrammeDay.allCases {
+            let r = StretchSchedule.evening(for: day)
+            XCTAssertNotNil(StretchLibrary.routine(id: r.id), "\(day.short): \(r.name) not in the library")
+        }
+    }
+
+    /// Doing everything the old programme prescribed came to about an hour a
+    /// day. The ceiling is now one home flow plus the desk reset, ~22 min, and
+    /// the desk part is done at lunch, not stacked on the evening.
+    func testNoDayAsksForMoreThanTwentyTwoMinutes() {
+        for day in ProgrammeDay.allCases {
+            let total = StretchSchedule.evening(for: day).totalSeconds
+                + (StretchSchedule.desk(for: day)?.totalSeconds ?? 0)
+            XCTAssertLessThanOrEqual(total, 22 * 60, "\(day.short) asks for \(total / 60) min")
+        }
+    }
+
+    func testDeskResetOnWeekdaysOnly() {
+        for day in ProgrammeDay.allCases {
+            let weekend = day == .sat || day == .sun
+            XCTAssertEqual(StretchSchedule.desk(for: day) == nil, weekend, day.short)
+        }
+    }
+
+    /// Thoracic turn is the limiter. The golf flow runs twice; the desk reset
+    /// (extension + seated turn) and Upper Body Flow carry it on other days.
+    func testThoracicWorkEveryWeekdayAndGolfFlowTwice() {
+        XCTAssertGreaterThanOrEqual(
+            StretchSchedule.days(for: StretchLibrary.Golf.rotationFlow).count, 2)
+        for day in ProgrammeDay.allCases where day != .sat {
+            let steps = StretchSchedule.evening(for: day).steps
+                + (StretchSchedule.desk(for: day)?.steps ?? [])
+            XCTAssertTrue(steps.contains { $0.name.contains("Thoracic") || $0.name.contains("Thread")
+                                           || $0.name.contains("Peanut") },
+                          "\(day.short) has no thoracic work")
+        }
+    }
+
+    /// Lower-body work is not optional: a full flow on both lower-body
+    /// training days, and hamstrings every workday from the chair.
+    func testLowerBodyFlowOnLegsAndConditioningDays() {
+        XCTAssertEqual(StretchSchedule.days(for: StretchLibrary.lowerBody), [.tue, .sat])
+        let names = StretchLibrary.lowerBody.steps.map(\.name).joined(separator: " ")
+        for muscle in ["Hamstring", "Calf", "Couch", "Adductor", "Pigeon"] {
+            XCTAssertTrue(names.contains(muscle), "Lower Body Flow lost \(muscle)")
+        }
+    }
+
+    func testHamstringsEveryWorkday() {
+        XCTAssertTrue(StretchLibrary.Work.deskReset.steps.contains { $0.name.contains("Hamstring") })
+    }
+
+    func testFewRoutinesSoEachBecomesFamiliar() {
+        let distinct = Set(ProgrammeDay.allCases.map { StretchSchedule.evening(for: $0).id })
+        XCTAssertLessThanOrEqual(distinct.count, 3)
+    }
+
+    func testEveryDayCardPointsAtItsRoutine() {
+        for day in Programme.allDays {
+            let links = day.sections.filter { if case .stretchLink = $0 { return true }; return false }
+            XCTAssertEqual(links.count, 1, "\(day.day.short) should show exactly one stretch link")
+        }
+    }
+
+    func testTodayUsesEasternTime() {
+        // 2026-11-17 03:30 UTC is still Monday evening in New York.
+        let date = ISO8601DateFormatter().date(from: "2026-11-17T03:30:00Z")!
+        XCTAssertEqual(StretchSchedule.today(date), .mon)
+    }
+
+    /// The desk routine only works if it is short enough to repeat during a
+    /// workday and never asks you onto an office floor.
+    func testDeskResetIsShortAndOfficeSafe() {
+        let desk = StretchLibrary.Work.deskReset
+        XCTAssertLessThanOrEqual(desk.totalSeconds, 8 * 60, "too long for a lunch break")
+        for step in desk.steps {
+            let text = (step.name + " " + step.detail).lowercased()
+            XCTAssertFalse(text.contains("floor") || text.contains("all fours")
+                           || text.contains("kneel"), "\(step.name) is not office-safe")
+        }
+    }
+
+    /// Both work flows reverse a flexed spine before asking it to turn, and
+    /// stay under the ~14 min ceiling every flow is held to.
+    func testWorkFlowsExtendBeforeRotatingAndStayShort() {
+        let desk = StretchLibrary.Work.deskReset.steps.map(\.name)
+        let ext = desk.firstIndex { $0.contains("Extension") }
+        let turn = desk.firstIndex { $0.contains("Turn") }
+        XCTAssertNotNil(ext); XCTAssertNotNil(turn)
+        XCTAssertLessThan(ext!, turn!)
+        for routine in StretchLibrary.workRoutines {
+            XCTAssertLessThanOrEqual(routine.totalSeconds, 14 * 60, routine.name)
+            XCTAssertEqual(routine.cadence, .flow, routine.name)
         }
     }
 }

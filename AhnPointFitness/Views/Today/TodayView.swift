@@ -7,6 +7,9 @@ struct TodayView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            SectionLabel(text: "Today's Stretch")
+            TodayStretchCard(day: StretchSchedule.today())
+
             SectionLabel(text: "WHOOP")
             WhoopTodayCard(state: whoop)
 

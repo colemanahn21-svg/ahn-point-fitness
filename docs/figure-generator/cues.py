@@ -74,5 +74,11 @@ C = {
 "kneeling-standing-club-turns":["Club across the shoulders","Half-kneeling: turn toward the front knee","Switch knees, then stand up","Build slow turns into half swings"],
 "doorway-pec-90-then-135":["Forearm on the frame, step through, rotate away","30s, then slide the hand high","Repeat at 135°","Ribs down the whole time"],
 "child-s-pose-reach-each-side":["Knees wide, hips to heels","Walk both hands to one side","Breathe into the opposite ribs","Switch"],
+"chair-back-extension":["Sit back so the chair top meets your mid-back","Hands behind the head, elbows wide","Exhale and arch over the top edge","Arch the upper back, not the low back"],
+"seated-thoracic-turn":["Feet flat, knees pressed together","Sit tall on the inhale, turn on the exhale","Far hand to the knee, near hand to the chair","Knees stay level — the ribs do the turning"],
+"desk-wrist-flexor-extensor":["Palms flat on the desk, fingers toward you","Elbows straight, lean back gently","Halfway: flip to the backs of the hands","Stretch, never tingling"],
+"short-stance-hip-flexor-reach":["Back foot one shoe-length behind — no lunge","Tuck the pelvis hard, squeeze the back glute","Reach the back-side arm overhead","Lean away from the back leg"],
+"seated-desk-sink":["Forearms on the desk edge, shoulder-width","Roll the chair back a few inches","Hinge from the hips, chest sinks through","Slow exhales into the armpits"],
+"seat-edge-hamstring-hinge":["Sit on the front edge of the seat","One leg straight, heel down, toes up","Hinge from the hips, back flat","Stop when the back of the thigh pulls"],
 }
 

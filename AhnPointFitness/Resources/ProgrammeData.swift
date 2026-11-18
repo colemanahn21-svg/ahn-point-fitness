@@ -108,7 +108,8 @@ struct DayContent {
     enum Section {
         case groups([GroupBlock])
         case cardioFinisher(title: String, options: [CardioDef], note: String?)
-        case stretchBlocks(title: String, blocks: [StretchBlock])
+        /// Pointer to the day's one scheduled stretch routine (see StretchSchedule).
+        case stretchLink
         case mobility(title: String, block: MobilityBlock)
         case abCircuit(title: String, groupLabel: String, items: [ExerciseDef])
         case saunaNote(String)

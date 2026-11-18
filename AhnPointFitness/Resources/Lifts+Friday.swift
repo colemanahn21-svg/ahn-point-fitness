@@ -54,7 +54,7 @@ extension Programme {
                 body: "10 KB Swings (heaviest) → 8 Push-Ups → 6 Pull-Ups → 200m Row or 15-cal Assault Bike",
                 footer: "Target: ~90s work per round. HR to Zone 3–4 (150–170 bpm) during work. Far more effective than steady walking for VO2max."
             ),
-            .stretchBlocks(title: "⬇ Stretch · ~12 min ⬇", blocks: Programme.upperBodyFlow)
+            .stretchLink
         ]
     )
 }

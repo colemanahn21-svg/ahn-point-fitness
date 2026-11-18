@@ -57,19 +57,8 @@ extension Programme {
                           "One heavy DB at your side, stand tall, brace everything. Anti-lateral flexion isometric. 60s rest → Round 2.")
                 ]
             ),
-            .saunaNote("🧖 SAUNA: 15 min infrared after mobility flow. Heat acclimation improves plasma volume → directly supports VO2max goal."),
-            .mobility(title: "⬇ Mobility Flow · Weekly Reset · 15 min ⬇", block:
-                MobilityBlock(label: "E. Mobility Flow", items: [
-                    .init("sat-m1", "World's Greatest Stretch · 5/side slow"),
-                    .init("sat-m2", "90/90 Hip Switch + Hold · 8 transitions + 15s holds"),
-                    .init("sat-m3", "Couch Stretch · 90s/side"),
-                    .init("sat-m4", "Pigeon Pose · 90s/side"),
-                    .init("sat-m5", "Shoulder CARs · 5/direction/side"),
-                    .init("sat-m6", "Foam Roller Thoracic Extension · 2 min"),
-                    .init("sat-m7", "Supine Spinal Twist · 60s/side"),
-                    .init("sat-m8", "Child's Pose · 2 min (4-count in, 6-count out)")
-                ])
-            )
+            .saunaNote("🧖 SAUNA: 15 min infrared after the session. Heat acclimation improves plasma volume → directly supports VO2max goal."),
+            .stretchLink
         ]
     )
 }

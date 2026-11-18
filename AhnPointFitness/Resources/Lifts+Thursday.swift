@@ -75,26 +75,7 @@ extension Programme {
                 ],
                 note: "Arms are fried but legs are fresh — bike/row intervals raise heart rate without stealing from Friday. Cap it at 12 min."
             ),
-            .stretchBlocks(title: "⬇ Stretch · 15–20 min ⬇", blocks: [
-                StretchBlock(label: "Post–Arms + Shoulders Stretching", stretches: [
-                    .init("thu-s1", "Overhead Tricep Stretch", ["45s/side"],
-                          "Long head crosses shoulder joint. Overhead extensions train it shortened—this restores length and improves overhead flexion ROM."),
-                    .init("thu-s2", "Wall Bicep Stretch", ["45s/side"],
-                          "Both bicep heads + anterior delt. Combines shoulder extension + elbow extension + supination for a complete stretch. Counteracts all curling."),
-                    .init("thu-s3", "Thread + Open", ["75s/side", "≈ 8 breaths/side"],
-                          "Replaces Shoulder CARs, which the primer already covers. All fours, thread the arm under on the exhale, sweep it to the ceiling on the inhale. The upper back needs its rotation dose every day, including arm day."),
-                    .init("thu-s4", "Forearm Flexor Stretch", ["30s/side"],
-                          "Flexor carpi radialis/ulnaris. Chronic tightness → medial epicondylitis (golfer's elbow). Essential given your golf habit."),
-                    .init("thu-s5", "Forearm Extensor Stretch", ["30s/side"],
-                          "Extensor carpi radialis/ulnaris. Tightness causes lateral epicondylitis (tennis elbow)."),
-                    .init("thu-s6", "Doorway Lat + Shoulder Hang", ["45s/side"],
-                          "Overhead pressing compresses subacromial space—traction stretch opens it. Critical for long-term shoulder health."),
-                    .init("thu-s7", "Upper Trap + Levator Scap Release", ["40s/side"],
-                          "Lateral raises elevate scapula repeatedly. These muscles hold tension reflexively—release before they cause cervicogenic headaches."),
-                    .init("thu-s8", "Prone Shoulder Extension", ["45s"],
-                          "Lying face-down, hands clasped behind. Opens entire anterior chain. After pressing and curling all session, this is the reset position.")
-                ])
-            ])
+            .stretchLink
         ]
     )
 }

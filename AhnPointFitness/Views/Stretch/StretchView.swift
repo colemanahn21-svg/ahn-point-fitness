@@ -11,9 +11,15 @@ struct StretchView: View {
                 RoutineCard(routine: routine) { presented = routine }
             }
 
-            SectionLabel(text: "Post-Lift + Full Body")
+            SectionLabel(text: "Work")
                 .padding(.top, 8)
-            ForEach(StretchLibrary.dayRoutines) { routine in
+            ForEach(StretchLibrary.workRoutines) { routine in
+                RoutineCard(routine: routine) { presented = routine }
+            }
+
+            SectionLabel(text: "Post-Lift")
+                .padding(.top, 8)
+            ForEach(StretchLibrary.postLiftRoutines) { routine in
                 RoutineCard(routine: routine) { presented = routine }
             }
         }
@@ -50,6 +56,12 @@ private struct RoutineCard: View {
                     Text(routine.subtitle)
                         .font(Typography.cardSubtitle)
                         .foregroundStyle(Theme.text3)
+                    if let days = StretchSchedule.daysLabel(for: routine) {
+                        Text(days)
+                            .font(Typography.chip)
+                            .foregroundStyle(Theme.accent)
+                            .padding(.top, 2)
+                    }
                 }
                 Spacer(minLength: 8)
 

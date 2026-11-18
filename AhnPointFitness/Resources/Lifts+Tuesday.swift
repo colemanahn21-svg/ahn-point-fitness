@@ -83,29 +83,8 @@ extension Programme {
                           "Heart-rate spike station — the KB is already out. Powerful hip snap, arms relaxed, glutes finish the rep. Pushes the circuit into Zone 3 without loading tired quads. 60s rest → Round 2.")
                 ]
             ),
-            .saunaNote("🧖 SAUNA: 15 min infrared after stretching. Best sauna day of the week — flushes legs, elevates growth hormone."),
-            .stretchBlocks(title: "⬇ Stretch · 15–20 min ⬇", blocks: [
-                StretchBlock(label: "Post–Legs Stretching", stretches: [
-                    .init("tue-s1", "Couch Stretch", ["60–90s/side"],
-                          "Iliopsoas + rectus femoris. Most effective hip flexor stretch. Squats shorten hip flexors—this restores full extension. Squeeze glute to posteriorly tilt pelvis."),
-                    .init("tue-s2", "Standing Quad Pull + Pelvic Tilt", ["45s/side"],
-                          "Rectus femoris crosses hip and knee. Posterior tilt is critical—without it, stretch only reaches the vasti."),
-                    .init("tue-s3", "Elevated Hamstring Stretch", ["60s/side"],
-                          "Biceps femoris + semimembranosus. RDLs create peak eccentric tension at long lengths—returns muscle to resting length."),
-                    .init("tue-s4", "Pigeon Pose", ["60–90s/side"],
-                          "Piriformis, glute med, deep external rotators. Squats load these as stabilisers. If piriformis compresses sciatic nerve, you'll feel it—stretch now."),
-                    .init("tue-s5", "90/90 Hip Transitions", ["8 reps slow"],
-                          "Hip internal/external rotation. Squats demand sagittal stability but restrict rotational ROM."),
-                    .init("tue-s6", "Frog Stretch", ["60–90s"],
-                          "Adductor longus, brevis, magnus. Wide-stance pressing and lunges load adductors. Ease in gradually."),
-                    .init("tue-s7a", "Wall Calf · Straight Knee", ["40s/side"],
-                          "Gastrocnemius. Crosses the knee, so it only lengthens with the leg straight."),
-                    .init("tue-s7b", "Wall Calf · Bent Knee", ["40s/side"],
-                          "Soleus. Functionally a different muscle from the gastroc — running both positions is non-negotiable, not optional."),
-                    .init("tue-s8", "Supine Spinal Twist", ["45s/side"],
-                          "Lumbar erectors, QL, obliques. Squats brace lumbar spine isometrically—this rotation decompresses.")
-                ])
-            ])
+            .saunaNote("🧖 SAUNA: 15 min infrared after the cardio finisher. Best sauna day of the week — flushes legs, elevates growth hormone."),
+            .stretchLink
         ]
     )
 }

@@ -58,3 +58,57 @@ C["child-s-pose-reach-each-side"] = [
    accent=[[(150,258),(96,240),(70,224)]], head=(132,244,15)),
  figure(floor=F, body=[[(238,262),(206,238),(212,258)], [(206,238),(150,258)]],
    accent=[[(150,258),(100,270),(72,284)]], head=(132,244,15))]
+
+# ---------- WORK (desk + after-work) ----------
+# Office chair, side view facing right: seat, back, one leg.
+def chair(x=118, seat=200, top=146):
+    return [[(x, seat), (x+78, seat)], [(x+2, seat), (x, top)], [(x+40, seat), (x+40, F)]]
+
+# Seated, arching the upper back over the top edge of the chair.
+C["chair-back-extension"] = [
+ figure(floor=F, props=chair(),
+   body=[[(140,194),(204,192),(208,262)], [(140,194),(134,148)]],
+   accent=[[(134,148),(108,118)], [(114,124),(128,90),(100,96)]],
+   head=(96,104,15))]
+
+# Seated side view: hands on the thighs, then turned — near hand back to the
+# chair, far hand across to the front knee.
+def seated_turn(turned):
+    legs = [[(140,194),(204,192),(208,262)], [(140,194),(144,120)]]
+    if not turned:
+        return figure(floor=F, props=chair(), body=legs + [[(144,130),(166,166),(190,186)]],
+                      head=(146,100,15))
+    return figure(floor=F, props=chair(), body=legs,
+                  accent=[[(144,128),(128,146),(122,156)], [(146,128),(178,150),(202,184)]],
+                  head=(148,100,15), arc=((178,110),(118,118),44))
+C["seated-thoracic-turn"] = [seated_turn(False), seated_turn(True)]
+
+# Standing at the desk: palms flat fingers back, then backs of the hands down.
+def desk_wrist(flip):
+    hand = [(214,166),(206,180),(190,182)] if flip else [(214,180),(190,180)]
+    return figure(floor=F, props=[[(184,184),(300,184)], [(292,184),(292,F)]],
+      body=[[(150,80),(146,152)], [(146,152),(140,206),(138,262)], [(146,152),(162,206),(164,262)]],
+      accent=[[(150,98),(186,136),(214,176)], hand], head=(152,62,15))
+C["desk-wrist-flexor-extensor"] = [desk_wrist(False), desk_wrist(True)]
+
+# Short split stance beside the desk: the stretch comes from the pelvic tuck,
+# not from stance length, so it fits in a cramped spot.
+C["short-stance-hip-flexor-reach"] = [figure(floor=F,
+   props=[[(214,170),(300,170)], [(292,170),(292,F)]],
+   body=[[(160,84),(160,152)], [(160,152),(180,206),(184,262)], [(160,100),(190,138),(216,166)]],
+   accent=[[(160,152),(140,206),(122,256)], [(160,98),(150,52),(136,18)]],
+   head=(162,64,15))]
+
+# Seated at the desk, forearms on the edge, chest sinking between the arms.
+C["seated-desk-sink"] = [figure(floor=F,
+   props=chair() + [[(222,150),(300,150)], [(292,150),(292,F)]],
+   body=[[(140,194),(198,194),(202,262)]],
+   accent=[[(140,194),(190,154)], [(190,152),(238,144)]],
+   head=(198,172,13))]
+
+# Perched on the front edge of the seat, one leg straight with the heel down,
+# hinging forward over it with a flat back.
+C["seat-edge-hamstring-hinge"] = [figure(floor=F, props=chair(),
+   body=[[(176,196),(214,198),(212,262)]],
+   accent=[[(176,196),(268,254),(278,242)], [(176,196),(234,152)], [(228,156),(252,214)]],
+   head=(250,138,15))]

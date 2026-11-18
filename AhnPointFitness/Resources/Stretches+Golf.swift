@@ -14,7 +14,7 @@ extension StretchLibrary {
         static let rotationFlow = StretchRoutine(
             id: "golf.flow",
             name: "Golf Rotation Flow",
-            subtitle: "Floor to standing · breath-led · every day",
+            subtitle: "Floor to standing · breath-led",
             focus: .golf,
             phases: [
                 StretchPhase(id: "golf.flow.p1", label: "Floor · Open", steps: [

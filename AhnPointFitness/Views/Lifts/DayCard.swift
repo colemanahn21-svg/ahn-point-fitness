@@ -86,10 +86,12 @@ struct DayCard: View {
                     .padding(.top, 8)
             }
 
-        case .stretchBlocks(let title, _):
-            // Stretch content now lives in the Stretch tab, which can run it as
-            // a guided timed session. This row is the pointer to it.
-            SectionDivider(text: title, color: Theme.orange)
+        case .stretchLink:
+            // Each day has exactly one scheduled stretch routine; the title is
+            // read from it so the card can never disagree with the player.
+            let routine = StretchSchedule.evening(for: day.day)
+            SectionDivider(text: "⬇ Tonight · \(routine.name) · \(routine.durationLabel) ⬇",
+                           color: Theme.orange)
             StretchRoutineLink(day: day.day)
                 .padding(.bottom, 10)
 
