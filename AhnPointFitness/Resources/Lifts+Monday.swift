@@ -23,23 +23,30 @@ extension Programme {
             .groups([
                 GroupBlock(label: "Superset A · No rest A1→A2 · 90s after pair", exercises: [
                     .init("mon-a1", "A1. Barbell Bench Press", ["4×6-8", "3-1-1-0", "→ A2"],
-                          "Primary horizontal push. Heavy compound for chest mass. Antagonist paired with row — go straight to A2 with no rest; the pairing rests each muscle while keeping heart rate up."),
+                          "Primary horizontal push. Heavy compound for chest mass. Antagonist paired with row — go straight to A2 with no rest; the pairing rests each muscle while keeping heart rate up.",
+                          logAs: .name("Barbell Bench Press")),
                     .init("mon-a2", "A2. Barbell Bent-Over Row", ["4×6-8", "3-1-1-0", "90s"],
-                          "Primary horizontal pull. Balances pressing volume, builds thick lats and mid-back. Rest 90s after the pair, then back to A1.")
+                          "Primary horizontal pull. Balances pressing volume, builds thick lats and mid-back. Rest 90s after the pair, then back to A1.",
+                          logAs: .name("Barbell Bent-Over Row"))
                 ]),
                 GroupBlock(label: "Superset B · No rest B1→B2 · 60s after pair", exercises: [
                     .init("mon-b1", "B1. Incline DB Press (30°)", ["3×8-10", "3-0-1-1", "→ B2"],
-                          "Upper chest emphasis. Shifts load to clavicular head. Straight to B2, no rest."),
+                          "Upper chest emphasis. Shifts load to clavicular head. Straight to B2, no rest.",
+                          logAs: .name("Incline DB Press")),
                     .init("mon-b2", "B2. Chest-Supported DB Row", ["3×8-10", "3-1-1-0", "60s"],
-                          "Isolates lats/rhomboids without low-back fatigue. Rest 60s after the pair — RPE 7-8 volume work tolerates the density.")
+                          "Isolates lats/rhomboids without low-back fatigue. Rest 60s after the pair — RPE 7-8 volume work tolerates the density.",
+                          logAs: .name("Chest-Supported DB Row"))
                 ]),
                 GroupBlock(label: "Giant Set C · C1→C2→C3 no rest · 60s after round · 3 rounds", exercises: [
                     .init("mon-c1", "C1. Cable Fly (low-to-high)", ["3×12-15", "2-1-2-0", "→ C2"],
-                          "Inner/upper chest isolation with constant cable tension. Straight to C2, no rest."),
+                          "Inner/upper chest isolation with constant cable tension. Straight to C2, no rest.",
+                          logAs: .name("Cable Fly")),
                     .init("mon-c2", "C2. Half-Kneeling Cable Chop", ["3×10/side", "3-0-1-0", "→ C3"],
-                          "Replaces straight-arm pulldown, which trained the lats in their shortest range on a day already carrying two heavy rows — stiffness that caps thoracic rotation. Hips square and still, chop high-to-low across the body, 3s controlled return. Rotation under load for the golf swing. Same cable station, straight to C3, no rest."),
+                          "Replaces straight-arm pulldown, which trained the lats in their shortest range on a day already carrying two heavy rows — stiffness that caps thoracic rotation. Hips square and still, chop high-to-low across the body, 3s controlled return. Rotation under load for the golf swing. Same cable station, straight to C3, no rest.",
+                          logAs: .name("Half-Kneeling Cable Chop")),
                     .init("mon-c3", "C3. Face Pulls", ["3×15-20", "2-1-2-0", "60s"],
-                          "Rear delt and external rotator health. Non-negotiable prehab. Closes the round — all three moves live at the cable area, so heart rate stays up with zero travel. 60s, back to C1.")
+                          "Rear delt and external rotator health. Non-negotiable prehab. Closes the round — all three moves live at the cable area, so heart rate stays up with zero travel. 60s, back to C1.",
+                          logAs: .name("Face Pulls"))
                 ])
             ]),
             .cardioFinisher(

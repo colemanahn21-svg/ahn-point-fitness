@@ -71,7 +71,7 @@ enum DemoSeeder {
                 let log = WorkoutLog(date: date, day: day.rawValue)
                 ctx.insert(log)
 
-                for (exIdx, ex) in (LogContent.exercises[day] ?? []).enumerated() {
+                for (exIdx, ex) in Programme.loggable(for: day).enumerated() {
                     let base = baseWeight(for: ex.name)
                     for setNum in 1...ex.sets {
                         // Deterministic variation: later sets slightly fewer reps.

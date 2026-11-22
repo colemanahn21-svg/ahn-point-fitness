@@ -2,13 +2,26 @@ import Foundation
 
 // MARK: - Exercise data types
 
+/// How a programme exercise appears on the Log tab.
+enum LogAs: Equatable {
+    /// Logged under this name. Saved sets are keyed by it, so renaming it
+    /// orphans the history already on the phone (LogTabGoldenTests guards it).
+    /// `sets` overrides the count read from the leading "N×" chip.
+    case name(String, sets: Int? = nil)
+    /// Shown in Lifts only (primers, ab circuits).
+    case notLogged
+}
+
 struct ExerciseDef: Identifiable {
     let id: String
     let name: String
     let chips: [String]
     let rationale: String?
-    init(_ id: String, _ name: String, _ chips: [String], _ rationale: String? = nil) {
-        self.id = id; self.name = name; self.chips = chips; self.rationale = rationale
+    /// nil only for exercises without a letter prefix; every lettered
+    /// exercise says whether and how it is logged (tested).
+    let logAs: LogAs?
+    init(_ id: String, _ name: String, _ chips: [String], _ rationale: String? = nil, logAs: LogAs? = nil) {
+        self.id = id; self.name = name; self.chips = chips; self.rationale = rationale; self.logAs = logAs
     }
 }
 

@@ -2,22 +2,22 @@ import Foundation
 
 extension Programme {
     // Tue Lift A can be either Trap Bar or Barbell Back Squat. The active
-    // variant is selected from the Log tab (or the toggle on the Tuesday
-    // card in Lifts) and stored in @AppStorage("tueLiftAVariant").
-    static let tueLiftAVariants: [String: ExerciseDef] = [
-        "Trap Bar Squat": ExerciseDef(
-            "tue-a",
-            "A. Trap Bar Squat (low handles)",
-            ["4×5-7", "3-1-1-0", "120s"],
-            "Use low handles for full ROM. Shifts ~30% of spinal compression to hips and arms vs back squat. More force output at the same %1RM. Match or exceed your back squat working weight — most lifters trap bar 10-15% more."
-        ),
-        "Barbell Back Squat": ExerciseDef(
-            "tue-a",
-            "A. Barbell Back Squat",
-            ["4×5-7", "3-1-1-0", "120s"],
-            "High-bar position, upright torso, full depth. Bigger axial spinal load than trap bar — brace hard, controlled eccentric, no bounce. Quads do more of the work; pair with the RDL that follows for a balanced posterior-chain hit."
-        )
-    ]
+    // variant (LiftVariant) is chosen from the Log tab or the toggle on the
+    // Tuesday card in Lifts; these are the cards each variant shows.
+    static let tueLiftATrapBar = ExerciseDef(
+        "tue-a",
+        "A. Trap Bar Squat (low handles)",
+        ["4×5-7", "3-1-1-0", "120s"],
+        "Use low handles for full ROM. Shifts ~30% of spinal compression to hips and arms vs back squat. More force output at the same %1RM. Match or exceed your back squat working weight — most lifters trap bar 10-15% more.",
+        logAs: .name(LiftVariant.trapBar.rawValue)
+    )
+    static let tueLiftABackSquat = ExerciseDef(
+        "tue-a",
+        "A. Barbell Back Squat",
+        ["4×5-7", "3-1-1-0", "120s"],
+        "High-bar position, upright torso, full depth. Bigger axial spinal load than trap bar — brace hard, controlled eccentric, no bounce. Quads do more of the work; pair with the RDL that follows for a balanced posterior-chain hit.",
+        logAs: .name(LiftVariant.backSquat.rawValue)
+    )
 
     static let tuesday = DayContent(
         day: .tue,
@@ -42,27 +42,35 @@ extension Programme {
             .groups([
                 GroupBlock(label: "Power Primer · 4 min", labelColor: .orange, exercises: [
                     .init("tue-p1", "P1. Med Ball Rotational Slam (to floor)", ["3×5/side", "Max effort", "30s"],
-                          "Athletic stance perpendicular to your slam target on the floor. Load hips, explosive rotation, slam ball diagonally down to floor as hard as possible. Same rotational power + hip-shoulder separation as a wall throw, no wall needed. 6–8 lb ball."),
+                          "Athletic stance perpendicular to your slam target on the floor. Load hips, explosive rotation, slam ball diagonally down to floor as hard as possible. Same rotational power + hip-shoulder separation as a wall throw, no wall needed. 6–8 lb ball.",
+                          logAs: .notLogged),
                     .init("tue-p2", "P2. Half-Kneel Med Ball Overhead Slam", ["3×5/side", "Max effort", "30s"],
-                          "Half-kneel on turf with ball overhead. Explosive forward-down slam into turf in front of you. Half-kneel eliminates leg drive and isolates thoracic-abdominal rotation that drives the X-factor. Switch knees each set. Ball stays where you slam it — no chasing. Same training effect as a shotput throw. 6–8 lb ball.")
+                          "Half-kneel on turf with ball overhead. Explosive forward-down slam into turf in front of you. Half-kneel eliminates leg drive and isolates thoracic-abdominal rotation that drives the X-factor. Switch knees each set. Ball stays where you slam it — no chasing. Same training effect as a shotput throw. 6–8 lb ball.",
+                          logAs: .notLogged)
                 ]),
                 GroupBlock(exercises: [
                     .init("tue-a", "A. Trap Bar Squat (low handles)", ["4×5-7", "3-1-1-0", "120s"],
-                          "Use low handles for full ROM. Shifts ~30% of spinal compression to hips and arms vs back squat. More force output at the same %1RM. Match or exceed your back squat working weight — most lifters trap bar 10-15% more. Full 120s rest — heavy strength work is protected, heart rate comes from everything after."),
+                          "Use low handles for full ROM. Shifts ~30% of spinal compression to hips and arms vs back squat. More force output at the same %1RM. Match or exceed your back squat working weight — most lifters trap bar 10-15% more. Full 120s rest — heavy strength work is protected, heart rate comes from everything after.",
+                          logAs: .name("Trap Bar Squat")),
                     .init("tue-b", "B. Romanian Deadlift", ["4×8-10", "3-1-1-0", "75s"],
-                          "Primary posterior chain builder. Heavy eccentric for hamstrings.")
+                          "Primary posterior chain builder. Heavy eccentric for hamstrings.",
+                          logAs: .name("Romanian Deadlift"))
                 ]),
                 GroupBlock(label: "Superset C · No rest C1→C2 · 75s after pair", exercises: [
                     .init("tue-c1", "C1. Walking Lunges (DB)", ["3×10/leg", "2-0-1-0", "→ C2"],
-                          "Unilateral quad/glute work. Addresses imbalances. Straight to leg curl — lunges alone will put you in Zone 3."),
+                          "Unilateral quad/glute work. Addresses imbalances. Straight to leg curl — lunges alone will put you in Zone 3.",
+                          logAs: .name("Walking Lunges (DB)")),
                     .init("tue-c2", "C2. Leg Curl", ["3×10-12", "3-1-1-0", "75s"],
-                          "Isolated knee-flexion hamstring work. Quads recover while hamstrings work. Rest 75s after the pair.")
+                          "Isolated knee-flexion hamstring work. Quads recover while hamstrings work. Rest 75s after the pair.",
+                          logAs: .name("Leg Curl"))
                 ]),
                 GroupBlock(label: "Superset D · No rest D1→D2 · 60s after pair", exercises: [
                     .init("tue-d1", "D1. Leg Press (standard foot placement)", ["3×12-15", "3-1-1-0", "→ D2"],
-                          "Quad-emphasis volume. Feet shoulder-width, lower on platform. Balances the trap bar's posterior-chain bias by hammering quads with zero spinal load."),
+                          "Quad-emphasis volume. Feet shoulder-width, lower on platform. Balances the trap bar's posterior-chain bias by hammering quads with zero spinal load.",
+                          logAs: .name("Leg Press")),
                     .init("tue-d2", "D2. Standing Calf Raise", ["4×12-15", "2-2-1-0", "60s"],
-                          "Heavy loading, full stretch. 2s pause at bottom. Calves rest the quads between leg press sets — do your 4th set after the last round.")
+                          "Heavy loading, full stretch. 2s pause at bottom. Calves rest the quads between leg press sets — do your 4th set after the last round.",
+                          logAs: .name("Standing Calf Raise"))
                 ])
             ]),
             .abCircuit(
@@ -70,17 +78,23 @@ extension Programme {
                 groupLabel: "Ab Circuit · TURF · 2 Rounds · No rest between",
                 items: [
                     .init("tue-e1", "E1. Plate Crunch (lying, knees bent)", ["15", "2-0-1-0"],
-                          "Pure rectus abdominis flexion. Knees bent, feet flat = hip flexors stay neutral. Post-leg-day friendly."),
+                          "Pure rectus abdominis flexion. Knees bent, feet flat = hip flexors stay neutral. Post-leg-day friendly.",
+                          logAs: .notLogged),
                     .init("tue-e2", "E2. KB Russian Twist (feet elevated)", ["20 total", "1-0-1-0"],
-                          "KB at chest, feet off the floor, rotate side to side touching KB to turf. Oblique rotation + anti-gravity. Cable-free rotational work."),
+                          "KB at chest, feet off the floor, rotate side to side touching KB to turf. Oblique rotation + anti-gravity. Cable-free rotational work.",
+                          logAs: .notLogged),
                     .init("tue-e3", "E3. Plate Dead Bug", ["10/side", "2-1-2-0"],
-                          "Hold plate at arm's length over chest. Alternate opposite arm/leg extensions. Anti-extension + contralateral coordination. Slow and controlled — hip flexors stay passive."),
+                          "Hold plate at arm's length over chest. Alternate opposite arm/leg extensions. Anti-extension + contralateral coordination. Slow and controlled — hip flexors stay passive.",
+                          logAs: .notLogged),
                     .init("tue-e4", "E4. DB Woodchop (half-kneel, no cable)", ["10/side", "Explosive concentric"],
-                          "Half-kneeling on turf, both hands on one DB held at hip. Swing DB up and across body like chopping wood. Rotational power without leaving the turf."),
+                          "Half-kneeling on turf, both hands on one DB held at hip. Swing DB up and across body like chopping wood. Rotational power without leaving the turf.",
+                          logAs: .notLogged),
                     .init("tue-e5", "E5. Side Plank + Hip Dip", ["10 dips/side", "Controlled"],
-                          "Side plank position, dip hip toward floor, drive back up. Anti-lateral flexion + oblique burn."),
+                          "Side plank position, dip hip toward floor, drive back up. Anti-lateral flexion + oblique burn.",
+                          logAs: .notLogged),
                     .init("tue-e6", "E6. KB Swing (hip hinge)", ["15", "Explosive"],
-                          "Heart-rate spike station — the KB is already out. Powerful hip snap, arms relaxed, glutes finish the rep. Pushes the circuit into Zone 3 without loading tired quads. 60s rest → Round 2.")
+                          "Heart-rate spike station — the KB is already out. Powerful hip snap, arms relaxed, glutes finish the rep. Pushes the circuit into Zone 3 without loading tired quads. 60s rest → Round 2.",
+                          logAs: .notLogged)
                 ]
             ),
             .saunaNote("🧖 SAUNA: 15 min infrared after the cardio finisher. Best sauna day of the week — flushes legs, elevates growth hormone."),

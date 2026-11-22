@@ -25,27 +25,35 @@ extension Programme {
             .groups([
                 GroupBlock(label: "Superset A · No rest A1→A2 · 90s after pair", exercises: [
                     .init("thu-a1", "A1. Seated DB OHP", ["4×6-8", "3-0-1-0", "→ A2"],
-                          "Primary shoulder compound. Seated removes leg drive. Straight to A2 with no rest — press and curl don't compete."),
+                          "Primary shoulder compound. Seated removes leg drive. Straight to A2 with no rest — press and curl don't compete.",
+                          logAs: .name("Seated DB OHP")),
                     .init("thu-a2", "A2. EZ-Bar Curl", ["3×6-8", "3-0-1-1", "90s"],
-                          "Primary bicep mass builder. EZ-bar reduces wrist strain. Rest 90s after the pair.")
+                          "Primary bicep mass builder. EZ-bar reduces wrist strain. Rest 90s after the pair.",
+                          logAs: .name("EZ-Bar Curl"))
                 ]),
                 GroupBlock(label: "Superset B · No rest B1→B2 · 45s after pair", exercises: [
                     .init("thu-b1", "B1. Cable Lateral Raise", ["3×12-15", "2-1-2-0", "→ B2"],
-                          "Medial delt width. Cables maintain constant tension. Straight to B2, no rest."),
+                          "Medial delt width. Cables maintain constant tension. Straight to B2, no rest.",
+                          logAs: .name("Cable Lateral Raise")),
                     .init("thu-b2", "B2. OH Tricep Extension", ["3×10-12", "2-1-2-0", "45s"],
-                          "Long head of triceps in stretched position. Rest 45s after the pair.")
+                          "Long head of triceps in stretched position. Rest 45s after the pair.",
+                          logAs: .name("OH Tricep Extension"))
                 ]),
                 GroupBlock(label: "Superset C · No rest C1→C2 · 45s after pair", exercises: [
                     .init("thu-c1", "C1. Reverse Pec Deck", ["3×12-15", "2-1-2-0", "→ C2"],
-                          "Rear delt isolation. Balances heavy pressing. Straight to C2, no rest."),
+                          "Rear delt isolation. Balances heavy pressing. Straight to C2, no rest.",
+                          logAs: .name("Reverse Pec Deck")),
                     .init("thu-c2", "C2. Hammer Curl", ["3×10-12", "2-0-1-1", "45s"],
-                          "Moved up from D2. Brachialis is fresher here — you can actually load these properly. Neutral grip after reverse pec deck is a smooth transition. Rest 45s after the pair.")
+                          "Moved up from D2. Brachialis is fresher here — you can actually load these properly. Neutral grip after reverse pec deck is a smooth transition. Rest 45s after the pair.",
+                          logAs: .name("Hammer Curl"))
                 ]),
                 GroupBlock(label: "Superset D · No rest D1→D2 · 45s after pair", exercises: [
                     .init("thu-d1", "D1. Dip Machine / CG Bench", ["3×8-10", "3-0-1-0", "→ D2"],
-                          "Compound tricep movement. Straight to D2, no rest."),
+                          "Compound tricep movement. Straight to D2, no rest.",
+                          logAs: .name("Dip Machine / CG Bench")),
                     .init("thu-d2", "D2. Incline DB Curl", ["3×10-12", "3-0-1-1", "45s"],
-                          "Finisher. Stretch-position exercise — works even when fatigued because the incline does the work. Deep stretch recruits long head regardless of how gassed you are. 25–30 lb is plenty here. Rest 45s after the pair.")
+                          "Finisher. Stretch-position exercise — works even when fatigued because the incline does the work. Deep stretch recruits long head regardless of how gassed you are. 25–30 lb is plenty here. Rest 45s after the pair.",
+                          logAs: .name("Incline DB Curl"))
                 ])
             ]),
             .abCircuit(
@@ -53,17 +61,23 @@ extension Programme {
                 groupLabel: "Ab Circuit · CABLE STATION · 2 Rounds · No rest between",
                 items: [
                     .init("thu-e1", "E1. Cable Crunch (kneeling)", ["12-15", "2-1-2-0"],
-                          "Kneeling at cable stack, rope attachment high, crunch down pulling elbows to knees. Direct rectus flexion under constant load — the strongest loaded ab exercise available."),
+                          "Kneeling at cable stack, rope attachment high, crunch down pulling elbows to knees. Direct rectus flexion under constant load — the strongest loaded ab exercise available.",
+                          logAs: .notLogged),
                     .init("thu-e2", "E2. Cable Woodchop (high-to-low)", ["10/side", "2-0-1-0"],
-                          "Rotational power chain. Explosive on the concentric, controlled return. Trains the same kinematic sequence as a golf swing — lead hip pull + trail side rotation."),
+                          "Rotational power chain. Explosive on the concentric, controlled return. Trains the same kinematic sequence as a golf swing — lead hip pull + trail side rotation.",
+                          logAs: .notLogged),
                     .init("thu-e3", "E3. Cable Pallof Press (standing)", ["12/side", "2-2-1-0"],
-                          "Standing perpendicular to cable, handle at sternum, press straight out and hold 2s. Anti-rotation isometric. Core has to resist the pull — no rep cheating possible."),
+                          "Standing perpendicular to cable, handle at sternum, press straight out and hold 2s. Anti-rotation isometric. Core has to resist the pull — no rep cheating possible.",
+                          logAs: .notLogged),
                     .init("thu-e4", "E4. Cable Reverse Woodchop (low-to-high)", ["10/side", "2-0-1-0"],
-                          "Cable low, explode up and across body to opposite shoulder. Opposite direction from E2. Hits the rotational chain from the other angle — critical for balanced oblique development."),
+                          "Cable low, explode up and across body to opposite shoulder. Opposite direction from E2. Hits the rotational chain from the other angle — critical for balanced oblique development.",
+                          logAs: .notLogged),
                     .init("thu-e5", "E5. Cable Side Bend (standing)", ["12/side", "2-1-1-0"],
-                          "Stand sideways to cable, handle at hip height, lean away against resistance. Direct oblique isolation under constant tension."),
+                          "Stand sideways to cable, handle at hip height, lean away against resistance. Direct oblique isolation under constant tension.",
+                          logAs: .notLogged),
                     .init("thu-e6", "E6. Cable Chop Sprint (alternating)", ["30s", "Max effort"],
-                          "Heart-rate spike station, zero steps from the stack. Moderate weight, alternating sides, as many explosive chops as you can in 30s. Pushes the circuit into Zone 3–4 AND banks extra rotational power reps for the golf swing. 60s rest → Round 2.")
+                          "Heart-rate spike station, zero steps from the stack. Moderate weight, alternating sides, as many explosive chops as you can in 30s. Pushes the circuit into Zone 3–4 AND banks extra rotational power reps for the golf swing. 60s rest → Round 2.",
+                          logAs: .notLogged)
                 ]
             ),
             .cardioFinisher(

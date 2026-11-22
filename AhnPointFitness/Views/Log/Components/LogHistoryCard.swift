@@ -97,7 +97,7 @@ struct LogHistoryCard: View {
 
             if isExpanded {
                 let grouped = Dictionary(grouping: log.sets, by: { $0.exerciseName })
-                let orderedNames = (LogContent.exercises[day] ?? []).map(\.name)
+                let orderedNames = Programme.loggable(for: day).map(\.name)
                 VStack(alignment: .leading, spacing: 6) {
                     ForEach(orderedNames.filter { grouped[$0] != nil }, id: \.self) { name in
                         let sets = (grouped[name] ?? []).sorted { $0.setNumber < $1.setNumber }

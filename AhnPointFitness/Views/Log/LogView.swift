@@ -18,8 +18,7 @@ struct LogView: View {
 
     // Tue Lift A is a user-chosen variant. Sets are saved under the active
     // variant's name so each option has an isolated history.
-    @AppStorage("tueLiftAVariant") private var tueLiftAVariant: String = "Barbell Back Squat"
-    private static let tueLiftAOptions = ["Trap Bar Squat", "Barbell Back Squat"]
+    @AppStorage(LiftVariant.storageKey) private var tueLiftAVariant: String = LiftVariant.fallback.rawValue
 
     private struct ProgressTarget: Identifiable {
         let id: String   // exercise name doubles as identity
@@ -43,15 +42,7 @@ struct LogView: View {
     }
 
     private var exercises: [LoggableExercise] {
-        var base = LogContent.exercises[selectedDay] ?? []
-        if selectedDay == .tue, let first = base.first {
-            base[0] = LoggableExercise(activeTueLiftA, first.sets)
-        }
-        return base
-    }
-
-    private var activeTueLiftA: String {
-        Self.tueLiftAOptions.contains(tueLiftAVariant) ? tueLiftAVariant : "Barbell Back Squat"
+        Programme.loggable(for: selectedDay, variant: LiftVariant.resolve(stored: tueLiftAVariant))
     }
 
     private var existingTodayLog: WorkoutLog? {
@@ -93,8 +84,8 @@ struct LogView: View {
 
                 if selectedDay == .tue {
                     TueVariantPicker(
-                        options: Self.tueLiftAOptions,
-                        active: activeTueLiftA,
+                        options: LiftVariant.allCases.map(\.rawValue),
+                        active: LiftVariant.resolve(stored: tueLiftAVariant).rawValue,
                         onSelect: { tueLiftAVariant = $0 }
                     )
                 }

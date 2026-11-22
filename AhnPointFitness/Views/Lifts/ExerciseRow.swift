@@ -3,21 +3,20 @@ import SwiftUI
 struct ExerciseRow: View {
     let exercise: ExerciseDef
     @State private var expanded = false
-    @AppStorage("tueLiftAVariant") private var tueLiftAVariant: String = "Barbell Back Squat"
+    @AppStorage(LiftVariant.storageKey) private var tueLiftAVariant: String = LiftVariant.fallback.rawValue
 
-    private static let tueLiftAOptions = ["Trap Bar Squat", "Barbell Back Squat"]
+    private var activeVariant: LiftVariant { LiftVariant.resolve(stored: tueLiftAVariant) }
 
     // Substitute the active variant's ExerciseDef when this row is the
     // Tuesday Lift A slot. Keeps the Lifts plan and Log tab synchronised.
     private var displayedExercise: ExerciseDef {
-        guard exercise.id == "tue-a" else { return exercise }
-        let key = Self.tueLiftAOptions.contains(tueLiftAVariant) ? tueLiftAVariant : "Barbell Back Squat"
-        return Programme.tueLiftAVariants[key] ?? exercise
+        guard exercise.id == LiftVariant.slotID else { return exercise }
+        return activeVariant.def
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            if exercise.id == "tue-a" {
+            if exercise.id == LiftVariant.slotID {
                 tueLiftAVariantToggle
             }
 
@@ -58,22 +57,22 @@ struct ExerciseRow: View {
     @ViewBuilder
     private var tueLiftAVariantToggle: some View {
         HStack(spacing: 6) {
-            ForEach(Self.tueLiftAOptions, id: \.self) { option in
+            ForEach(LiftVariant.allCases) { option in
                 Button {
                     withAnimation(.easeInOut(duration: 0.15)) {
-                        tueLiftAVariant = option
+                        tueLiftAVariant = option.rawValue
                     }
                 } label: {
-                    Text(option)
+                    Text(option.rawValue)
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(tueLiftAVariant == option ? .white : Theme.text2)
+                        .foregroundStyle(activeVariant == option ? .white : Theme.text2)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 7)
-                        .background(tueLiftAVariant == option ? Theme.accent : Theme.surface)
+                        .background(activeVariant == option ? Theme.accent : Theme.surface)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
-                                .stroke(tueLiftAVariant == option ? Theme.accent : Theme.border, lineWidth: 1)
+                                .stroke(activeVariant == option ? Theme.accent : Theme.border, lineWidth: 1)
                         )
                 }
                 .buttonStyle(.plain)

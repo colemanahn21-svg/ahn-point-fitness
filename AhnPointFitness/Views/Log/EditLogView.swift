@@ -28,7 +28,7 @@ struct EditLogView: View {
     /// The day's programmed exercises plus any extra names present in the
     /// log's sets (covers the inactive Tue Lift A variant).
     private var exercises: [LoggableExercise] {
-        var base = LogContent.exercises[day] ?? []
+        var base = Programme.loggable(for: day)
         let baseNames = Set(base.map(\.name))
         let extraNames = Set(log.sets.map(\.exerciseName)).subtracting(baseNames)
         for name in extraNames.sorted() {

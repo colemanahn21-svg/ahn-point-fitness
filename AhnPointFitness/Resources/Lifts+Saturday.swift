@@ -18,11 +18,14 @@ extension Programme {
             .groups([
                 GroupBlock(label: "B. Plyometrics (8 min)", labelColor: .orange, exercises: [
                     .init("sat-b1", "B1. Box Jump (step down)", ["3×5", "Explosive", "45s"],
-                          "Concentric-only power. Step down — no eccentric impact before Monday. Full hip extension at top."),
+                          "Concentric-only power. Step down — no eccentric impact before Monday. Full hip extension at top.",
+                          logAs: .name("Box Jump")),
                     .init("sat-b2", "B2. Lateral Bound (stick 2s)", ["3×5/side", "Explosive", "45s"],
-                          "Single-leg lateral power. The dodge-and-cut pattern from lacrosse. Hold the landing."),
+                          "Single-leg lateral power. The dodge-and-cut pattern from lacrosse. Hold the landing.",
+                          logAs: .name("Lateral Bound")),
                     .init("sat-b3", "B3. Med Ball Rotational Slam", ["3×6/side", "Explosive", "45s"],
-                          "Athletic stance, slam ball diagonally down to floor. Rotate through hips and torso explosively. Shot and pass mechanic — no wall needed.")
+                          "Athletic stance, slam ball diagonally down to floor. Rotate through hips and torso explosively. Shot and pass mechanic — no wall needed.",
+                          logAs: .name("Med Ball Rotational Slam"))
                 ])
             ]),
             .conditioningCircuit(
@@ -34,11 +37,14 @@ extension Programme {
             .groups([
                 GroupBlock(label: "D. Loaded Carry Complex (8 min)", exercises: [
                     .init("sat-d1", "D1. Farmer's Carry (heavy DBs)", ["2×40 yd", "45s rest"],
-                          "Heaviest you can hold. Grip, core, traps. Walk fast, stay tall."),
+                          "Heaviest you can hold. Grip, core, traps. Walk fast, stay tall.",
+                          logAs: .name("Farmer's Carry")),
                     .init("sat-d2", "D2. Overhead Carry (single DB/KB)", ["2×30 yd/side", "45s rest"],
-                          "One arm locked overhead. Shoulder stability, obliques, thoracic extension."),
+                          "One arm locked overhead. Shoulder stability, obliques, thoracic extension.",
+                          logAs: .name("Overhead Carry")),
                     .init("sat-d3", "D3. Bear Crawl", ["2×20 yd", "45s rest"],
-                          "Forward + backward. Knees 2\" off ground. No machine can replicate this.")
+                          "Forward + backward. Knees 2\" off ground. No machine can replicate this.",
+                          logAs: .name("Bear Crawl"))
                 ])
             ]),
             .abCircuit(
@@ -46,15 +52,20 @@ extension Programme {
                 groupLabel: "E. Ab Circuit · TURF · 2 Rounds · No rest between",
                 items: [
                     .init("sat-e1", "E1. KB Halo", ["8/direction", "Controlled"],
-                          "Hold KB by horns at chest, circle it around your head slowly. Anti-extension + shoulder stability + oblique bracing. Great activation move that sets up the rest of the circuit."),
+                          "Hold KB by horns at chest, circle it around your head slowly. Anti-extension + shoulder stability + oblique bracing. Great activation move that sets up the rest of the circuit.",
+                          logAs: .notLogged),
                     .init("sat-e2", "E2. DB Russian Twist (feet elevated)", ["20 total", "Controlled"],
-                          "Feet off floor, DB at chest, rotate side to side. Oblique + anti-gravity demand."),
+                          "Feet off floor, DB at chest, rotate side to side. Oblique + anti-gravity demand.",
+                          logAs: .notLogged),
                     .init("sat-e3", "E3. Side Plank + KB Pull-Through", ["8/side", "Controlled"],
-                          "Side plank on forearm, feet stacked. Place KB in front of chest. Reach top arm under body, drag KB across to other side, then back. Hips stay UP — flat line from feet to shoulder. Hits obliques, QL, glute med, plus anti-rotation under load. Self-limiting: if your hips drop, you stop."),
+                          "Side plank on forearm, feet stacked. Place KB in front of chest. Reach top arm under body, drag KB across to other side, then back. Hips stay UP — flat line from feet to shoulder. Hits obliques, QL, glute med, plus anti-rotation under load. Self-limiting: if your hips drop, you stop.",
+                          logAs: .notLogged),
                     .init("sat-e4", "E4. Plate Sit-Up + Overhead Press", ["12-15", "2-0-1-0"],
-                          "Sit-up with plate on chest, press plate overhead at top. Full rectus flexion + anterior chain tie-in."),
+                          "Sit-up with plate on chest, press plate overhead at top. Full rectus flexion + anterior chain tie-in.",
+                          logAs: .notLogged),
                     .init("sat-e5", "E5. Suitcase Hold (heavy DB)", ["30s/side", "Brace"],
-                          "One heavy DB at your side, stand tall, brace everything. Anti-lateral flexion isometric. 60s rest → Round 2.")
+                          "One heavy DB at your side, stand tall, brace everything. Anti-lateral flexion isometric. 60s rest → Round 2.",
+                          logAs: .notLogged)
                 ]
             ),
             .saunaNote("🧖 SAUNA: 15 min infrared after the session. Heat acclimation improves plasma volume → directly supports VO2max goal."),

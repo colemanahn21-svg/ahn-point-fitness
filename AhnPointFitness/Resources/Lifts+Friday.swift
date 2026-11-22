@@ -23,29 +23,38 @@ extension Programme {
             .groups([
                 GroupBlock(label: "A. Power Primer", labelColor: .orange, exercises: [
                     .init("fri-a1", "A1. Med Ball Supine Chest Throw", ["2×8", "Explosive", "30s"],
-                          "Lie on your back, hold ball at chest. Explosively press ball straight up, catch it, immediately reload and repeat. Same plyometric horizontal push as a wall chest pass — no wall needed, ball comes right back to you. Lacrosse passing power. 6–8 lb ball."),
+                          "Lie on your back, hold ball at chest. Explosively press ball straight up, catch it, immediately reload and repeat. Same plyometric horizontal push as a wall chest pass — no wall needed, ball comes right back to you. Lacrosse passing power. 6–8 lb ball.",
+                          logAs: .name("Med Ball Supine Throw")),
                     .init("fri-a2", "A2. Explosive Pull-Up", ["2×5", "Explosive", "30s"],
-                          "Pull hard enough to briefly release at top. Lat power — the engine behind every check and shot.")
+                          "Pull hard enough to briefly release at top. Lat power — the engine behind every check and shot.",
+                          logAs: .name("Explosive Pull-Up"))
                 ]),
                 GroupBlock(label: "Superset B — Heavy Functional", exercises: [
                     .init("fri-b1", "B1. SA DB Row (staggered stance)", ["3×8/side", "2-0-1-1", "75s"],
-                          "Standing, no bench. Anti-rotation under heavy load. 80–100 lb."),
+                          "Standing, no bench. Anti-rotation under heavy load. 80–100 lb.",
+                          logAs: .name("SA DB Row (staggered)")),
                     .init("fri-b2", "B2. SA DB Push Press (standing)", ["3×6-8/side", "Explode, 3s down", "75s"],
-                          "Full kinetic chain, ground to overhead. Single-arm = massive anti-lateral flexion. 50–70 lb.")
+                          "Full kinetic chain, ground to overhead. Single-arm = massive anti-lateral flexion. 50–70 lb.",
+                          logAs: .name("SA DB Push Press"))
                 ]),
                 GroupBlock(label: "Superset C — Landmine", exercises: [
                     .init("fri-c1", "C1. Landmine Row (single arm)", ["3×10/side", "2-1-1-0", "60s"],
-                          "Standing hinge loads posterior chain isometrically while you row — full-body integration."),
+                          "Standing hinge loads posterior chain isometrically while you row — full-body integration.",
+                          logAs: .name("Landmine Row")),
                     .init("fri-c2", "C2. Landmine Press (half-kneel)", ["3×10/side", "2-0-1-0", "60s"],
-                          "Half-kneeling eliminates compensation. Arced path is shoulder-friendly.")
+                          "Half-kneeling eliminates compensation. Arced path is shoulder-friendly.",
+                          logAs: .name("Landmine Press (half-kneel)"))
                 ]),
                 GroupBlock(label: "D. Cable Tri-Set — No rest between", exercises: [
                     .init("fri-d1", "D1. Cable Face Pull", ["2×15", "2-1-2-0"],
-                          "Posterior shoulder health."),
+                          "Posterior shoulder health.",
+                          logAs: .name("Cable Face Pull")),
                     .init("fri-d2", "D2. Cable Pallof Press", ["2×10/side", "2-2-1-0"],
-                          "Anti-rotation core."),
+                          "Anti-rotation core.",
+                          logAs: .name("Cable Pallof Press")),
                     .init("fri-d3", "D3. Cable Chop (high-to-low)", ["2×10/side", "2-0-1-0"],
-                          "Rotational power. All 3 planes in under 5 min. 60s rest after all three → repeat.")
+                          "Rotational power. All 3 planes in under 5 min. 60s rest after all three → repeat.",
+                          logAs: .name("Cable Chop"))
                 ])
             ]),
             .hiftFinisher(
