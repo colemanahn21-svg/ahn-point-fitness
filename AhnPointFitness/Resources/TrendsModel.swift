@@ -10,17 +10,10 @@ enum TrendsModel {
         var id: Date { weekStart }
     }
 
-    private static var etCalendar: Calendar {
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = TimeZone(identifier: "America/New_York")!
-        cal.firstWeekday = 2  // Monday
-        return cal
-    }
-
     /// Weekly training tonnage from workout logs, sorted by week ascending.
     /// Sets missing weight or reps contribute nothing.
     static func weeklyTonnage(logs: [WorkoutLog]) -> [WeekPoint] {
-        let cal = etCalendar
+        let cal = ET.calendar
         var byWeek: [Date: Double] = [:]
 
         for log in logs {

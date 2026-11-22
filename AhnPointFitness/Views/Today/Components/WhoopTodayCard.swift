@@ -202,7 +202,7 @@ struct WhoopTodayCard: View {
 
     static let shortDateET: DateFormatter = {
         let f = DateFormatter()
-        f.timeZone = TimeZone(identifier: "America/New_York")!
+        f.timeZone = ET.timeZone
         f.dateFormat = "EEE MMM d"     // e.g., "FRI MAY 1"
         return f
     }()

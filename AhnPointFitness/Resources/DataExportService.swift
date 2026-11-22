@@ -32,8 +32,6 @@ struct SetPayload: Codable {
 enum DataExportService {
     static let currentVersion = 1
 
-    private static let etTZ = TimeZone(identifier: "America/New_York")!
-
     private static var encoder: JSONEncoder {
         let e = JSONEncoder()
         e.dateEncodingStrategy = .iso8601
@@ -91,7 +89,7 @@ enum DataExportService {
 
     static func writeTempFile(_ data: Data, dateET: Date = Date()) throws -> URL {
         let f = DateFormatter()
-        f.timeZone = etTZ
+        f.timeZone = ET.timeZone
         f.dateFormat = "yyyy-MM-dd"
         let stamp = f.string(from: dateET)
         let filename = "ahn-point-logs-\(stamp).json"
@@ -118,8 +116,7 @@ enum DataExportService {
         var imported = 0
         var skipped = 0
 
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = etTZ
+        let cal = ET.calendar
 
         struct CompositeKey: Hashable {
             let day: String

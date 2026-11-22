@@ -25,11 +25,7 @@ struct WhoopTodaySnapshot: Codable {
     /// Monday 00:00 of the current calendar week, in America/New_York.
     /// Used as the inclusive lower bound for weekly aggregates.
     static func currentWeekStartET(now: Date = Date()) -> Date {
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = TimeZone(identifier: "America/New_York")!
-        cal.firstWeekday = 2  // Monday
-        return cal.dateInterval(of: .weekOfYear, for: now)?.start
-            ?? now.addingTimeInterval(-7 * 86_400)
+        ET.weekStart(now) ?? now.addingTimeInterval(-7 * 86_400)
     }
 
     static func compute(

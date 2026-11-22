@@ -25,15 +25,6 @@ struct CycleModel {
         self.now = now
     }
 
-    private static let etTZ = TimeZone(identifier: "America/New_York")!
-
-    private static var etCalendar: Calendar {
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = etTZ
-        cal.firstWeekday = 2  // Monday
-        return cal
-    }
-
     var startDate: Date? {
         startDateRaw > 0 ? Date(timeIntervalSince1970: startDateRaw) : nil
     }
@@ -43,13 +34,13 @@ struct CycleModel {
     /// May 25 is the Monday after week 8.
     var endDate: Date? {
         startDate.flatMap {
-            Self.etCalendar.date(byAdding: .day, value: Self.weekCount * 7, to: $0)
+            ET.calendar.date(byAdding: .day, value: Self.weekCount * 7, to: $0)
         }
     }
 
     var phase: Phase {
         guard let start = startDate else { return .unset }
-        let cal = Self.etCalendar
+        let cal = ET.calendar
         let startDay = cal.startOfDay(for: start)
         let today = cal.startOfDay(for: now)
         let days = cal.dateComponents([.day], from: startDay, to: today).day ?? 0
@@ -77,21 +68,21 @@ struct CycleModel {
     /// Six-week range from start: "Mar 30 – May 11, 2026".
     var sixWeekRangeString: String? {
         guard let start = startDate,
-              let end = Self.etCalendar.date(byAdding: .day, value: 42, to: start)
+              let end = ET.calendar.date(byAdding: .day, value: 42, to: start)
         else { return nil }
         return Self.formatRange(start: start, end: end)
     }
 
     static func formatRange(start: Date, end: Date) -> String {
-        let cal = etCalendar
+        let cal = ET.calendar
         let sameYear = cal.component(.year, from: start) == cal.component(.year, from: end)
 
         let monthDay = DateFormatter()
-        monthDay.timeZone = etTZ
+        monthDay.timeZone = ET.timeZone
         monthDay.dateFormat = "MMM d"
 
         let monthDayYear = DateFormatter()
-        monthDayYear.timeZone = etTZ
+        monthDayYear.timeZone = ET.timeZone
         monthDayYear.dateFormat = "MMM d, yyyy"
 
         if sameYear {

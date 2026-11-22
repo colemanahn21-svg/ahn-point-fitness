@@ -14,7 +14,7 @@ struct TrendsView: View {
 
     private static let weekLabel: DateFormatter = {
         let f = DateFormatter()
-        f.timeZone = TimeZone(identifier: "America/New_York")!
+        f.timeZone = ET.timeZone
         f.dateFormat = "M/d"
         return f
     }()

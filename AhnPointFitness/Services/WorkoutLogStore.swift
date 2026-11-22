@@ -29,16 +29,9 @@ struct SetSheet: Equatable {
 /// Finding and saving workout logs, kept out of the views so the Log tab
 /// and the editor share one tested path.
 enum WorkoutLogStore {
-    private static var etCalendar: Calendar {
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = TimeZone(identifier: "America/New_York")!
-        return cal
-    }
-
     /// The log for a programme day on the ET calendar day containing `date`.
     static func log(for day: ProgrammeDay, on date: Date, in logs: [WorkoutLog]) -> WorkoutLog? {
-        let cal = etCalendar
-        return logs.first { $0.day == day.rawValue && cal.isDate($0.date, inSameDayAs: date) }
+        logs.first { $0.day == day.rawValue && ET.isSameDay($0.date, date) }
     }
 
     /// Saves the visible exercises' sets.
@@ -59,7 +52,7 @@ enum WorkoutLogStore {
         in ctx: ModelContext,
         commit: (ModelContext) throws -> Void = { try $0.save() }
     ) throws -> WorkoutLog {
-        let log = existing ?? WorkoutLog(date: etCalendar.startOfDay(for: date), day: day.rawValue)
+        let log = existing ?? WorkoutLog(date: ET.startOfDay(date), day: day.rawValue)
         if log.modelContext == nil {
             ctx.insert(log)
         }

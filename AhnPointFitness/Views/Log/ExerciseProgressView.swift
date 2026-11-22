@@ -371,18 +371,17 @@ private struct SessionHistoryRow: View {
 // MARK: - Helpers
 // formatWeight lives in Resources/ETCalendar.swift.
 
-private let etTZ = TimeZone(identifier: "America/New_York")!
 
 private let prDateFormatter: DateFormatter = {
     let f = DateFormatter()
-    f.timeZone = etTZ
+    f.timeZone = ET.timeZone
     f.dateFormat = "MMM d, yyyy"
     return f
 }()
 
 private let historyDateFormatter: DateFormatter = {
     let f = DateFormatter()
-    f.timeZone = etTZ
+    f.timeZone = ET.timeZone
     f.dateFormat = "MMM d"
     return f
 }()

@@ -33,23 +33,17 @@ struct WhoopWeeklyCard: View {
         }
     }
 
-    private static let etTZ = TimeZone(identifier: "America/New_York")!
-
     private static let shortDateET: DateFormatter = {
         let f = DateFormatter()
-        f.timeZone = etTZ
+        f.timeZone = ET.timeZone
         f.dateFormat = "MMM d"
         return f
     }()
 
     /// "APR 27 – MAY 3" — Monday → Sunday of the current calendar week, ET.
     private static func weekRangeLabel() -> String {
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = etTZ
-        cal.firstWeekday = 2  // Monday
-        let now = Date()
-        guard let weekStart = cal.dateInterval(of: .weekOfYear, for: now)?.start,
-              let weekEnd = cal.date(byAdding: .day, value: 6, to: weekStart) else {
+        guard let weekStart = ET.weekStart(Date()),
+              let weekEnd = ET.calendar.date(byAdding: .day, value: 6, to: weekStart) else {
             return ""
         }
         let s = shortDateET.string(from: weekStart).uppercased()

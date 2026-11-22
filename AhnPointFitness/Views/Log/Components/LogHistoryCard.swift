@@ -8,7 +8,6 @@ struct LogHistoryCard: View {
     let onEdit: (WorkoutLog) -> Void
     let onClear: () -> Void
 
-    private static let etTZ = TimeZone(identifier: "America/New_York")!
 
     var body: some View {
         Card {
@@ -50,7 +49,7 @@ struct LogHistoryCard: View {
         let dayLabel = LogContent.dayDisplay[day] ?? log.day
         let dateStr: String = {
             let f = DateFormatter()
-            f.timeZone = Self.etTZ
+            f.timeZone = ET.timeZone
             f.dateFormat = "M/d"
             return f.string(from: log.date)
         }()

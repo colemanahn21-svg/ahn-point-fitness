@@ -25,11 +25,10 @@ struct LogView: View {
         let id: String   // exercise name doubles as identity
     }
 
-    private static let etTZ = TimeZone(identifier: "America/New_York")!
 
     private var headerDateString: String {
         let f = DateFormatter()
-        f.timeZone = Self.etTZ
+        f.timeZone = ET.timeZone
         f.dateFormat = "EEEE, MMM d, yyyy"
         return f.string(from: Date())
     }

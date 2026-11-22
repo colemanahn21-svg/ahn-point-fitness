@@ -14,13 +14,12 @@ struct EditLogView: View {
     @State private var saveError: String?
     @State private var keyboardHeight: CGFloat = 0
 
-    private static let etTZ = TimeZone(identifier: "America/New_York")!
 
     private var day: ProgrammeDay { ProgrammeDay(rawValue: log.day) ?? .mon }
 
     private var titleString: String {
         let f = DateFormatter()
-        f.timeZone = Self.etTZ
+        f.timeZone = ET.timeZone
         f.dateFormat = "M/d"
         let dayLabel = LogContent.dayDisplay[day] ?? log.day
         return "\(dayLabel) · \(f.string(from: log.date))"

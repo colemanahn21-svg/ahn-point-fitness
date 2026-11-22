@@ -229,9 +229,8 @@ enum StretchSchedule {
 
     /// Today's programme day, in Eastern time like the rest of the app.
     static func today(_ now: Date = .now) -> ProgrammeDay {
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = TimeZone(identifier: "America/New_York")!
-        switch cal.component(.weekday, from: now) {
+        // .weekday is 1 = Sunday whatever the calendar's firstWeekday.
+        switch ET.calendar.component(.weekday, from: now) {
         case 1: return .sun
         case 2: return .mon
         case 3: return .tue

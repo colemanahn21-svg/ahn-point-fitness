@@ -14,15 +14,6 @@ enum DemoSeeder {
     private static let seededIDsKey = "demo.seededLogIDs"
     private static let wroteSnapshotKey = "demo.wroteWhoopSnapshot"
 
-    private static let etTZ = TimeZone(identifier: "America/New_York")!
-
-    private static var etCalendar: Calendar {
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = etTZ
-        cal.firstWeekday = 2  // Monday
-        return cal
-    }
-
     static var isSeeded: Bool {
         !(UserDefaults.standard.stringArray(forKey: seededIDsKey) ?? []).isEmpty
     }
@@ -33,7 +24,7 @@ enum DemoSeeder {
     static func seed(into ctx: ModelContext, existing: [WorkoutLog]) -> Int {
         guard !isSeeded else { return 0 }
 
-        let cal = etCalendar
+        let cal = ET.calendar
         let today = cal.startOfDay(for: Date())
         guard let thisWeekStart = cal.dateInterval(of: .weekOfYear, for: today)?.start
         else { return 0 }
