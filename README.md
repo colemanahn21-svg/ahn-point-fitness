@@ -25,7 +25,7 @@ A native iOS training companion for an 8-week recomposition protocol — structu
 AhnPointFitness/
 ├── AhnPointFitnessApp.swift    @main — SwiftData ModelContainer, WHOOP auth env object
 ├── Models/                     @Model WorkoutLog / SetEntry (cascade delete)
-├── Design/                     Color + typography tokens (dark mode only)
+├── Design/                     Color + typography tokens (light only)
 ├── Components/                 Reusable cards, chips, rules, zone cards
 ├── Services/
 │   ├── WhoopAuth.swift         OAuth2 via ASWebAuthenticationSession + Keychain
