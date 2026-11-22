@@ -8,8 +8,9 @@ struct LogView: View {
     private var allLogs: [WorkoutLog]
 
     @State private var selectedDay: ProgrammeDay = .mon
-    @State private var inputs: [String: [String: String]] = [:]   // exerciseName -> [w-S1, r-S1, ...]
+    @State private var sheet = SetSheet()
     @State private var showSaveConfirm: Bool = false
+    @State private var saveError: String?
     @State private var showClearAlert: Bool = false
     @State private var showSettings: Bool = false
     @State private var progressTarget: ProgressTarget?
@@ -26,14 +27,6 @@ struct LogView: View {
 
     private static let etTZ = TimeZone(identifier: "America/New_York")!
 
-    private var currentET: Date {
-        let now = Date()
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = Self.etTZ
-        let comps = cal.dateComponents([.year, .month, .day], from: now)
-        return cal.date(from: comps) ?? now
-    }
-
     private var headerDateString: String {
         let f = DateFormatter()
         f.timeZone = Self.etTZ
@@ -46,11 +39,7 @@ struct LogView: View {
     }
 
     private var existingTodayLog: WorkoutLog? {
-        let dayKey = selectedDay.rawValue
-        let target = currentET
-        return allLogs.first { log in
-            log.day == dayKey && Calendar(identifier: .gregorian).with(timeZone: Self.etTZ).isDate(log.date, inSameDayAs: target)
-        }
+        WorkoutLogStore.log(for: selectedDay, on: Date(), in: allLogs)
     }
 
     var body: some View {
@@ -108,7 +97,14 @@ struct LogView: View {
                 .buttonStyle(.plain)
                 .padding(.top, 12)
 
-                if showSaveConfirm {
+                if let saveError {
+                    Text("Not saved: \(saveError)")
+                        .font(.system(size: 13))
+                        .foregroundStyle(Theme.red)
+                        .frame(maxWidth: .infinity)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 8)
+                } else if showSaveConfirm {
                     Text("✓ Saved")
                         .font(.system(size: 13))
                         .foregroundStyle(Theme.green)
@@ -226,12 +222,10 @@ struct LogView: View {
 
             VStack(spacing: 8) {
                 ForEach(1...ex.sets, id: \.self) { s in
-                    let wKey = inputKey(name: ex.name, kind: "w", set: s)
-                    let rKey = inputKey(name: ex.name, kind: "r", set: s)
                     SetInputRow(
                         setNumber: s,
-                        weight: binding(for: ex.name, field: wKey),
-                        reps: binding(for: ex.name, field: rKey)
+                        weight: binding(for: ex.name, field: .weight, set: s),
+                        reps: binding(for: ex.name, field: .reps, set: s)
                     )
                 }
             }
@@ -245,67 +239,39 @@ struct LogView: View {
 
     // MARK: - Inputs
 
-    private func inputKey(name: String, kind: String, set: Int) -> String {
-        "\(kind)-\(set)"
-    }
-
-    private func binding(for exercise: String, field: String) -> Binding<String> {
+    private func binding(for exercise: String, field: SetSheet.Field, set: Int) -> Binding<String> {
         Binding(
-            get: { inputs[exercise]?[field] ?? "" },
-            set: { newValue in
-                var d = inputs[exercise] ?? [:]
-                d[field] = newValue
-                inputs[exercise] = d
-            }
+            get: { sheet[exercise, field, set] },
+            set: { sheet[exercise, field, set] = $0 }
         )
     }
 
     private func loadInputs() {
-        inputs = [:]
-        guard let log = existingTodayLog else { return }
-        for s in log.sets {
-            var d = inputs[s.exerciseName] ?? [:]
-            if let w = s.weight { d["w-\(s.setNumber)"] = formatWeight(w) }
-            if let r = s.reps { d["r-\(s.setNumber)"] = String(r) }
-            inputs[s.exerciseName] = d
-        }
+        sheet = SetSheet(log: existingTodayLog)
+        saveError = nil
     }
 
     // MARK: - Save
 
     private func save() {
-        let dayKey = selectedDay.rawValue
-        let target = currentET
-
-        let log = existingTodayLog ?? WorkoutLog(date: target, day: dayKey)
-        if log.modelContext == nil {
-            ctx.insert(log)
-        }
-
-        // Clear previous sets ONLY for currently-visible exercises. This
-        // preserves the inactive variant's data (e.g. saving a Barbell Back
-        // Squat session must not erase prior Trap Bar Squat sets on the same
-        // WorkoutLog).
-        let visibleNames = Set(exercises.map(\.name))
-        let toDelete = log.sets.filter { visibleNames.contains($0.exerciseName) }
-        for s in toDelete { ctx.delete(s) }
-        log.sets.removeAll { visibleNames.contains($0.exerciseName) }
-
-        for ex in exercises {
-            for s in 1...ex.sets {
-                let wStr = inputs[ex.name]?["w-\(s)"] ?? ""
-                let rStr = inputs[ex.name]?["r-\(s)"] ?? ""
-                guard !wStr.isEmpty || !rStr.isEmpty else { continue }
-                let w = Double(wStr)
-                let r = Int(rStr)
-                let entry = SetEntry(exerciseName: ex.name, setNumber: s, weight: w, reps: r, log: log)
-                ctx.insert(entry)
-                log.sets.append(entry)
+        do {
+            try WorkoutLogStore.save(
+                sheet,
+                exercises: exercises,
+                day: selectedDay,
+                date: Date(),
+                existing: existingTodayLog,
+                in: ctx
+            )
+        } catch {
+            withAnimation {
+                showSaveConfirm = false
+                saveError = error.localizedDescription
             }
+            return
         }
 
-        try? ctx.save()
-
+        saveError = nil
         withAnimation { showSaveConfirm = true }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             withAnimation { showSaveConfirm = false }
@@ -317,6 +283,6 @@ struct LogView: View {
             ctx.delete(log)
         }
         try? ctx.save()
-        inputs = [:]
+        sheet = SetSheet()
     }
 }

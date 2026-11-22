@@ -10,7 +10,8 @@ struct EditLogView: View {
 
     let log: WorkoutLog
 
-    @State private var inputs: [String: [String: String]] = [:]
+    @State private var sheet = SetSheet()
+    @State private var saveError: String?
     @State private var keyboardHeight: CGFloat = 0
 
     private static let etTZ = TimeZone(identifier: "America/New_York")!
@@ -107,6 +108,14 @@ struct EditLogView: View {
             keyboardHeight = 0
         }
         .onAppear { loadInputs() }
+        .alert("Not saved", isPresented: Binding(
+            get: { saveError != nil },
+            set: { if !$0 { saveError = nil } }
+        )) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(saveError ?? "")
+        }
     }
 
     // MARK: - Exercise card (input-only variant of LogView's tracker card)
@@ -122,8 +131,8 @@ struct EditLogView: View {
                 ForEach(1...ex.sets, id: \.self) { s in
                     SetInputRow(
                         setNumber: s,
-                        weight: binding(for: ex.name, field: "w-\(s)"),
-                        reps: binding(for: ex.name, field: "r-\(s)")
+                        weight: binding(for: ex.name, field: .weight, set: s),
+                        reps: binding(for: ex.name, field: .reps, set: s)
                     )
                 }
             }
@@ -137,51 +146,34 @@ struct EditLogView: View {
 
     // MARK: - Inputs
 
-    private func binding(for exercise: String, field: String) -> Binding<String> {
+    private func binding(for exercise: String, field: SetSheet.Field, set: Int) -> Binding<String> {
         Binding(
-            get: { inputs[exercise]?[field] ?? "" },
-            set: { newValue in
-                var d = inputs[exercise] ?? [:]
-                d[field] = newValue
-                inputs[exercise] = d
-            }
+            get: { sheet[exercise, field, set] },
+            set: { sheet[exercise, field, set] = $0 }
         )
     }
 
     private func loadInputs() {
-        inputs = [:]
-        for s in log.sets {
-            var d = inputs[s.exerciseName] ?? [:]
-            if let w = s.weight { d["w-\(s.setNumber)"] = formatWeight(w) }
-            if let r = s.reps { d["r-\(s.setNumber)"] = String(r) }
-            inputs[s.exerciseName] = d
-        }
+        sheet = SetSheet(log: log)
     }
 
     // MARK: - Save
 
+    /// Rewrites the sets of every exercise shown here, on this log only.
+    /// Stays open with a message if the save fails.
     private func save() {
-        // Rewrite sets for every exercise shown in this editor, scoped to
-        // this log only (same delete-and-recreate pattern as LogView.save).
-        let visibleNames = Set(exercises.map(\.name))
-        let toDelete = log.sets.filter { visibleNames.contains($0.exerciseName) }
-        for s in toDelete { ctx.delete(s) }
-        log.sets.removeAll { visibleNames.contains($0.exerciseName) }
-
-        for ex in exercises {
-            for s in 1...ex.sets {
-                let wStr = inputs[ex.name]?["w-\(s)"] ?? ""
-                let rStr = inputs[ex.name]?["r-\(s)"] ?? ""
-                guard !wStr.isEmpty || !rStr.isEmpty else { continue }
-                let w = Double(wStr)
-                let r = Int(rStr)
-                let entry = SetEntry(exerciseName: ex.name, setNumber: s, weight: w, reps: r, log: log)
-                ctx.insert(entry)
-                log.sets.append(entry)
-            }
+        do {
+            try WorkoutLogStore.save(
+                sheet,
+                exercises: exercises,
+                day: day,
+                date: log.date,
+                existing: log,
+                in: ctx
+            )
+            dismiss()
+        } catch {
+            saveError = error.localizedDescription
         }
-
-        try? ctx.save()
-        dismiss()
     }
 }
