@@ -47,6 +47,13 @@ final class WhoopAuth: NSObject, ObservableObject {
     private var activeSession: ASWebAuthenticationSession?
     // CSRF nonce — set when starting auth, validated when callback returns.
     private var pendingState: String?
+    // The refresh in progress, if any. WHOOP rotates the refresh token on
+    // every use and treats a reused one as stolen, revoking the whole chain.
+    // The Today card fetches recovery, cycles and sleep in parallel, so
+    // without this all three refresh at once and the second and third kill
+    // the token the first just received.
+    private var refreshInFlight: Task<String, Error>?
+    private let session: URLSession
 
     private let keychainService = "com.recompapp.whoop"
     private enum Key {
@@ -55,7 +62,8 @@ final class WhoopAuth: NSObject, ObservableObject {
         static let expiresAt    = "expires_at"   // ISO8601
     }
 
-    override init() {
+    init(session: URLSession = .shared) {
+        self.session = session
         super.init()
         // Connected if we have an access token (refresh may or may not be present).
         isConnected = (loadFromKeychain(Key.accessToken) != nil)
@@ -197,7 +205,16 @@ final class WhoopAuth: NSObject, ObservableObject {
         return try await postTokenRequest(body: body, mappingFailure: WhoopAuthError.tokenExchangeFailed)
     }
 
+    /// Joins the refresh already in flight instead of starting a second one.
     private func refreshAccessToken() async throws -> String {
+        if let inFlight = refreshInFlight { return try await inFlight.value }
+        let task = Task { try await performRefresh() }
+        refreshInFlight = task
+        defer { refreshInFlight = nil }
+        return try await task.value
+    }
+
+    private func performRefresh() async throws -> String {
         guard let refresh = loadFromKeychain(Key.refreshToken) else {
             throw WhoopAuthError.notConnected
         }
@@ -213,16 +230,27 @@ final class WhoopAuth: NSObject, ObservableObject {
             try persistTokens(bundle)
             return bundle.accessToken
         } catch let e as WhoopAuthError {
-            // Only wipe Keychain when WHOOP definitively rejects the refresh token
-            // (invalid_grant on 400/401). Transient failures — network, 5xx, decode —
-            // must preserve tokens so the next attempt can recover.
+            // Only wipe Keychain when WHOOP definitively rejects the refresh token.
+            // Transient failures — network, 5xx, decode — must preserve tokens
+            // so the next attempt can recover.
             if case .refreshFailed(let status, let body) = e,
-               (status == 400 || status == 401),
-               body.lowercased().contains("invalid_grant") {
+               Self.isDeadRefreshToken(status: status, body: body) {
                 disconnect()
             }
             throw e
         }
+    }
+
+    /// WHOOP answers an expired, revoked or reused refresh token with
+    /// `invalid_request`, not the `invalid_grant` the OAuth spec suggests
+    /// (probed Nov 2026: a made-up token gets `invalid_request`, a wrong
+    /// client secret gets `invalid_client`). Either means the token is gone
+    /// and only reconnecting helps, so the app must stop calling itself
+    /// connected. `invalid_client` is a config problem, not a dead token.
+    nonisolated static func isDeadRefreshToken(status: Int, body: String) -> Bool {
+        guard status == 400 || status == 401 else { return false }
+        let b = body.lowercased()
+        return b.contains("invalid_grant") || b.contains("\"invalid_request\"")
     }
 
     private func postTokenRequest(
@@ -238,7 +266,7 @@ final class WhoopAuth: NSObject, ObservableObject {
         req.setValue("application/json", forHTTPHeaderField: "Accept")
         req.httpBody = Self.formURLEncoded(body).data(using: .utf8)
 
-        let (data, response) = try await URLSession.shared.data(for: req)
+        let (data, response) = try await session.data(for: req)
         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
         let bodyText = String(data: data, encoding: .utf8) ?? "<binary>"
         guard (200..<300).contains(status) else {
@@ -258,6 +286,14 @@ final class WhoopAuth: NSObject, ObservableObject {
             expiresAt: Date().addingTimeInterval(TimeInterval(token.expires_in))
         )
     }
+
+    #if DEBUG
+    /// Tests only: put tokens in the Keychain as if a connect had happened.
+    func storeTokensForTesting(access: String, refresh: String, expiresAt: Date) throws {
+        try persistTokens(TokenBundle(accessToken: access, refreshToken: refresh, expiresAt: expiresAt))
+        isConnected = true
+    }
+    #endif
 
     // MARK: - Keychain
 
